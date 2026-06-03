@@ -27,14 +27,22 @@
       --shadow:0 18px 45px rgba(15,23,42,.10);
       --radius:24px;
     }
+
     *{box-sizing:border-box}
+
     body{
       margin:0;
       background:var(--page);
       color:var(--ink);
       font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
-    .wrap{max-width:1080px;margin:0 auto;padding:24px 16px 70px}
+
+    .wrap{
+      max-width:1080px;
+      margin:0 auto;
+      padding:24px 16px 70px;
+    }
+
     .hero{
       background:radial-gradient(circle at 88% 10%,rgba(58,167,255,.38),transparent 28%),linear-gradient(135deg,#071a33,#0b2545 55%,#123d73);
       color:white;
@@ -44,112 +52,453 @@
       position:relative;
       overflow:hidden;
     }
-    .heroTop{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+
+    .heroTop{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:flex-start;
+    }
+
+    .titleRow{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
     .logoBox{
-      width:84px;height:84px;border-radius:22px;background:rgba(255,255,255,.14);
-      display:flex;align-items:center;justify-content:center;font-weight:900;font-size:28px;border:1px solid rgba(255,255,255,.18)
+      width:84px;
+      height:84px;
+      border-radius:22px;
+      background:rgba(255,255,255,.14);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:28px;
+      border:1px solid rgba(255,255,255,.18);
     }
-    .titleRow{display:flex;gap:18px;align-items:center}
-    h1{font-size:44px;line-height:.95;margin:0}
-    .subtitle{font-size:35px;font-weight:400;margin-top:2px}
-    .hero p{font-size:18px;font-weight:700;line-height:1.4;max-width:720px;margin:24px 0 0}
-    .heroTiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;max-width:700px}
-    .heroTile{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);border-radius:16px;padding:12px;text-align:center;font-weight:800}
-    .heroTile span{display:block;color:#79c7ff;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
-    .nextCard{background:white;color:#111827;border:3px solid var(--blue);border-radius:22px;padding:18px;min-width:290px;align-self:flex-end}
-    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:900}
-    .nextTitle{font-size:24px;font-weight:900;margin-top:4px}
-    .nextMeta{font-size:14px;color:#475467}
+
+    .logoImageBox{
+      background:white;
+      overflow:hidden;
+      padding:8px;
+    }
+
+    .logoImageBox img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
+
+    h1{
+      font-size:44px;
+      line-height:.95;
+      margin:0;
+    }
+
+    .subtitle{
+      font-size:35px;
+      font-weight:400;
+      margin-top:2px;
+    }
+
+    .hero p{
+      font-size:18px;
+      font-weight:700;
+      line-height:1.4;
+      max-width:720px;
+      margin:24px 0 0;
+    }
+
+    .heroTiles{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:18px;
+      max-width:700px;
+    }
+
+    .heroTile{
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.20);
+      border-radius:16px;
+      padding:12px;
+      text-align:center;
+      font-weight:800;
+    }
+
+    .heroTile span{
+      display:block;
+      color:#79c7ff;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .nextCard{
+      background:white;
+      color:#111827;
+      border:3px solid var(--blue);
+      border-radius:22px;
+      padding:18px;
+      min-width:290px;
+      align-self:flex-end;
+    }
+
+    .eyebrow{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.09em;
+      color:var(--muted);
+      font-weight:900;
+    }
+
+    .nextTitle{
+      font-size:24px;
+      font-weight:900;
+      margin-top:4px;
+    }
+
+    .nextMeta{
+      font-size:14px;
+      color:#475467;
+    }
+
     .tabs{
-      margin:16px 0 12px;background:white;border:1px solid var(--line);border-radius:22px;
-      display:grid;grid-template-columns:repeat(6,1fr);padding:8px;gap:8px
+      margin:16px 0 12px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:22px;
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      padding:8px;
+      gap:8px;
     }
+
     .tabBtn{
-      border:0;background:transparent;border-radius:16px;padding:13px 8px;font-weight:900;color:#1f2937;cursor:pointer;font-size:14px
+      border:0;
+      background:transparent;
+      border-radius:16px;
+      padding:13px 8px;
+      font-weight:900;
+      color:#1f2937;
+      cursor:pointer;
+      font-size:14px;
     }
-    .tabBtn.active{background:var(--navy);color:white;box-shadow:inset 0 -4px 0 var(--blue)}
-    .legend{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-    .pill{display:inline-flex;align-items:center;gap:7px;background:white;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:13px;font-weight:800}
-    .dot{width:12px;height:12px;border-radius:999px;background:var(--gray)}
-    .grid{display:grid;grid-template-columns:1.35fr .8fr;gap:16px}
-    .panel{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 8px 26px rgba(15,23,42,.05)}
-    h2{font-size:30px;margin:0 0 10px;line-height:1}
-    h3{font-size:20px;margin:0 0 10px}
-    .sectionLabel{color:var(--muted);font-size:14px;margin-bottom:4px}
+
+    .tabBtn.active{
+      background:var(--navy);
+      color:white;
+      box-shadow:inset 0 -4px 0 var(--blue);
+    }
+
+    .legend{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin:12px 0;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 11px;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .dot{
+      width:12px;
+      height:12px;
+      border-radius:999px;
+      background:var(--gray);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.35fr .8fr;
+      gap:16px;
+    }
+
+    .panel{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:0 8px 26px rgba(15,23,42,.05);
+    }
+
+    h2{
+      font-size:30px;
+      margin:0 0 10px;
+      line-height:1;
+    }
+
+    h3{
+      font-size:20px;
+      margin:0 0 10px;
+    }
+
+    .sectionLabel{
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
     input,select,textarea{
-      width:100%;border:1px solid var(--line);border-radius:16px;padding:13px 14px;
-      font:inherit;font-weight:700;background:white;color:var(--ink)
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:13px 14px;
+      font:inherit;
+      font-weight:700;
+      background:white;
+      color:var(--ink);
     }
-    textarea{min-height:86px;resize:vertical}
-    label{display:block;font-size:12px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:12px 0 6px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+    textarea{
+      min-height:86px;
+      resize:vertical;
+    }
+
+    label{
+      display:block;
+      font-size:12px;
+      font-weight:900;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin:12px 0 6px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
     .btn{
-      border:0;border-radius:16px;padding:13px 16px;font-weight:900;cursor:pointer;background:var(--navy);color:white
+      border:0;
+      border-radius:16px;
+      padding:13px 16px;
+      font-weight:900;
+      cursor:pointer;
+      background:var(--navy);
+      color:white;
     }
-    .btn.secondary{background:white;color:var(--navy);border:1px solid var(--line)}
-    .btn.danger{background:white;color:#b42318;border:1px solid #fecaca}
-    .btn.small{padding:8px 12px;border-radius:999px;font-size:13px}
+
+    .btn.secondary{
+      background:white;
+      color:var(--navy);
+      border:1px solid var(--line);
+    }
+
+    .btn.danger{
+      background:white;
+      color:#b42318;
+      border:1px solid #fecaca;
+    }
+
+    .btn.small{
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+    }
+
     .eventCard{
-      background:white;border:1px solid var(--line);border-radius:22px;padding:16px;margin:12px 0;position:relative
+      background:white;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:16px;
+      margin:12px 0;
+      position:relative;
     }
-    .catBadge{display:inline-flex;border-radius:999px;padding:8px 12px;font-weight:900;color:white;font-size:13px;margin-bottom:10px}
-    .eventTitle{font-size:22px;font-weight:900;margin-bottom:3px}
-    .eventMeta,.eventNotes{color:var(--muted);font-weight:600;line-height:1.35}
+
+    .catBadge{
+      display:inline-flex;
+      border-radius:999px;
+      padding:8px 12px;
+      font-weight:900;
+      color:white;
+      font-size:13px;
+      margin-bottom:10px;
+    }
+
+    .eventTitle{
+      font-size:22px;
+      font-weight:900;
+      margin-bottom:3px;
+    }
+
+    .eventMeta,.eventNotes{
+      color:var(--muted);
+      font-weight:600;
+      line-height:1.35;
+    }
+
     .durationBox{
-      position:absolute;right:16px;top:16px;background:#f2f4f7;border-radius:18px;padding:12px 16px;text-align:center;min-width:72px
+      position:absolute;
+      right:16px;
+      top:16px;
+      background:#f2f4f7;
+      border-radius:18px;
+      padding:12px 16px;
+      text-align:center;
+      min-width:72px;
     }
-    .durationBox strong{font-size:26px;display:block}
-    .actions{display:flex;gap:8px;margin-top:14px}
-    .weekDay{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin:8px 0;font-weight:900;cursor:pointer}
-    .weekDay.active{background:var(--navy);color:white;box-shadow:inset 0 -4px 0 var(--blue)}
-    .monthGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-    .dow{text-align:center;font-size:12px;color:var(--muted);font-weight:900;padding:6px}
-    .dayCell{background:white;border:1px solid var(--line);border-radius:14px;min-height:92px;padding:8px;cursor:pointer}
-    .dayCell.today{outline:3px solid var(--blue)}
-    .dayNum{font-weight:900}
-    .miniItem{font-size:11px;font-weight:900;color:white;border-radius:999px;padding:3px 6px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .summaryGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .stat{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
-    .stat strong{display:block;font-size:30px}
-    .status{padding:18px;border-radius:18px;background:white;border:1px solid var(--line);font-weight:800}
-    .hidden{display:none!important}
+
+    .durationBox strong{
+      font-size:26px;
+      display:block;
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      margin-top:14px;
+    }
+
+    .weekDay{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px 14px;
+      margin:8px 0;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .weekDay.active{
+      background:var(--navy);
+      color:white;
+      box-shadow:inset 0 -4px 0 var(--blue);
+    }
+
+    .monthGrid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:6px;
+    }
+
+    .dow{
+      text-align:center;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:900;
+      padding:6px;
+    }
+
+    .dayCell{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:14px;
+      min-height:92px;
+      padding:8px;
+      cursor:pointer;
+    }
+
+    .dayCell.today{
+      outline:3px solid var(--blue);
+    }
+
+    .dayNum{
+      font-weight:900;
+    }
+
+    .miniItem{
+      font-size:11px;
+      font-weight:900;
+      color:white;
+      border-radius:999px;
+      padding:3px 6px;
+      margin-top:4px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .summaryGrid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .stat{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:16px;
+    }
+
+    .stat strong{
+      display:block;
+      font-size:30px;
+    }
+
+    .status{
+      padding:18px;
+      border-radius:18px;
+      background:white;
+      border:1px solid var(--line);
+      font-weight:800;
+    }
+
+    .hidden{
+      display:none!important;
+    }
+
     @media(max-width:850px){
       .wrap{padding:14px 10px 60px}
       .hero{padding:22px}
       .heroTop,.titleRow{display:block}
       .logoBox{width:72px;height:72px;margin-bottom:14px}
-      h1{font-size:38px}.subtitle{font-size:30px}
+      h1{font-size:38px}
+      .subtitle{font-size:30px}
       .nextCard{margin-top:18px;min-width:0}
       .heroTiles{grid-template-columns:1fr}
       .tabs{grid-template-columns:repeat(3,1fr);border-radius:20px}
       .grid{grid-template-columns:1fr}
-      .row,.row3,.summaryGrid{grid-template-columns:1fr}
+      .row,.summaryGrid{grid-template-columns:1fr}
       .eventCard{padding-right:16px}
       .durationBox{position:static;display:inline-block;margin-top:10px}
-      .monthGrid{gap:4px}.dayCell{min-height:78px;padding:6px;border-radius:12px}
+      .monthGrid{gap:4px}
+      .dayCell{min-height:78px;padding:6px;border-radius:12px}
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <section class="hero">
       <div class="heroTop">
         <div>
           <div class="titleRow">
-            <div class="logoBox">CB</div>
+            <div class="logoBox logoImageBox">
+              <img src="cam-uri-ram-logo.jpg" alt="Rhode Island Rams logo">
+            </div>
             <div>
               <h1>Cam</h1>
               <div class="subtitle">Summer Training</div>
             </div>
           </div>
+
           <p>Track the work, plan the week, and build momentum heading into URI.</p>
+
           <div class="heroTiles">
             <div class="heroTile"><span>Plan</span>Day • Week • Month</div>
             <div class="heroTile"><span>Train</span>Ice • Lift • Conditioning</div>
             <div class="heroTile"><span>Log</span>What got done</div>
           </div>
         </div>
+
         <div class="nextCard">
           <div class="eyebrow">Next Scheduled Session</div>
           <div id="nextTitle" class="nextTitle">—</div>
@@ -177,6 +526,7 @@
           <input id="selectedDate" type="date" />
           <div id="dayEvents"></div>
         </section>
+
         <section class="panel">
           <div class="sectionLabel">This Week</div>
           <h2>Week Ahead</h2>
@@ -211,13 +561,14 @@
       <section class="panel">
         <h2>Summary</h2>
         <div id="summaryGrid" class="summaryGrid"></div>
+        <div id="categorySummary" style="margin-top:20px"></div>
       </section>
     </main>
 
     <main id="journal" class="tabPage hidden">
       <section class="panel">
         <h2>Training Log</h2>
-        <p class="eventMeta">Use notes inside each event for now. This section summarizes completed/active work from the Events sheet.</p>
+        <p class="eventMeta">Use notes inside each event for now. This section summarizes active work from the Events sheet.</p>
         <div id="journalList"></div>
       </section>
     </main>
@@ -300,37 +651,74 @@
     let calendarMonth = new Date();
 
     function $(id){ return document.getElementById(id); }
-    function esc(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-    function toYMD(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
-    function parseYMD(s){ const [y,m,d]=String(s).split("-").map(Number); return new Date(y,m-1,d); }
-    function startOfWeek(d){ const x=new Date(d); const day=x.getDay(); x.setDate(x.getDate()-day); x.setHours(0,0,0,0); return x; }
-    function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+
+    function esc(s){
+      return String(s ?? "").replace(/[&<>"']/g, m => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+      }[m]));
+    }
+
+    function toYMD(d){
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    }
+
+    function parseYMD(s){
+      const [y,m,d] = String(s).split("-").map(Number);
+      return new Date(y,m-1,d);
+    }
+
+    function startOfWeek(d){
+      const x = new Date(d);
+      const day = x.getDay();
+      x.setDate(x.getDate()-day);
+      x.setHours(0,0,0,0);
+      return x;
+    }
+
+    function addDays(d,n){
+      const x = new Date(d);
+      x.setDate(x.getDate()+n);
+      return x;
+    }
+
     function prettyDate(ymd){
       if(!ymd) return "";
       return parseYMD(ymd).toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"});
     }
+
     function shortDate(ymd){
       if(!ymd) return "";
       return parseYMD(ymd).toLocaleDateString("en-US",{month:"short",day:"numeric"});
     }
+
     function eventTime(e){
       if(e.start && e.end) return `${e.start} – ${e.end}`;
       if(e.start) return e.start;
       return "";
     }
-    function colorFor(cat){ return categories[cat] || categories.Other; }
+
+    function colorFor(cat){
+      return categories[cat] || categories.Other;
+    }
 
     function eventDateTime(e){
       const d = e.date ? parseYMD(e.date) : new Date();
-      let hour = 0, minute = 0;
+      let hour = 0;
+      let minute = 0;
       const raw = String(e.start || "").trim().toUpperCase();
       const m = raw.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/);
+
       if(m){
         hour = parseInt(m[1],10);
         minute = parseInt(m[2] || "0",10);
         if(m[3] === "AM" && hour === 12) hour = 0;
         if(m[3] === "PM" && hour !== 12) hour += 12;
       }
+
       d.setHours(hour, minute, 0, 0);
       return d;
     }
@@ -346,7 +734,7 @@
         $("nextMeta").textContent = "Loading schedule...";
         const data = await api({action:"list", t:Date.now()});
         events = Array.isArray(data.events) ? data.events : [];
-        events.sort((a,b)=> eventDateTime(a) - eventDateTime(b));
+        events.sort((a,b) => eventDateTime(a) - eventDateTime(b));
         renderAll();
       }catch(err){
         $("nextTitle").textContent = "Error";
@@ -359,29 +747,44 @@
       $("legend").innerHTML = Object.entries(categories).map(([name,color]) =>
         `<span class="pill"><span class="dot" style="background:${color}"></span>${esc(name)}</span>`
       ).join("");
-      $("eventCategory").innerHTML = Object.keys(categories).map(c => `<option>${esc(c)}</option>`).join("");
+
+      $("eventCategory").innerHTML = Object.keys(categories)
+        .map(c => `<option>${esc(c)}</option>`)
+        .join("");
     }
 
     function renderNext(){
       const now = new Date();
-      const next = events.filter(e => eventDateTime(e) > now).sort((a,b)=>eventDateTime(a)-eventDateTime(b))[0];
+      const next = events
+        .filter(e => eventDateTime(e) > now)
+        .sort((a,b) => eventDateTime(a)-eventDateTime(b))[0];
+
       if(!next){
         $("nextTitle").textContent = "—";
         $("nextMeta").textContent = "No upcoming sessions";
         return;
       }
+
       $("nextTitle").textContent = next.title || "Scheduled item";
       $("nextMeta").textContent = `${shortDate(next.date)} · ${eventTime(next) || "Time TBD"} · ${next.location || "Location TBD"}`;
     }
 
     function eventCard(e, allowActions=true){
-      const dur = e.duration ? `<div class="durationBox"><strong>${esc(e.duration)}</strong><span>min</span></div>` : "";
-      const notes = e.notes ? `<div class="eventNotes" style="margin-top:12px;background:#f8fafc;border-radius:16px;padding:12px">${esc(e.notes)}</div>` : "";
-      const actions = allowActions ? `
-        <div class="actions">
-          <button class="btn secondary small" onclick="editEvent('${esc(e.id)}')">Edit</button>
-          <button class="btn danger small" onclick="deleteEventById('${esc(e.id)}')">Delete</button>
-        </div>` : "";
+      const dur = e.duration
+        ? `<div class="durationBox"><strong>${esc(e.duration)}</strong><span>min</span></div>`
+        : "";
+
+      const notes = e.notes
+        ? `<div class="eventNotes" style="margin-top:12px;background:#f8fafc;border-radius:16px;padding:12px">${esc(e.notes)}</div>`
+        : "";
+
+      const actions = allowActions
+        ? `<div class="actions">
+            <button class="btn secondary small" onclick="editEvent('${esc(e.id)}')">Edit</button>
+            <button class="btn danger small" onclick="deleteEventById('${esc(e.id)}')">Delete</button>
+          </div>`
+        : "";
+
       return `
         <div class="eventCard">
           ${dur}
@@ -398,39 +801,60 @@
     function renderDay(){
       $("selectedDate").value = selectedDate;
       $("selectedDayTitle").textContent = prettyDate(selectedDate);
+
       const dayEvents = events.filter(e => e.date === selectedDate);
-      $("dayEvents").innerHTML = dayEvents.length ? dayEvents.map(e => eventCard(e)).join("") : `<div class="status">No events for this day yet.</div>`;
+
+      $("dayEvents").innerHTML = dayEvents.length
+        ? dayEvents.map(e => eventCard(e)).join("")
+        : `<div class="status">No events for this day yet.</div>`;
     }
 
     function renderWeek(){
       const list = [];
+
       for(let i=0;i<7;i++){
         const d = addDays(weekStart,i);
         const ymd = toYMD(d);
         const count = events.filter(e => e.date === ymd).length;
-        list.push(`<div class="weekDay ${ymd===selectedDate?'active':''}" onclick="selectDay('${ymd}')"><span>${d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})}</span><span>${count} item${count===1?"":"s"}</span></div>`);
+
+        list.push(`
+          <div class="weekDay ${ymd===selectedDate?'active':''}" onclick="selectDay('${ymd}')">
+            <span>${d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})}</span>
+            <span>${count} item${count===1?"":"s"}</span>
+          </div>
+        `);
       }
+
       $("weekList").innerHTML = list.join("");
 
       let full = "";
+
       for(let i=0;i<7;i++){
         const d = addDays(weekStart,i);
         const ymd = toYMD(d);
         const dayEvents = events.filter(e => e.date === ymd);
+
         full += `<h3 style="margin-top:18px">${d.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})}</h3>`;
-        full += dayEvents.length ? dayEvents.map(e => eventCard(e)).join("") : `<div class="status">No events.</div>`;
+        full += dayEvents.length
+          ? dayEvents.map(e => eventCard(e)).join("")
+          : `<div class="status">No events.</div>`;
       }
+
       $("fullWeek").innerHTML = full;
     }
 
     function renderCalendar(){
       const y = calendarMonth.getFullYear();
       const m = calendarMonth.getMonth();
+
       $("monthTitle").textContent = calendarMonth.toLocaleDateString("en-US",{month:"long",year:"numeric"});
 
       const first = new Date(y,m,1);
       const start = startOfWeek(first);
-      let html = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => `<div class="dow">${d}</div>`).join("");
+
+      let html = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+        .map(d => `<div class="dow">${d}</div>`)
+        .join("");
 
       for(let i=0;i<42;i++){
         const d = addDays(start,i);
@@ -438,41 +862,54 @@
         const dayEvents = events.filter(e => e.date === ymd);
         const muted = d.getMonth() !== m ? "opacity:.35" : "";
         const today = ymd === toYMD(new Date()) ? "today" : "";
-        html += `<div class="dayCell ${today}" style="${muted}" onclick="selectDay('${ymd}','home')">
-          <div class="dayNum">${d.getDate()}</div>
-          ${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.category)}">${esc(e.title || e.category)}</div>`).join("")}
-        </div>`;
+
+        html += `
+          <div class="dayCell ${today}" style="${muted}" onclick="selectDay('${ymd}','home')">
+            <div class="dayNum">${d.getDate()}</div>
+            ${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.category)}">${esc(e.title || e.category)}</div>`).join("")}
+          </div>
+        `;
       }
+
       $("monthGrid").innerHTML = html;
     }
 
     function renderSummary(){
       const active = events;
-      const totalMinutes = active.reduce((sum,e)=>sum+(parseInt(e.duration,10)||0),0);
+      const totalMinutes = active.reduce((sum,e) => sum + (parseInt(e.duration,10)||0), 0);
+
       const stats = [
         ["Events", active.length],
         ["Minutes", totalMinutes],
-        ["On-ice", active.filter(e=>e.category==="On-ice").length],
-        ["Lifts", active.filter(e=>e.category==="Lift").length]
+        ["On-ice", active.filter(e => e.category==="On-ice").length],
+        ["Lifts", active.filter(e => e.category==="Lift").length]
       ];
-      $("summaryGrid").innerHTML = stats.map(([label,val]) => `<div class="stat"><div class="eyebrow">${label}</div><strong>${val}</strong></div>`).join("");
 
-      const byCat = Object.keys(categories).map(cat => {
-        const count = active.filter(e => e.category === cat).length;
-        const mins = active.filter(e => e.category === cat).reduce((s,e)=>s+(parseInt(e.duration,10)||0),0);
+      $("summaryGrid").innerHTML = stats.map(([label,val]) =>
+        `<div class="stat"><div class="eyebrow">${label}</div><strong>${val}</strong></div>`
+      ).join("");
+
+      $("categorySummary").innerHTML = Object.keys(categories).map(cat => {
+        const catEvents = active.filter(e => e.category === cat);
+        const count = catEvents.length;
+        const mins = catEvents.reduce((s,e) => s + (parseInt(e.duration,10)||0), 0);
         return `<div class="weekDay"><span>${cat}</span><span>${count} events · ${mins} min</span></div>`;
       }).join("");
-      $("summaryGrid").insertAdjacentHTML("afterend", `<div style="margin-top:20px">${byCat}</div>`);
     }
 
     function renderJournal(){
-      $("journalList").innerHTML = events.length ? events.map(e => eventCard(e, false)).join("") : `<div class="status">No training logged yet.</div>`;
+      $("journalList").innerHTML = events.length
+        ? events.map(e => eventCard(e, false)).join("")
+        : `<div class="status">No training logged yet.</div>`;
     }
 
     function renderUpcoming(){
       const now = new Date();
       const upcoming = events.filter(e => eventDateTime(e) >= now).slice(0,10);
-      $("upcomingEvents").innerHTML = upcoming.length ? upcoming.map(e => eventCard(e)).join("") : `<div class="status">No upcoming events yet.</div>`;
+
+      $("upcomingEvents").innerHTML = upcoming.length
+        ? upcoming.map(e => eventCard(e)).join("")
+        : `<div class="status">No upcoming events yet.</div>`;
     }
 
     function renderAll(){
@@ -516,8 +953,14 @@
 
     window.editEvent = function(id){
       const e = events.find(x => String(x.id) === String(id));
-      if(!e) return alert("Could not find this event.");
+
+      if(!e){
+        alert("Could not find this event.");
+        return;
+      }
+
       showTab("add");
+
       $("eventId").value = e.id;
       $("formMode").textContent = "Editing event";
       $("formTitle").textContent = "Edit scheduled item";
@@ -529,13 +972,21 @@
       $("eventLocation").value = e.location || "";
       $("eventDuration").value = e.duration || "";
       $("eventNotes").value = e.notes || "";
+
       window.scrollTo({top:0,behavior:"smooth"});
     }
 
     window.deleteEventById = async function(id){
       const e = events.find(x => String(x.id) === String(id));
-      if(!e) return alert("Could not find this event.");
-      if(!confirm(`Delete "${e.title || "this event"}"?`)) return;
+
+      if(!e){
+        alert("Could not find this event.");
+        return;
+      }
+
+      if(!confirm(`Delete "${e.title || "this event"}"?`)){
+        return;
+      }
 
       try{
         await api({action:"delete", id});
@@ -548,6 +999,7 @@
 
     async function saveEvent(){
       const id = $("eventId").value || "";
+
       const params = {
         action: id ? "update" : "add",
         id: id || ("event-" + Date.now()),
@@ -571,7 +1023,11 @@
 
       try{
         const result = await api(params);
-        if(!result.ok) throw new Error(result.error || "Save failed");
+
+        if(!result.ok){
+          throw new Error(result.error || "Save failed");
+        }
+
         $("saveStatus").innerHTML = `<div class="status">Saved.</div>`;
         clearForm();
         await loadEvents();
@@ -582,12 +1038,32 @@
       }
     }
 
-    document.querySelectorAll(".tabBtn").forEach(btn => btn.addEventListener("click", () => showTab(btn.dataset.tab)));
+    document.querySelectorAll(".tabBtn").forEach(btn => {
+      btn.addEventListener("click", () => showTab(btn.dataset.tab));
+    });
+
     $("selectedDate").addEventListener("change", e => selectDay(e.target.value));
-    $("prevWeek").addEventListener("click", () => { weekStart = addDays(weekStart,-7); renderAll(); });
-    $("nextWeek").addEventListener("click", () => { weekStart = addDays(weekStart,7); renderAll(); });
-    $("prevMonth").addEventListener("click", () => { calendarMonth.setMonth(calendarMonth.getMonth()-1); renderAll(); });
-    $("nextMonth").addEventListener("click", () => { calendarMonth.setMonth(calendarMonth.getMonth()+1); renderAll(); });
+
+    $("prevWeek").addEventListener("click", () => {
+      weekStart = addDays(weekStart,-7);
+      renderAll();
+    });
+
+    $("nextWeek").addEventListener("click", () => {
+      weekStart = addDays(weekStart,7);
+      renderAll();
+    });
+
+    $("prevMonth").addEventListener("click", () => {
+      calendarMonth.setMonth(calendarMonth.getMonth()-1);
+      renderAll();
+    });
+
+    $("nextMonth").addEventListener("click", () => {
+      calendarMonth.setMonth(calendarMonth.getMonth()+1);
+      renderAll();
+    });
+
     $("saveEvent").addEventListener("click", saveEvent);
     $("clearForm").addEventListener("click", clearForm);
 
