@@ -91,17 +91,8 @@
       display:block;
     }
 
-    h1{
-      font-size:44px;
-      line-height:.95;
-      margin:0;
-    }
-
-    .subtitle{
-      font-size:35px;
-      font-weight:400;
-      margin-top:2px;
-    }
+    h1{font-size:44px;line-height:.95;margin:0}
+    .subtitle{font-size:35px;font-weight:400;margin-top:2px}
 
     .hero p{
       font-size:18px;
@@ -154,16 +145,8 @@
       font-weight:900;
     }
 
-    .nextTitle{
-      font-size:24px;
-      font-weight:900;
-      margin-top:4px;
-    }
-
-    .nextMeta{
-      font-size:14px;
-      color:#475467;
-    }
+    .nextTitle{font-size:24px;font-weight:900;margin-top:4px}
+    .nextMeta{font-size:14px;color:#475467}
 
     .tabs{
       margin:16px 0 12px;
@@ -233,22 +216,9 @@
       box-shadow:0 8px 26px rgba(15,23,42,.05);
     }
 
-    h2{
-      font-size:30px;
-      margin:0 0 10px;
-      line-height:1;
-    }
-
-    h3{
-      font-size:20px;
-      margin:0 0 10px;
-    }
-
-    .sectionLabel{
-      color:var(--muted);
-      font-size:14px;
-      margin-bottom:4px;
-    }
+    h2{font-size:30px;margin:0 0 10px;line-height:1}
+    h3{font-size:20px;margin:0 0 10px}
+    .sectionLabel{color:var(--muted);font-size:14px;margin-bottom:4px}
 
     input,select,textarea{
       width:100%;
@@ -261,10 +231,7 @@
       color:var(--ink);
     }
 
-    textarea{
-      min-height:86px;
-      resize:vertical;
-    }
+    textarea{min-height:86px;resize:vertical}
 
     label{
       display:block;
@@ -276,11 +243,8 @@
       margin:12px 0 6px;
     }
 
-    .row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .timeRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 
     .btn{
       border:0;
@@ -292,23 +256,9 @@
       color:white;
     }
 
-    .btn.secondary{
-      background:white;
-      color:var(--navy);
-      border:1px solid var(--line);
-    }
-
-    .btn.danger{
-      background:white;
-      color:#b42318;
-      border:1px solid #fecaca;
-    }
-
-    .btn.small{
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:13px;
-    }
+    .btn.secondary{background:white;color:var(--navy);border:1px solid var(--line)}
+    .btn.danger{background:white;color:#b42318;border:1px solid #fecaca}
+    .btn.small{padding:8px 12px;border-radius:999px;font-size:13px}
 
     .eventCard{
       background:white;
@@ -329,17 +279,8 @@
       margin-bottom:10px;
     }
 
-    .eventTitle{
-      font-size:22px;
-      font-weight:900;
-      margin-bottom:3px;
-    }
-
-    .eventMeta,.eventNotes{
-      color:var(--muted);
-      font-weight:600;
-      line-height:1.35;
-    }
+    .eventTitle{font-size:22px;font-weight:900;margin-bottom:3px}
+    .eventMeta,.eventNotes{color:var(--muted);font-weight:600;line-height:1.35}
 
     .durationBox{
       position:absolute;
@@ -352,16 +293,18 @@
       min-width:72px;
     }
 
-    .durationBox strong{
-      font-size:26px;
-      display:block;
+    .durationBox strong{font-size:26px;display:block}
+
+    .calculatedBox{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+      font-weight:900;
+      color:#111827;
     }
 
-    .actions{
-      display:flex;
-      gap:8px;
-      margin-top:14px;
-    }
+    .actions{display:flex;gap:8px;margin-top:14px}
 
     .weekDay{
       display:flex;
@@ -404,13 +347,8 @@
       cursor:pointer;
     }
 
-    .dayCell.today{
-      outline:3px solid var(--blue);
-    }
-
-    .dayNum{
-      font-weight:900;
-    }
+    .dayCell.today{outline:3px solid var(--blue)}
+    .dayNum{font-weight:900}
 
     .miniItem{
       font-size:11px;
@@ -437,10 +375,7 @@
       padding:16px;
     }
 
-    .stat strong{
-      display:block;
-      font-size:30px;
-    }
+    .stat strong{display:block;font-size:30px}
 
     .status{
       padding:18px;
@@ -450,9 +385,7 @@
       font-weight:800;
     }
 
-    .hidden{
-      display:none!important;
-    }
+    .hidden{display:none!important}
 
     @media(max-width:850px){
       .wrap{padding:14px 10px 60px}
@@ -589,15 +522,18 @@
           <label>Title</label>
           <input id="eventTitleInput" placeholder="Example: Lift, Stick & Puck, Work shift" />
 
-          <div class="row">
-            <div>
-              <label>Start</label>
-              <select id="eventStart"></select>
-            </div>
-            <div>
-              <label>End</label>
-              <select id="eventEnd"></select>
-            </div>
+          <label>Start Time</label>
+          <div class="timeRow">
+            <select id="startHour"></select>
+            <select id="startMinute"></select>
+            <select id="startAmPm"></select>
+          </div>
+
+          <label>End Time</label>
+          <div class="timeRow">
+            <select id="endHour"></select>
+            <select id="endMinute"></select>
+            <select id="endAmPm"></select>
           </div>
 
           <div class="row">
@@ -606,10 +542,12 @@
               <input id="eventLocation" placeholder="Example: Gym, rink, home" />
             </div>
             <div>
-              <label>Duration</label>
-              <input id="eventDuration" placeholder="Example: 60" />
+              <label>Calculated Minutes</label>
+              <div id="durationDisplay" class="calculatedBox">Choose start and end times</div>
             </div>
           </div>
+
+          <input type="hidden" id="eventDuration" />
 
           <label>Notes</label>
           <textarea id="eventNotes" placeholder="Optional notes"></textarea>
@@ -704,40 +642,132 @@
       return categories[cat] || categories.Other;
     }
 
-    function eventDateTime(e){
-      const d = e.date ? parseYMD(e.date) : new Date();
-      let hour = 0;
-      let minute = 0;
-      const raw = String(e.start || "").trim().toUpperCase();
-      const m = raw.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/);
+    function timeStringFromParts(prefix){
+      const hour = $(`${prefix}Hour`).value;
+      const minute = $(`${prefix}Minute`).value;
+      const ampm = $(`${prefix}AmPm`).value;
 
-      if(m){
-        hour = parseInt(m[1],10);
-        minute = parseInt(m[2] || "0",10);
-        if(m[3] === "AM" && hour === 12) hour = 0;
-        if(m[3] === "PM" && hour !== 12) hour += 12;
+      if(!hour || !minute || !ampm) return "";
+
+      return `${Number(hour)}:${minute} ${ampm}`;
+    }
+
+    function minutesFromTimeString(time){
+      if(!time) return null;
+
+      const match = String(time).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      if(!match) return null;
+
+      let hour = Number(match[1]);
+      const minute = Number(match[2]);
+      const ampm = match[3].toUpperCase();
+
+      if(ampm === "AM" && hour === 12) hour = 0;
+      if(ampm === "PM" && hour !== 12) hour += 12;
+
+      return hour * 60 + minute;
+    }
+
+    function setTimeParts(prefix, time){
+      const match = String(time || "").trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+
+      if(!match){
+        $(`${prefix}Hour`).value = "";
+        $(`${prefix}Minute`).value = "";
+        $(`${prefix}AmPm`).value = "";
+        return;
       }
 
-      d.setHours(hour, minute, 0, 0);
+      $(`${prefix}Hour`).value = String(Number(match[1]));
+      $(`${prefix}Minute`).value = match[2];
+      $(`${prefix}AmPm`).value = match[3].toUpperCase();
+    }
+
+    function timeStringFromMinutes(total){
+      total = ((total % 1440) + 1440) % 1440;
+
+      let hour24 = Math.floor(total / 60);
+      const minute = total % 60;
+      const ampm = hour24 >= 12 ? "PM" : "AM";
+
+      let hour12 = hour24 % 12;
+      if(hour12 === 0) hour12 = 12;
+
+      return `${hour12}:${String(minute).padStart(2,"0")} ${ampm}`;
+    }
+
+    function eventDateTime(e){
+      const d = e.date ? parseYMD(e.date) : new Date();
+      const mins = minutesFromTimeString(e.start);
+
+      if(mins !== null){
+        d.setHours(Math.floor(mins / 60), mins % 60, 0, 0);
+      }else{
+        d.setHours(0,0,0,0);
+      }
+
       return d;
     }
 
-    function buildTimeOptions(){
-      const options = [`<option value="">No time / TBD</option>`];
-
-      for(let hour = 5; hour <= 23; hour++){
-        for(const minute of [0,15,30,45]){
-          const ampm = hour >= 12 ? "PM" : "AM";
-          let displayHour = hour % 12;
-          if(displayHour === 0) displayHour = 12;
-
-          const label = `${displayHour}:${String(minute).padStart(2,"0")} ${ampm}`;
-          options.push(`<option value="${label}">${label}</option>`);
-        }
+    function buildTimeSelectors(){
+      const hourOptions = [`<option value="">Hour</option>`];
+      for(let h=1; h<=12; h++){
+        hourOptions.push(`<option value="${h}">${h}</option>`);
       }
 
-      $("eventStart").innerHTML = options.join("");
-      $("eventEnd").innerHTML = options.join("");
+      const minuteOptions = [`<option value="">Min</option>`];
+      ["00","15","30","45"].forEach(m => {
+        minuteOptions.push(`<option value="${m}">${m}</option>`);
+      });
+
+      const ampmOptions = `
+        <option value="">AM/PM</option>
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      `;
+
+      ["startHour","endHour"].forEach(id => $(id).innerHTML = hourOptions.join(""));
+      ["startMinute","endMinute"].forEach(id => $(id).innerHTML = minuteOptions.join(""));
+      ["startAmPm","endAmPm"].forEach(id => $(id).innerHTML = ampmOptions);
+    }
+
+    function calculateDuration(){
+      const start = timeStringFromParts("start");
+      const end = timeStringFromParts("end");
+
+      const startMinutes = minutesFromTimeString(start);
+      const endMinutes = minutesFromTimeString(end);
+
+      if(startMinutes === null || endMinutes === null){
+        $("eventDuration").value = "";
+        $("durationDisplay").textContent = "Choose start and end times";
+        return "";
+      }
+
+      let duration = endMinutes - startMinutes;
+
+      if(duration < 0){
+        duration += 24 * 60;
+      }
+
+      $("eventDuration").value = String(duration);
+      $("durationDisplay").textContent = `${duration} minutes`;
+
+      return duration;
+    }
+
+    function autofillEndTime(){
+      const start = timeStringFromParts("start");
+      const startMinutes = minutesFromTimeString(start);
+
+      if(startMinutes === null) {
+        calculateDuration();
+        return;
+      }
+
+      const end = timeStringFromMinutes(startMinutes + 60);
+      setTimeParts("end", end);
+      calculateDuration();
     }
 
     async function api(params){
@@ -953,28 +983,6 @@
       document.querySelector(`[data-tab="${tab}"]`).classList.add("active");
     }
 
-    function setSelectValue(selectId, value){
-      const select = $(selectId);
-      const normalized = String(value || "").trim();
-
-      if(!normalized){
-        select.value = "";
-        return;
-      }
-
-      const existing = Array.from(select.options).some(option => option.value === normalized);
-
-      if(existing){
-        select.value = normalized;
-      }else{
-        const option = document.createElement("option");
-        option.value = normalized;
-        option.textContent = normalized;
-        select.appendChild(option);
-        select.value = normalized;
-      }
-    }
-
     function clearForm(){
       $("eventId").value = "";
       $("formMode").textContent = "New event";
@@ -982,10 +990,11 @@
       $("eventDate").value = selectedDate;
       $("eventCategory").value = "On-ice";
       $("eventTitleInput").value = "";
-      $("eventStart").value = "";
-      $("eventEnd").value = "";
+      setTimeParts("start", "");
+      setTimeParts("end", "");
       $("eventLocation").value = "";
       $("eventDuration").value = "";
+      $("durationDisplay").textContent = "Choose start and end times";
       $("eventNotes").value = "";
       $("saveStatus").innerHTML = "";
     }
@@ -1006,11 +1015,11 @@
       $("eventDate").value = e.date || selectedDate;
       $("eventCategory").value = e.category || "Other";
       $("eventTitleInput").value = e.title || "";
-      setSelectValue("eventStart", e.start || "");
-      setSelectValue("eventEnd", e.end || "");
+      setTimeParts("start", e.start || "");
+      setTimeParts("end", e.end || "");
       $("eventLocation").value = e.location || "";
-      $("eventDuration").value = e.duration || "";
       $("eventNotes").value = e.notes || "";
+      calculateDuration();
 
       window.scrollTo({top:0,behavior:"smooth"});
     }
@@ -1038,6 +1047,9 @@
 
     async function saveEvent(){
       const id = $("eventId").value || "";
+      const start = timeStringFromParts("start");
+      const end = timeStringFromParts("end");
+      const duration = calculateDuration();
 
       const params = {
         action: id ? "update" : "add",
@@ -1045,10 +1057,10 @@
         date: $("eventDate").value,
         category: $("eventCategory").value,
         title: $("eventTitleInput").value,
-        start: $("eventStart").value,
-        end: $("eventEnd").value,
+        start,
+        end,
         location: $("eventLocation").value,
-        duration: $("eventDuration").value,
+        duration: duration || "",
         notes: $("eventNotes").value,
         status: "active"
       };
@@ -1106,8 +1118,16 @@
     $("saveEvent").addEventListener("click", saveEvent);
     $("clearForm").addEventListener("click", clearForm);
 
+    ["startHour","startMinute","startAmPm"].forEach(id => {
+      $(id).addEventListener("change", autofillEndTime);
+    });
+
+    ["endHour","endMinute","endAmPm"].forEach(id => {
+      $(id).addEventListener("change", calculateDuration);
+    });
+
     renderLegend();
-    buildTimeOptions();
+    buildTimeSelectors();
     $("selectedDate").value = selectedDate;
     clearForm();
     loadEvents();
