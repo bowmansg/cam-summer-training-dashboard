@@ -69,22 +69,16 @@
       width:84px;
       height:84px;
       border-radius:22px;
-      background:rgba(255,255,255,.14);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      font-size:28px;
-      border:1px solid rgba(255,255,255,.18);
-    }
-
-    .logoImageBox{
       background:white;
       overflow:hidden;
       padding:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,.18);
     }
 
-    .logoImageBox img{
+    .logoBox img{
       width:100%;
       height:100%;
       object-fit:contain;
@@ -277,6 +271,18 @@
       color:white;
       font-size:13px;
       margin-bottom:10px;
+      margin-right:6px;
+    }
+
+    .journalBadge{
+      display:inline-flex;
+      border-radius:999px;
+      padding:8px 12px;
+      font-weight:900;
+      color:#6d28d9;
+      background:#ede9fe;
+      font-size:13px;
+      margin-bottom:10px;
     }
 
     .eventTitle{font-size:22px;font-weight:900;margin-bottom:3px}
@@ -413,7 +419,7 @@
       <div class="heroTop">
         <div>
           <div class="titleRow">
-            <div class="logoBox logoImageBox">
+            <div class="logoBox">
               <img src="cam-uri-ram-logo.jpg" alt="Rhode Island Rams logo">
             </div>
             <div>
@@ -498,11 +504,42 @@
     </main>
 
     <main id="journal" class="tabPage hidden">
-      <section class="panel">
-        <h2>Training Log</h2>
-        <p class="eventMeta">Use notes inside each event for now. This section summarizes active work from the Events sheet.</p>
-        <div id="journalList"></div>
-      </section>
+      <div class="grid">
+        <section class="panel">
+          <div class="sectionLabel">Cam journal</div>
+          <h2>What did you work on?</h2>
+          <p class="eventMeta">Simple activity log. Choose the activity, enter minutes, and write one quick line about what you worked on.</p>
+
+          <label>Date</label>
+          <input id="journalDate" type="date">
+
+          <label>Category</label>
+          <select id="journalCategory"></select>
+
+          <label>Minutes</label>
+          <input id="journalMinutes" type="number" min="0" step="5" placeholder="Example: 60">
+
+          <label>What did you work on?</label>
+          <input id="journalTitle" placeholder="Example: lower body lift, edge work, 100 pucks">
+
+          <label>Optional quick note</label>
+          <textarea id="journalNote" placeholder="Optional note"></textarea>
+
+          <label style="text-transform:none;letter-spacing:0;font-size:14px;color:#344054;display:flex;align-items:center;gap:10px">
+            <input id="journalRecovery" type="checkbox" style="width:auto">
+            Recovery completed — mobility / stretch / treatment / sauna
+          </label>
+
+          <button class="btn" id="saveJournal" style="width:100%;margin-top:10px">Save Journal Entry</button>
+          <div id="journalStatus" style="margin-top:12px"></div>
+        </section>
+
+        <section class="panel">
+          <div class="sectionLabel">Recent entries</div>
+          <h2>Training Journal</h2>
+          <div id="journalEntries"></div>
+        </section>
+      </div>
     </main>
 
     <main id="add" class="tabPage hidden">
@@ -582,7 +619,9 @@
       "Other": "#94a3b8"
     };
 
+    let items = [];
     let events = [];
+    let journals = [];
     let selectedDate = toYMD(new Date());
     let weekStart = startOfWeek(new Date());
     let calendarMonth = new Date();
@@ -632,29 +671,26 @@
       return parseYMD(ymd).toLocaleDateString("en-US",{month:"short",day:"numeric"});
     }
 
-    function eventTime(e){
-      if(e.start && e.end) return `${e.start} – ${e.end}`;
-      if(e.start) return e.start;
-      return "";
-    }
-
     function colorFor(cat){
       return categories[cat] || categories.Other;
+    }
+
+    function eventTime(e){
+      if(e.time && e.end) return `${e.time} – ${e.end}`;
+      if(e.time) return e.time;
+      return "";
     }
 
     function timeStringFromParts(prefix){
       const hour = $(`${prefix}Hour`).value;
       const minute = $(`${prefix}Minute`).value;
       const ampm = $(`${prefix}AmPm`).value;
-
       if(!hour || !minute || !ampm) return "";
-
       return `${Number(hour)}:${minute} ${ampm}`;
     }
 
     function minutesFromTimeString(time){
       if(!time) return null;
-
       const match = String(time).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
       if(!match) return null;
 
@@ -685,7 +721,6 @@
 
     function timeStringFromMinutes(total){
       total = ((total % 1440) + 1440) % 1440;
-
       let hour24 = Math.floor(total / 60);
       const minute = total % 60;
       const ampm = hour24 >= 12 ? "PM" : "AM";
@@ -696,9 +731,9 @@
       return `${hour12}:${String(minute).padStart(2,"0")} ${ampm}`;
     }
 
-    function eventDateTime(e){
-      const d = e.date ? parseYMD(e.date) : new Date();
-      const mins = minutesFromTimeString(e.start);
+    function itemDateTime(item){
+      const d = item.date ? parseYMD(item.date) : new Date();
+      const mins = minutesFromTimeString(item.time);
 
       if(mins !== null){
         d.setHours(Math.floor(mins / 60), mins % 60, 0, 0);
@@ -734,7 +769,6 @@
     function calculateDuration(){
       const start = timeStringFromParts("start");
       const end = timeStringFromParts("end");
-
       const startMinutes = minutesFromTimeString(start);
       const endMinutes = minutesFromTimeString(end);
 
@@ -745,14 +779,10 @@
       }
 
       let duration = endMinutes - startMinutes;
-
-      if(duration < 0){
-        duration += 24 * 60;
-      }
+      if(duration < 0) duration += 24 * 60;
 
       $("eventDuration").value = String(duration);
       $("durationDisplay").textContent = `${duration} minutes`;
-
       return duration;
     }
 
@@ -760,7 +790,7 @@
       const start = timeStringFromParts("start");
       const startMinutes = minutesFromTimeString(start);
 
-      if(startMinutes === null) {
+      if(startMinutes === null){
         calculateDuration();
         return;
       }
@@ -776,12 +806,22 @@
       return await res.json();
     }
 
-    async function loadEvents(){
+    async function loadItems(){
       try{
         $("nextMeta").textContent = "Loading schedule...";
         const data = await api({action:"list", t:Date.now()});
-        events = Array.isArray(data.events) ? data.events : [];
-        events.sort((a,b) => eventDateTime(a) - eventDateTime(b));
+
+        items = Array.isArray(data.items) ? data.items : [];
+        events = items.filter(x => !x.isJournal);
+        journals = items.filter(x => x.isJournal);
+
+        events.sort((a,b) => itemDateTime(a) - itemDateTime(b));
+        journals.sort((a,b) => {
+          const dateDiff = parseYMD(b.date || toYMD(new Date())) - parseYMD(a.date || toYMD(new Date()));
+          if(dateDiff !== 0) return dateDiff;
+          return String(b.createdAt || "").localeCompare(String(a.createdAt || ""));
+        });
+
         renderAll();
       }catch(err){
         $("nextTitle").textContent = "Error";
@@ -795,16 +835,16 @@
         `<span class="pill"><span class="dot" style="background:${color}"></span>${esc(name)}</span>`
       ).join("");
 
-      $("eventCategory").innerHTML = Object.keys(categories)
-        .map(c => `<option>${esc(c)}</option>`)
-        .join("");
+      const categoryOptions = Object.keys(categories).map(c => `<option>${esc(c)}</option>`).join("");
+      $("eventCategory").innerHTML = categoryOptions;
+      $("journalCategory").innerHTML = categoryOptions;
     }
 
     function renderNext(){
       const now = new Date();
       const next = events
-        .filter(e => eventDateTime(e) > now)
-        .sort((a,b) => eventDateTime(a)-eventDateTime(b))[0];
+        .filter(e => itemDateTime(e) > now)
+        .sort((a,b) => itemDateTime(a)-itemDateTime(b))[0];
 
       if(!next){
         $("nextTitle").textContent = "—";
@@ -817,30 +857,49 @@
     }
 
     function eventCard(e, allowActions=true){
-      const dur = e.duration
-        ? `<div class="durationBox"><strong>${esc(e.duration)}</strong><span>min</span></div>`
+      const dur = e.minutes
+        ? `<div class="durationBox"><strong>${esc(e.minutes)}</strong><span>min</span></div>`
         : "";
 
-      const notes = e.notes
-        ? `<div class="eventNotes" style="margin-top:12px;background:#f8fafc;border-radius:16px;padding:12px">${esc(e.notes)}</div>`
+      const notes = e.note
+        ? `<div class="eventNotes" style="margin-top:12px;background:#f8fafc;border-radius:16px;padding:12px">${esc(e.note)}</div>`
         : "";
 
       const actions = allowActions
         ? `<div class="actions">
             <button class="btn secondary small" onclick="editEvent('${esc(e.id)}')">Edit</button>
-            <button class="btn danger small" onclick="deleteEventById('${esc(e.id)}')">Delete</button>
+            <button class="btn danger small" onclick="deleteItemById('${esc(e.id)}')">Delete</button>
           </div>`
         : "";
 
       return `
         <div class="eventCard">
           ${dur}
-          <span class="catBadge" style="background:${colorFor(e.category)}">${esc(e.category || "Other")}</span>
+          <span class="catBadge" style="background:${colorFor(e.type)}">${esc(e.type || "Other")}</span>
           <div class="eventTitle">${esc(e.title || "Scheduled item")}</div>
           <div class="eventMeta">${esc(prettyDate(e.date))}${eventTime(e) ? " · " + esc(eventTime(e)) : ""}</div>
           <div class="eventMeta">${esc(e.location || "")}</div>
           ${notes}
           ${actions}
+        </div>
+      `;
+    }
+
+    function journalCard(j){
+      const recovery = j.recovery ? `<div class="eventNotes" style="margin-top:8px;background:#ecfdf3;border-radius:16px;padding:10px">Recovery completed</div>` : "";
+      const note = j.note ? `<div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:16px;padding:10px">${esc(j.note)}</div>` : "";
+
+      return `
+        <div class="eventCard">
+          ${j.minutes ? `<div class="durationBox"><strong>${esc(j.minutes)}</strong><span>min</span></div>` : ""}
+          <span class="catBadge" style="background:${colorFor(j.type)}">${esc(j.type || "Other")}</span>
+          <span class="journalBadge">Journal</span>
+          <div class="eventTitle">${esc(j.title || "Journal entry")}</div>
+          <div class="eventMeta">${esc(prettyDate(j.date))} · Logged</div>
+          <div class="eventMeta">Training journal</div>
+          ${note}
+          ${recovery}
+          <div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:16px;padding:10px">Shared item. For rare edits/deletes, update the Google Sheet row.</div>
         </div>
       `;
     }
@@ -913,7 +972,7 @@
         html += `
           <div class="dayCell ${today}" style="${muted}" onclick="selectDay('${ymd}','home')">
             <div class="dayNum">${d.getDate()}</div>
-            ${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.category)}">${esc(e.title || e.category)}</div>`).join("")}
+            ${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.type)}">${esc(e.title || e.type)}</div>`).join("")}
           </div>
         `;
       }
@@ -922,14 +981,14 @@
     }
 
     function renderSummary(){
-      const active = events;
-      const totalMinutes = active.reduce((sum,e) => sum + (parseInt(e.duration,10)||0), 0);
+      const totalPlanned = events.reduce((sum,e) => sum + (parseInt(e.minutes,10)||0), 0);
+      const totalLogged = journals.reduce((sum,j) => sum + (parseInt(j.minutes,10)||0), 0);
 
       const stats = [
-        ["Events", active.length],
-        ["Minutes", totalMinutes],
-        ["On-ice", active.filter(e => e.category==="On-ice").length],
-        ["Lifts", active.filter(e => e.category==="Lift").length]
+        ["Planned Events", events.length],
+        ["Planned Minutes", totalPlanned],
+        ["Journal Entries", journals.length],
+        ["Logged Minutes", totalLogged]
       ];
 
       $("summaryGrid").innerHTML = stats.map(([label,val]) =>
@@ -937,22 +996,22 @@
       ).join("");
 
       $("categorySummary").innerHTML = Object.keys(categories).map(cat => {
-        const catEvents = active.filter(e => e.category === cat);
-        const count = catEvents.length;
-        const mins = catEvents.reduce((s,e) => s + (parseInt(e.duration,10)||0), 0);
-        return `<div class="weekDay"><span>${cat}</span><span>${count} events · ${mins} min</span></div>`;
+        const planned = events.filter(e => e.type === cat).length;
+        const logged = journals.filter(j => j.type === cat).length;
+        const loggedMins = journals.filter(j => j.type === cat).reduce((s,j) => s + (parseInt(j.minutes,10)||0), 0);
+        return `<div class="weekDay"><span>${cat}</span><span>${planned} planned · ${logged} logged · ${loggedMins} min</span></div>`;
       }).join("");
     }
 
     function renderJournal(){
-      $("journalList").innerHTML = events.length
-        ? events.map(e => eventCard(e, false)).join("")
-        : `<div class="status">No training logged yet.</div>`;
+      $("journalEntries").innerHTML = journals.length
+        ? journals.map(j => journalCard(j)).join("")
+        : `<div class="status">No journal entries yet.</div>`;
     }
 
     function renderUpcoming(){
       const now = new Date();
-      const upcoming = events.filter(e => eventDateTime(e) >= now).slice(0,10);
+      const upcoming = events.filter(e => itemDateTime(e) >= now).slice(0,10);
 
       $("upcomingEvents").innerHTML = upcoming.length
         ? upcoming.map(e => eventCard(e)).join("")
@@ -1013,32 +1072,32 @@
       $("formMode").textContent = "Editing event";
       $("formTitle").textContent = "Edit scheduled item";
       $("eventDate").value = e.date || selectedDate;
-      $("eventCategory").value = e.category || "Other";
+      $("eventCategory").value = e.type || "Other";
       $("eventTitleInput").value = e.title || "";
-      setTimeParts("start", e.start || "");
+      setTimeParts("start", e.time || "");
       setTimeParts("end", e.end || "");
       $("eventLocation").value = e.location || "";
-      $("eventNotes").value = e.notes || "";
+      $("eventNotes").value = e.note || "";
       calculateDuration();
 
       window.scrollTo({top:0,behavior:"smooth"});
     }
 
-    window.deleteEventById = async function(id){
-      const e = events.find(x => String(x.id) === String(id));
+    window.deleteItemById = async function(id){
+      const item = items.find(x => String(x.id) === String(id));
 
-      if(!e){
-        alert("Could not find this event.");
+      if(!item){
+        alert("Could not find this item.");
         return;
       }
 
-      if(!confirm(`Delete "${e.title || "this event"}"?`)){
+      if(!confirm(`Delete "${item.title || "this item"}"?`)){
         return;
       }
 
       try{
         await api({action:"delete", id});
-        await loadEvents();
+        await loadItems();
       }catch(err){
         alert("Delete failed. Try again.");
         console.error(err);
@@ -1047,22 +1106,24 @@
 
     async function saveEvent(){
       const id = $("eventId").value || "";
-      const start = timeStringFromParts("start");
+      const time = timeStringFromParts("start");
       const end = timeStringFromParts("end");
-      const duration = calculateDuration();
+      const minutes = calculateDuration();
 
       const params = {
         action: id ? "update" : "add",
+        mode: "event",
         id: id || ("event-" + Date.now()),
         date: $("eventDate").value,
-        category: $("eventCategory").value,
+        time,
         title: $("eventTitleInput").value,
-        start,
+        type: $("eventCategory").value,
         end,
         location: $("eventLocation").value,
-        duration: duration || "",
-        notes: $("eventNotes").value,
-        status: "active"
+        minutes: minutes || "",
+        owner: "Cam",
+        note: $("eventNotes").value,
+        addedBy: "Dashboard"
       };
 
       if(!params.date || !params.title){
@@ -1074,17 +1135,53 @@
 
       try{
         const result = await api(params);
-
-        if(!result.ok){
-          throw new Error(result.error || "Save failed");
-        }
+        if(!result.ok) throw new Error(result.error || "Save failed");
 
         $("saveStatus").innerHTML = `<div class="status">Saved.</div>`;
         clearForm();
-        await loadEvents();
+        await loadItems();
         showTab("home");
       }catch(err){
         $("saveStatus").innerHTML = `<div class="status">Save failed. ${esc(err.message || err)}</div>`;
+        console.error(err);
+      }
+    }
+
+    async function saveJournal(){
+      const params = {
+        action: "add",
+        mode: "journal",
+        id: "journal-" + Date.now(),
+        date: $("journalDate").value,
+        title: $("journalTitle").value,
+        type: $("journalCategory").value,
+        minutes: $("journalMinutes").value,
+        location: "Training journal",
+        note: $("journalNote").value,
+        recovery: $("journalRecovery").checked ? "true" : "false",
+        owner: "Cam",
+        addedBy: "Cam"
+      };
+
+      if(!params.date || !params.title || !params.minutes){
+        $("journalStatus").innerHTML = `<div class="status">Please add date, minutes, and what you worked on.</div>`;
+        return;
+      }
+
+      $("journalStatus").innerHTML = `<div class="status">Saving journal entry...</div>`;
+
+      try{
+        const result = await api(params);
+        if(!result.ok) throw new Error(result.error || "Save failed");
+
+        $("journalStatus").innerHTML = `<div class="status">Journal entry saved.</div>`;
+        $("journalTitle").value = "";
+        $("journalMinutes").value = "";
+        $("journalNote").value = "";
+        $("journalRecovery").checked = false;
+        await loadItems();
+      }catch(err){
+        $("journalStatus").innerHTML = `<div class="status">Journal save failed. ${esc(err.message || err)}</div>`;
         console.error(err);
       }
     }
@@ -1117,6 +1214,7 @@
 
     $("saveEvent").addEventListener("click", saveEvent);
     $("clearForm").addEventListener("click", clearForm);
+    $("saveJournal").addEventListener("click", saveJournal);
 
     ["startHour","startMinute","startAmPm"].forEach(id => {
       $(id).addEventListener("change", autofillEndTime);
@@ -1128,9 +1226,13 @@
 
     renderLegend();
     buildTimeSelectors();
+
     $("selectedDate").value = selectedDate;
+    $("eventDate").value = selectedDate;
+    $("journalDate").value = selectedDate;
+
     clearForm();
-    loadEvents();
+    loadItems();
   </script>
 </body>
 </html>
