@@ -924,7 +924,7 @@
           <select id="eventCategory"></select>
 
           <label>Title</label>
-          <input id="eventTitleInput" placeholder="Example: Lift, Stick & Puck, Work shift" />
+          <input id="eventTitleInput" placeholder="Example: Skate with Kevin, Lift at gym, Work shift" />
 
           <label>Start Time</label>
           <div class="timeRow">
@@ -1042,6 +1042,44 @@
 
     function colorFor(cat){
       return categories[cat] || categories.Other;
+    }
+
+    function calendarLabel(e){
+      const title = String(e.title || "").trim();
+      const type = String(e.type || "").trim();
+
+      if(!title) return type || "Event";
+
+      const lower = title.toLowerCase();
+
+      // "Skate with Kevin" -> "Kevin"
+      if(lower.includes(" with ")){
+        const afterWith = title.split(/ with /i).pop().trim();
+        if(afterWith) return afterWith;
+      }
+
+      // "Skills with Mike Rabideau" -> "Mike"
+      if(lower.includes(" with ")){
+        const afterWith = title.split(/ with /i).pop().trim();
+        const firstName = afterWith.split(/\s+/)[0];
+        if(firstName) return firstName;
+      }
+
+      // "Lift at gym" -> "Lift"
+      if(lower.includes(" at ")){
+        const beforeAt = title.split(/ at /i)[0].trim();
+        if(beforeAt) return beforeAt;
+      }
+
+      // Keep short titles as-is
+      if(title.length <= 10){
+        return title;
+      }
+
+      // Clean fallback by category
+      if(type) return type;
+
+      return title.split(" ")[0] || "Event";
     }
 
     function eventTime(e){
@@ -1357,7 +1395,7 @@
         html += `
           <div class="dayCell ${today}" style="${muted}" onclick="selectDay('${ymd}','day')">
             <div class="dayNum">${d.getDate()}</div>
-            ${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.type)}">${esc(e.title || e.type)}</div>`).join("")}
+            ${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.type)}">${esc(calendarLabel(e))}</div>`).join("")}
           </div>
         `;
       }
