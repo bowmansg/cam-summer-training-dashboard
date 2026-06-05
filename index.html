@@ -16,18 +16,13 @@
       --ink:#101828;
       --muted:#667085;
       --line:#d8e2ee;
-
       --navy:#082345;
-      --navy2:#103d6c;
       --accent:#38a8ff;
-      --accentSoft:#dff2ff;
-
       --green:#20c997;
       --red:#ef4444;
       --orange:#f97316;
       --purple:#8b5cf6;
       --gray:#64748b;
-
       --shadow:0 18px 45px rgba(15,23,42,.10);
       --softShadow:0 8px 26px rgba(15,23,42,.05);
       --radius:24px;
@@ -199,7 +194,7 @@
       border:1px solid var(--line);
       border-radius:24px;
       display:grid;
-      grid-template-columns:repeat(6,1fr);
+      grid-template-columns:repeat(7,1fr);
       padding:8px;
       gap:8px;
       box-shadow:0 6px 18px rgba(15,23,42,.04);
@@ -357,6 +352,20 @@
       padding:8px 12px;
       border-radius:999px;
       font-size:13px;
+    }
+
+    .dayToolbar{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:12px 0;
+    }
+
+    .quickActions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:14px;
     }
 
     .eventCard{
@@ -628,7 +637,7 @@
       }
 
       .tabs{
-        grid-template-columns:repeat(3,1fr);
+        grid-template-columns:repeat(4,1fr);
         border-radius:24px;
         gap:8px;
         padding:8px;
@@ -637,7 +646,7 @@
 
       .tabBtn{
         padding:15px 6px;
-        font-size:15px;
+        font-size:14px;
         border-radius:18px;
       }
 
@@ -670,6 +679,11 @@
       }
 
       .row,.summaryGrid{
+        grid-template-columns:1fr;
+      }
+
+      .dayToolbar,
+      .quickActions{
         grid-template-columns:1fr;
       }
 
@@ -752,6 +766,7 @@
 
     <nav class="tabs">
       <button class="tabBtn active" data-tab="home">Home</button>
+      <button class="tabBtn" data-tab="day">Day</button>
       <button class="tabBtn" data-tab="calendar">Calendar</button>
       <button class="tabBtn" data-tab="week">Week</button>
       <button class="tabBtn" data-tab="summary">Summary</button>
@@ -782,6 +797,45 @@
           <div id="weekList"></div>
         </section>
       </div>
+    </main>
+
+    <main id="day" class="tabPage hidden">
+      <div class="grid">
+        <section class="panel">
+          <div class="sectionLabel">Day View</div>
+          <h2 id="dayViewTitle">Today</h2>
+          <div class="accentLine"></div>
+
+          <div class="dayToolbar">
+            <button class="btn secondary" id="prevDay">‹ Previous Day</button>
+            <button class="btn secondary" id="nextDay">Next Day ›</button>
+          </div>
+
+          <label>Selected Date</label>
+          <input id="dayViewDate" type="date" />
+
+          <div class="quickActions">
+            <button class="btn" id="quickAddEvent">Add Event for This Day</button>
+            <button class="btn secondary" id="quickLogTraining">Log Training for This Day</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="sectionLabel">Scheduled Work</div>
+          <h2>Schedule</h2>
+          <div class="accentLine"></div>
+          <div id="dayViewEvents"></div>
+        </section>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <section class="panel">
+        <div class="sectionLabel">Logged Work</div>
+        <h2>Training Journal</h2>
+        <div class="accentLine"></div>
+        <div id="dayViewJournals"></div>
+      </section>
     </main>
 
     <main id="calendar" class="tabPage hidden">
@@ -937,6 +991,7 @@
     let events = [];
     let journals = [];
     let selectedDate = toYMD(new Date());
+    let dayViewDate = selectedDate;
     let weekStart = startOfWeek(new Date());
     let calendarMonth = new Date();
 
@@ -1229,6 +1284,22 @@
         : `<div class="status">No events for this day yet.</div>`;
     }
 
+    function renderDayView(){
+      $("dayViewDate").value = dayViewDate;
+      $("dayViewTitle").textContent = prettyDate(dayViewDate);
+
+      const dayEvents = events.filter(e => e.date === dayViewDate);
+      const dayJournals = journals.filter(j => j.date === dayViewDate);
+
+      $("dayViewEvents").innerHTML = dayEvents.length
+        ? dayEvents.map(e => eventCard(e)).join("")
+        : `<div class="status">No scheduled events for this day.</div>`;
+
+      $("dayViewJournals").innerHTML = dayJournals.length
+        ? dayJournals.map(j => journalCard(j)).join("")
+        : `<div class="status">No training journal entries for this day yet.</div>`;
+    }
+
     function renderWeek(){
       const list = [];
 
@@ -1284,7 +1355,7 @@
         const today = ymd === toYMD(new Date()) ? "today" : "";
 
         html += `
-          <div class="dayCell ${today}" style="${muted}" onclick="selectDay('${ymd}','home')">
+          <div class="dayCell ${today}" style="${muted}" onclick="selectDay('${ymd}','day')">
             <div class="dayNum">${d.getDate()}</div>
             ${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.type)}">${esc(e.title || e.type)}</div>`).join("")}
           </div>
@@ -1335,6 +1406,7 @@
     function renderAll(){
       renderNext();
       renderDay();
+      renderDayView();
       renderWeek();
       renderCalendar();
       renderSummary();
@@ -1344,9 +1416,17 @@
 
     function selectDay(ymd, tab){
       selectedDate = ymd;
+      dayViewDate = ymd;
       weekStart = startOfWeek(parseYMD(ymd));
       renderAll();
       if(tab) showTab(tab);
+    }
+
+    function shiftDayView(days){
+      dayViewDate = toYMD(addDays(parseYMD(dayViewDate), days));
+      selectedDate = dayViewDate;
+      weekStart = startOfWeek(parseYMD(dayViewDate));
+      renderAll();
     }
 
     function showTab(tab){
@@ -1370,6 +1450,21 @@
       $("durationDisplay").textContent = "Choose start and end times";
       $("eventNotes").value = "";
       $("saveStatus").innerHTML = "";
+    }
+
+    function quickAddEventForDay(){
+      selectedDate = dayViewDate;
+      clearForm();
+      $("eventDate").value = dayViewDate;
+      showTab("add");
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function quickLogTrainingForDay(){
+      selectedDate = dayViewDate;
+      $("journalDate").value = dayViewDate;
+      showTab("journal");
+      window.scrollTo({top:0,behavior:"smooth"});
     }
 
     window.editEvent = function(id){
@@ -1452,9 +1547,11 @@
         if(!result.ok) throw new Error(result.error || "Save failed");
 
         $("saveStatus").innerHTML = `<div class="status">Saved.</div>`;
+        selectedDate = params.date;
+        dayViewDate = params.date;
         clearForm();
         await loadItems();
-        showTab("home");
+        showTab("day");
       }catch(err){
         $("saveStatus").innerHTML = `<div class="status">Save failed. ${esc(err.message || err)}</div>`;
         console.error(err);
@@ -1489,6 +1586,8 @@
         if(!result.ok) throw new Error(result.error || "Save failed");
 
         $("journalStatus").innerHTML = `<div class="status">Journal entry saved.</div>`;
+        dayViewDate = params.date;
+        selectedDate = params.date;
         $("journalTitle").value = "";
         $("journalMinutes").value = "";
         $("journalNote").value = "";
@@ -1505,6 +1604,13 @@
     });
 
     $("selectedDate").addEventListener("change", e => selectDay(e.target.value));
+    $("dayViewDate").addEventListener("change", e => selectDay(e.target.value,"day"));
+
+    $("prevDay").addEventListener("click", () => shiftDayView(-1));
+    $("nextDay").addEventListener("click", () => shiftDayView(1));
+
+    $("quickAddEvent").addEventListener("click", quickAddEventForDay);
+    $("quickLogTraining").addEventListener("click", quickLogTrainingForDay);
 
     $("prevWeek").addEventListener("click", () => {
       weekStart = addDays(weekStart,-7);
@@ -1542,6 +1648,7 @@
     buildTimeSelectors();
 
     $("selectedDate").value = selectedDate;
+    $("dayViewDate").value = dayViewDate;
     $("eventDate").value = selectedDate;
     $("journalDate").value = selectedDate;
 
