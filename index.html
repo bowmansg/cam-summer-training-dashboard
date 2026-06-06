@@ -370,9 +370,9 @@
     .weekDay{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin:8px 0;font-weight:900;cursor:pointer;background:white;gap:8px}
     .weekDay.active{background:var(--navy);color:white;box-shadow:inset 0 -4px 0 var(--accent)}
 
-    .monthGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+    .monthGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:10px}
     .dow{text-align:center;font-size:12px;color:var(--muted);font-weight:900;padding:6px}
-    .dayCell{background:white;border:1px solid var(--line);border-radius:14px;min-height:92px;padding:8px;cursor:pointer;box-shadow:0 4px 12px rgba(15,23,42,.025)}
+    .dayCell{background:white;border:1px solid var(--line);border-radius:14px;min-height:92px;padding:8px;cursor:pointer;box-shadow:0 4px 12px rgba(15,23,42,.025);min-width:0;overflow:hidden}
     .dayCell.today{outline:3px solid var(--accent);outline-offset:0}
     .dayCell.selected{background:#eef7ff;border-color:var(--accent)}
     .dayNum{font-weight:900;margin-bottom:2px}
@@ -405,7 +405,7 @@
       .legendBox:not([open]){margin-bottom:12px}
       .legend{gap:8px}.pill{padding:8px 12px;font-size:13px}
       .grid{grid-template-columns:1fr;gap:14px}.panel{padding:18px;border-radius:24px}h2{font-size:30px}h3{font-size:19px}
-      .row,.summaryGrid{grid-template-columns:1fr}.dayToolbar,.quickActions{grid-template-columns:1fr}
+      .row,.summaryGrid{grid-template-columns:1fr}.monthNav{grid-template-columns:1fr 1fr}.dayToolbar,.quickActions{grid-template-columns:1fr}
       .eventCard{padding:15px;padding-right:15px;border-radius:20px;margin:10px 0}.eventTitle{font-size:21px;padding-right:0}.durationBox{position:static;display:inline-block;margin-top:10px}
       .monthGrid{gap:4px}.dow{font-size:11px;padding:4px 2px}.dayCell{min-height:78px;padding:6px;border-radius:12px}.miniItem{font-size:10px;padding:3px 5px}
     }
@@ -522,7 +522,7 @@
 
     <main id="calendar" class="tabPage hidden">
       <section class="panel">
-        <div class="row">
+        <div class="row monthNav">
           <button class="btn secondary" id="prevMonth">‹ Previous Month</button>
           <button class="btn secondary" id="nextMonth">Next Month ›</button>
         </div>
@@ -567,14 +567,14 @@
           <input id="journalMinutes" type="number" min="0" step="5" placeholder="Example: 60">
 
           <label>What did you work on?</label>
-          <input id="journalTitle" placeholder="Example: workout, on-ice skills, mobility">
+          <input id="journalTitle" placeholder="Example: workout, on-ice skills, recovery">
 
           <label>Optional quick note</label>
           <textarea id="journalNote" placeholder="Optional note"></textarea>
 
           <label style="text-transform:none;letter-spacing:0;font-size:14px;color:#344054;display:flex;align-items:center;gap:10px">
             <input id="journalRecovery" type="checkbox" style="width:auto">
-            Recovery completed — mobility / stretch / treatment / sauna
+            Recovery completed — stretch / treatment / sauna
           </label>
 
           <button class="btn" id="saveJournal" style="width:100%;margin-top:10px">Save Journal Entry</button>
@@ -671,13 +671,12 @@
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzALxfRtc41NQA-rNrJh1zv1L0b138KMgrkPbGJL8gNJe-aQVSdN2PK6H0nLdphBn2H/exec";
 
     const categories = {
-      "Workout": "#06152b",
+      "Workout": "#8b5cf6",
       "On-Ice": "#1e9bf0",
       "Shooting/Skills": "#f97316",
       "Away": "#ef4444",
-      "Mobility": "#8b5cf6",
       "Recovery": "#20c997",
-      "Work": "#64748b",
+      "Work": "#f4c430",
       "Other": "#94a3b8"
     };
 
@@ -696,7 +695,6 @@
       "Stick Handling": "Shooting/Skills",
       "Shooting/Skills": "Shooting/Skills",
       "Away": "Away",
-      "Mobility": "Mobility",
       "Recovery": "Recovery",
       "Work": "Work",
       "Other": "Other"
@@ -758,6 +756,11 @@
       return categories[normalizeType(cat)] || categories.Other;
     }
 
+    function textColorFor(cat){
+      const type = normalizeType(cat);
+      return type === "Work" ? "#111827" : "#ffffff";
+    }
+
     function isAway(eOrType){
       const type = typeof eOrType === "string" ? eOrType : eOrType?.type;
       return normalizeType(type) === "Away";
@@ -782,10 +785,29 @@
       return isAway(e) ? "Away" : "";
     }
 
+    function shortAwayLabel(title){
+      let clean = String(title || "").trim();
+      clean = clean.replace(/\b(begins|ends)$/i, "").trim();
+      clean = clean.replace(/^away\s*[:-]?\s*/i, "").trim();
+
+      const destinationMatch = clean.match(/\b(?:to|in|at)\s+([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+)?)/);
+      if(destinationMatch) return destinationMatch[1].trim();
+
+      const lower = clean.toLowerCase();
+      const knownPlaces = ["Denver", "Boston", "Rochester", "Buffalo", "URI", "Chicago", "Detroit", "Providence"];
+      const known = knownPlaces.find(place => lower.includes(place.toLowerCase()));
+      if(known) return known;
+
+      const words = clean.split(/\s+/).filter(Boolean);
+      if(words.length <= 2 && clean) return clean;
+      return "Away";
+    }
+
     function calendarLabel(e){
       const type = normalizeType(e.type);
       const title = String(e.title || "").trim();
-      if(type === "Away") return title || "Away";
+      if(type === "Away") return shortAwayLabel(title);
+      if(type === "Work") return "Work";
       if(!title) return type || "Event";
       const lower = title.toLowerCase();
       if(lower.includes(" with ")){
@@ -794,10 +816,10 @@
       }
       if(lower.includes(" at ")){
         const beforeAt = title.split(/ at /i)[0].trim();
-        if(beforeAt) return beforeAt;
+        if(beforeAt && beforeAt.length <= 14) return beforeAt;
       }
-      if(title.length <= 12) return title;
-      return type || title.split(" ")[0] || "Event";
+      if(title.length <= 14) return title;
+      return title.split(/\s+/)[0] || type || "Event";
     }
 
     function timeStringFromParts(prefix){
@@ -998,7 +1020,7 @@
       const dur = minutesNum > 0 ? `<div class="durationBox"><strong>${esc(minutesNum)}</strong><span>min</span></div>` : "";
       const notes = e.note ? `<div class="eventNotes" style="margin-top:12px;background:#f8fafc;border-radius:16px;padding:12px">${esc(e.note)}</div>` : "";
       const actions = allowActions ? `<div class="actions"><button class="btn secondary small" onclick="editEvent('${esc(e.id)}')">Edit</button><button class="btn danger small" onclick="deleteItemById('${esc(e.id)}')">Delete</button></div>` : "";
-      return `<div class="eventCard">${dur}<span class="catBadge" style="background:${colorFor(type)}">${esc(type)}</span><div class="eventTitle">${esc(e.title || "Scheduled item")}</div><div class="eventMeta">${esc(prettyDate(e.date))}${eventTime(e) ? " · " + esc(eventTime(e)) : ""}</div><div class="eventMeta">${esc(e.location || "")}</div>${notes}${actions}</div>`;
+      return `<div class="eventCard">${dur}<span class="catBadge" style="background:${colorFor(type)};color:${textColorFor(type)}">${esc(type)}</span><div class="eventTitle">${esc(e.title || "Scheduled item")}</div><div class="eventMeta">${esc(prettyDate(e.date))}${eventTime(e) ? " · " + esc(eventTime(e)) : ""}</div><div class="eventMeta">${esc(e.location || "")}</div>${notes}${actions}</div>`;
     }
 
     function journalCard(j){
@@ -1006,7 +1028,7 @@
       const recovery = j.recovery ? `<div class="eventNotes" style="margin-top:8px;background:#ecfdf3;border-radius:16px;padding:10px">Recovery completed</div>` : "";
       const note = j.note ? `<div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:16px;padding:10px">${esc(j.note)}</div>` : "";
       const minutesNum = parseInt(j.minutes,10) || 0;
-      return `<div class="eventCard">${minutesNum ? `<div class="durationBox"><strong>${esc(minutesNum)}</strong><span>min</span></div>` : ""}<span class="catBadge" style="background:${colorFor(type)}">${esc(type)}</span><span class="journalBadge">Journal</span><div class="eventTitle">${esc(j.title || "Journal entry")}</div><div class="eventMeta">${esc(prettyDate(j.date))} · Logged</div><div class="eventMeta">Training journal</div>${note}${recovery}<div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:16px;padding:10px">Shared item. For rare edits/deletes, update the Google Sheet row.</div></div>`;
+      return `<div class="eventCard">${minutesNum ? `<div class="durationBox"><strong>${esc(minutesNum)}</strong><span>min</span></div>` : ""}<span class="catBadge" style="background:${colorFor(type)};color:${textColorFor(type)}">${esc(type)}</span><span class="journalBadge">Journal</span><div class="eventTitle">${esc(j.title || "Journal entry")}</div><div class="eventMeta">${esc(prettyDate(j.date))} · Logged</div><div class="eventMeta">Training journal</div>${note}${recovery}<div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:16px;padding:10px">Shared item. For rare edits/deletes, update the Google Sheet row.</div></div>`;
     }
 
     function renderDay(){
@@ -1059,7 +1081,7 @@
         const muted = d.getMonth() !== m ? "opacity:.35" : "";
         const today = ymd === toYMD(new Date()) ? "today" : "";
         const selected = ymd === selectedDate ? "selected" : "";
-        html += `<div class="dayCell ${today} ${selected}" style="${muted}" onclick="selectDay('${ymd}','day')"><div class="dayNum">${d.getDate()}</div>${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.type)}">${esc(calendarLabel(e))}</div>`).join("")}</div>`;
+        html += `<div class="dayCell ${today} ${selected}" style="${muted}" onclick="selectDay('${ymd}','day')"><div class="dayNum">${d.getDate()}</div>${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.type)};color:${textColorFor(e.type)}">${esc(calendarLabel(e))}</div>`).join("")}</div>`;
       }
       $("monthGrid").innerHTML = html;
     }
