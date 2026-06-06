@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Cam Summer Training</title>
+
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" href="apple-touch-icon.png">
   <meta name="apple-mobile-web-app-title" content="Cam Hockey">
@@ -16,23 +16,22 @@
 
   <style>
     :root{
-      --page:#f3f8ff;
+      --page:#f4f8fc;
       --panel:#ffffff;
       --card:#f8fafc;
-      --ink:#07152b;
+      --ink:#101828;
       --muted:#667085;
       --line:#d8e2ee;
-      --navy:#061a35;
-      --navy2:#082345;
-      --blue:#0b67d8;
+      --navy:#082345;
+      --navy2:#071a33;
       --accent:#38a8ff;
       --green:#20c997;
       --red:#ef4444;
       --orange:#f97316;
       --purple:#8b5cf6;
       --gray:#64748b;
-      --shadow:0 20px 55px rgba(15,23,42,.14);
-      --softShadow:0 8px 26px rgba(15,23,42,.06);
+      --shadow:0 18px 45px rgba(15,23,42,.12);
+      --softShadow:0 8px 26px rgba(15,23,42,.05);
       --radius:24px;
     }
 
@@ -40,179 +39,151 @@
 
     body{
       margin:0;
-      background:
-        radial-gradient(circle at 15% 5%,rgba(56,168,255,.18),transparent 28%),
-        linear-gradient(180deg,#f6fbff 0%,#eef6ff 100%);
+      background:var(--page);
       color:var(--ink);
       font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
 
     .wrap{
-      max-width:1120px;
+      max-width:1080px;
       margin:0 auto;
-      padding:22px 14px 70px;
+      padding:24px 16px 70px;
     }
 
     .hero{
+      background:
+        linear-gradient(90deg,rgba(7,26,51,.96),rgba(7,26,51,.86)),
+        url("cam-hero-rink.jpg"),
+        radial-gradient(circle at 84% 8%,rgba(56,168,255,.34),transparent 31%),
+        linear-gradient(135deg,#071a33 0%,#082345 54%,#15598e 100%);
+      background-size:cover;
+      background-position:center;
       color:white;
-      border-radius:30px;
+      border-radius:28px;
       padding:28px;
       box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
-      background:
-        linear-gradient(90deg,rgba(3,15,32,.96) 0%,rgba(5,22,48,.86) 40%,rgba(5,22,48,.42) 100%),
-        url("cam-hero-rink.jpg");
-      background-size:cover;
-      background-position:center;
-      border:1px solid rgba(255,255,255,.18);
     }
 
-    .hero::after{
+    .hero:before{
       content:"";
       position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 78% 10%,rgba(56,168,255,.22),transparent 32%),
-        linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.12));
-      pointer-events:none;
+      inset:auto -90px -110px auto;
+      width:340px;
+      height:340px;
+      border-radius:999px;
+      background:rgba(56,168,255,.18);
+      filter:blur(2px);
     }
 
     .heroTop{
       position:relative;
       z-index:1;
-      display:grid;
-      grid-template-columns:1fr 315px;
-      gap:24px;
-      align-items:end;
+      display:flex;
+      justify-content:space-between;
+      gap:22px;
+      align-items:flex-start;
     }
 
-    .titleRow{
-      display:flex;
-      gap:18px;
-      align-items:center;
-    }
+    .heroLeft{flex:1;min-width:0}
+
+    .titleRow{display:flex;gap:18px;align-items:center}
 
     .logoBox{
-      width:88px;
-      height:88px;
-      border-radius:24px;
+      width:84px;
+      height:84px;
+      border-radius:22px;
       background:white;
       overflow:hidden;
       padding:8px;
       display:flex;
       align-items:center;
       justify-content:center;
-      border:1px solid rgba(255,255,255,.25);
-      box-shadow:0 14px 30px rgba(0,0,0,.20);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 12px 34px rgba(0,0,0,.18);
       flex-shrink:0;
     }
 
-    .logoBox img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      display:block;
-    }
+    .logoBox img{width:100%;height:100%;object-fit:contain;display:block}
 
     h1{
-      font-size:54px;
-      line-height:.9;
+      font-size:44px;
+      line-height:.95;
       margin:0;
-      letter-spacing:-.055em;
+      letter-spacing:-.04em;
       font-weight:900;
     }
 
     .subtitle{
       font-size:35px;
-      font-weight:500;
+      font-weight:400;
       margin-top:2px;
       line-height:1;
-      letter-spacing:-.04em;
-      color:rgba(255,255,255,.93);
+      letter-spacing:-.03em;
+      color:rgba(255,255,255,.92);
     }
 
     .heroKicker{
-      font-size:20px;
+      font-size:18px;
       font-weight:900;
       line-height:1.35;
-      margin:28px 0 0;
-      color:#72c8ff;
+      margin:24px 0 0;
+      color:rgba(255,255,255,.92);
     }
 
     .heroCopy{
-      font-size:17px;
-      font-weight:750;
+      font-size:18px;
+      font-weight:800;
       line-height:1.45;
-      max-width:680px;
-      margin:12px 0 0;
-      color:rgba(255,255,255,.96);
-      text-shadow:0 2px 10px rgba(0,0,0,.24);
+      max-width:720px;
+      margin:26px 0 0;
+      color:rgba(255,255,255,.94);
     }
 
     .heroTiles{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-top:28px;
-      max-width:760px;
+      gap:10px;
+      margin-top:18px;
+      max-width:720px;
     }
 
     .heroTile{
-      background:rgba(4,21,45,.62);
-      border:1px solid rgba(255,255,255,.28);
-      border-radius:18px;
-      padding:17px 14px;
-      display:grid;
-      grid-template-columns:48px 1fr;
-      gap:12px;
-      align-items:center;
-      backdrop-filter:blur(5px);
-      box-shadow:0 10px 28px rgba(0,0,0,.15);
-    }
-
-    .heroIcon{
-      width:46px;
-      height:46px;
-      border-radius:14px;
       background:rgba(255,255,255,.10);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:27px;
-    }
-
-    .heroTile strong{
-      display:block;
-      color:#72c8ff;
-      font-size:22px;
-      line-height:1;
-      text-transform:uppercase;
-      letter-spacing:.03em;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:16px;
+      padding:12px 10px;
+      text-align:center;
+      font-weight:900;
+      line-height:1.2;
     }
 
     .heroTile span{
       display:block;
-      color:white;
-      font-size:13px;
-      font-weight:800;
-      margin-top:6px;
+      color:#79c7ff;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.10em;
+      margin-bottom:5px;
     }
 
     .nextCard{
-      background:rgba(255,255,255,.96);
+      background:white;
       color:#111827;
-      border:1px solid rgba(255,255,255,.5);
+      border:4px solid var(--accent);
       border-radius:24px;
-      padding:22px;
-      box-shadow:0 18px 45px rgba(0,0,0,.18);
+      padding:20px;
+      min-width:290px;
+      align-self:flex-end;
+      box-shadow:0 10px 24px rgba(15,23,42,.12);
     }
 
     .eyebrow{
       font-size:12px;
       text-transform:uppercase;
       letter-spacing:.10em;
-      color:#0b67d8;
+      color:var(--muted);
       font-weight:900;
     }
 
@@ -224,163 +195,68 @@
     }
 
     .nextMeta{
-      font-size:15px;
+      font-size:16px;
       color:#475467;
-      margin-top:8px;
-      line-height:1.45;
-      font-weight:700;
-    }
-
-    .viewDayBtn{
-      display:block;
-      margin-top:16px;
-      width:100%;
-      text-align:center;
-      background:linear-gradient(180deg,#1976df,#075fca);
-      color:white;
-      border:0;
-      border-radius:12px;
-      padding:12px;
-      font-weight:900;
-      cursor:pointer;
-      box-shadow:0 8px 18px rgba(11,103,216,.25);
-    }
-
-    .hero.compact{
-      padding:12px 14px;
-      border-radius:20px;
-      background:
-        linear-gradient(90deg,rgba(3,15,32,.98),rgba(5,30,65,.88)),
-        url("cam-hero-rink.jpg");
-      background-size:cover;
-      background-position:center;
-    }
-
-    .hero.compact .heroTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    }
-
-    .hero.compact .logoBox{
-      width:50px;
-      height:50px;
-      border-radius:15px;
-      padding:5px;
-    }
-
-    .hero.compact h1{
-      font-size:28px;
-    }
-
-    .hero.compact .subtitle{
-      font-size:18px;
-    }
-
-    .hero.compact .heroKicker,
-    .hero.compact .heroCopy,
-    .hero.compact .heroTiles,
-    .hero.compact .nextCard{
-      display:none;
+      margin-top:6px;
+      line-height:1.35;
+      font-weight:600;
     }
 
     .tabs{
-      margin:16px 0 12px;
-      background:white;
+      position:sticky;
+      top:0;
+      z-index:20;
+      margin:18px 0 14px;
+      background:rgba(255,255,255,.94);
+      backdrop-filter:blur(12px);
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:24px;
       display:grid;
       grid-template-columns:repeat(7,1fr);
       padding:8px;
       gap:8px;
-      box-shadow:0 12px 30px rgba(15,23,42,.07);
-      position:sticky;
-      top:0;
-      z-index:20;
+      box-shadow:0 6px 18px rgba(15,23,42,.04);
     }
 
     .tabBtn{
       border:0;
       background:transparent;
-      border-radius:16px;
-      padding:13px 8px;
+      border-radius:18px;
+      padding:15px 8px;
       font-weight:900;
-      color:#14213d;
+      color:#1f2937;
       cursor:pointer;
-      font-size:14px;
-      display:flex;
-      gap:7px;
-      align-items:center;
-      justify-content:center;
+      font-size:15px;
     }
 
-    .tabBtn .navIcon{
-      font-size:18px;
-      line-height:1;
-    }
+    .tabBtn.active{background:var(--navy);color:white;box-shadow:inset 0 -5px 0 var(--accent)}
 
-    .tabBtn.active{
-      background:linear-gradient(180deg,#092549,#061a35);
-      color:white;
-      box-shadow:inset 0 -5px 0 var(--accent),0 8px 20px rgba(6,26,53,.16);
-    }
-
-    .legendShell{
-      margin:0 0 14px;
+    .legendBox{
+      margin:12px 0 18px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 4px 14px rgba(15,23,42,.035);
     }
 
     .legendToggle{
-      width:100%;
+      cursor:pointer;
+      list-style:none;
+      padding:12px 14px;
+      font-weight:900;
+      color:#1f2937;
       display:flex;
-      align-items:center;
       justify-content:space-between;
       gap:10px;
-      background:white;
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:11px 14px;
-      font-weight:900;
-      color:var(--navy);
-      box-shadow:0 8px 24px rgba(15,23,42,.045);
-      cursor:pointer;
-    }
-
-    .legendTitle{
-      display:flex;
       align-items:center;
-      gap:10px;
     }
 
-    .legendDots{
-      display:grid;
-      grid-template-columns:repeat(4,7px);
-      gap:3px;
-    }
+    .legendToggle::-webkit-details-marker{display:none}
+    .legendToggle:after{content:"Show";font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .legendBox[open] .legendToggle:after{content:"Hide"}
 
-    .legendDots i{
-      width:7px;
-      height:7px;
-      border-radius:50%;
-      display:block;
-    }
-
-    .legendToggle span{
-      color:#111827;
-      font-size:13px;
-      font-weight:900;
-    }
-
-    .legend{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:10px 0 0;
-    }
-
-    .legend.collapsed{
-      display:none;
-    }
+    .legend{display:flex;gap:10px;flex-wrap:wrap;padding:0 14px 14px}
 
     .pill{
       display:inline-flex;
@@ -395,85 +271,38 @@
       box-shadow:0 4px 14px rgba(15,23,42,.035);
     }
 
-    .dot{
-      width:13px;
-      height:13px;
-      border-radius:999px;
-      background:var(--gray);
-    }
+    .dot{width:13px;height:13px;border-radius:999px;background:var(--gray)}
 
-    .grid{
-      display:grid;
-      grid-template-columns:1.25fr .9fr;
-      gap:14px;
-      align-items:start;
-    }
+    .grid{display:grid;grid-template-columns:1.35fr .8fr;gap:16px;align-items:start}
 
     .panel{
-      background:rgba(255,255,255,.96);
+      background:white;
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:20px;
       box-shadow:var(--softShadow);
     }
 
-    .panelHeader{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      margin-bottom:4px;
-    }
+    h2{font-size:30px;margin:0 0 10px;line-height:1;letter-spacing:-.035em;font-weight:900}
+    h3{font-size:20px;margin:0 0 10px;letter-spacing:-.02em;font-weight:900}
 
-    h2{
-      font-size:30px;
-      margin:0 0 10px;
-      line-height:1;
-      letter-spacing:-.035em;
-      font-weight:900;
-    }
+    .sectionLabel{color:var(--muted);font-size:15px;margin-bottom:4px;font-weight:600}
 
-    h3{
-      font-size:20px;
-      margin:0 0 10px;
-      letter-spacing:-.02em;
-      font-weight:900;
-    }
-
-    .sectionLabel{
-      color:var(--blue);
-      font-size:14px;
-      margin-bottom:4px;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.03em;
-      display:flex;
-      align-items:center;
-      gap:7px;
-    }
-
-    .accentLine{
-      height:9px;
-      border-radius:999px;
-      background:linear-gradient(90deg,var(--accent),rgba(56,168,255,.08));
-      margin:14px 0 16px;
-    }
+    .accentLine{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--accent),rgba(56,168,255,.08));margin:16px 0 18px}
 
     input,select,textarea{
       width:100%;
       border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px 13px;
+      border-radius:16px;
+      padding:13px 14px;
       font:inherit;
       font-weight:700;
       background:white;
       color:var(--ink);
     }
 
-    textarea{
-      min-height:86px;
-      resize:vertical;
-    }
+    input:disabled,select:disabled,textarea:disabled{background:#f2f4f7;color:#98a2b3}
+    textarea{min-height:86px;resize:vertical}
 
     label{
       display:block;
@@ -485,571 +314,111 @@
       margin:12px 0 6px;
     }
 
-    .row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    .timeRow{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      gap:8px;
-    }
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .timeRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 
     .btn{
       border:0;
-      border-radius:15px;
-      padding:12px 15px;
+      border-radius:16px;
+      padding:13px 16px;
       font-weight:900;
       cursor:pointer;
-      background:linear-gradient(180deg,#0a2b55,#061a35);
+      background:var(--navy);
       color:white;
     }
 
-    .btn.secondary{
-      background:white;
-      color:var(--navy);
-      border:1px solid var(--line);
-    }
+    .btn.secondary{background:white;color:var(--navy);border:1px solid var(--line)}
+    .btn.danger{background:white;color:#b42318;border:1px solid #fecaca}
+    .btn.small{padding:8px 12px;border-radius:999px;font-size:13px}
 
-    .btn.danger{
-      background:white;
-      color:#b42318;
-      border:1px solid #fecaca;
-    }
-
-    .btn.small{
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:13px;
-    }
-
-    .dayToolbar{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin:12px 0;
-    }
-
-    .quickActions{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:14px;
-    }
+    .dayToolbar,.quickActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 
     .eventCard{
       background:white;
       border:1px solid var(--line);
-      border-radius:19px;
-      padding:14px;
-      margin:10px 0;
+      border-radius:22px;
+      padding:16px;
+      margin:12px 0;
       position:relative;
       box-shadow:0 6px 18px rgba(15,23,42,.035);
     }
 
-    .catBadge{
-      display:inline-flex;
-      border-radius:8px;
-      padding:6px 9px;
-      font-weight:900;
-      color:white;
-      font-size:11px;
-      margin-bottom:9px;
-      margin-right:6px;
-      text-transform:uppercase;
-    }
-
-    .journalBadge{
-      display:inline-flex;
-      border-radius:8px;
-      padding:6px 9px;
-      font-weight:900;
-      color:#6d28d9;
-      background:#ede9fe;
-      font-size:11px;
-      margin-bottom:9px;
-      text-transform:uppercase;
-    }
-
-    .eventTitle{
-      font-size:20px;
-      font-weight:900;
-      margin-bottom:3px;
-      line-height:1.1;
-    }
-
-    .eventMeta,.eventNotes{
-      color:var(--muted);
-      font-weight:650;
-      line-height:1.35;
-    }
+    .catBadge{display:inline-flex;border-radius:999px;padding:8px 12px;font-weight:900;color:white;font-size:13px;margin-bottom:10px;margin-right:6px}
+    .journalBadge{display:inline-flex;border-radius:999px;padding:8px 12px;font-weight:900;color:#6d28d9;background:#ede9fe;font-size:13px;margin-bottom:10px}
+    .eventTitle{font-size:22px;font-weight:900;margin-bottom:3px;line-height:1.1}
+    .eventMeta,.eventNotes{color:var(--muted);font-weight:600;line-height:1.35}
 
     .durationBox{
       position:absolute;
-      right:14px;
-      top:14px;
-      background:#f2f7ff;
-      border-radius:14px;
-      padding:10px 13px;
-      text-align:center;
-      min-width:66px;
-      border:1px solid #d6e9ff;
-    }
-
-    .durationBox strong{
-      font-size:24px;
-      display:block;
-      line-height:1;
-      color:#092549;
-    }
-
-    .durationBox span{
-      color:var(--muted);
-      font-size:11px;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-    }
-
-    .calculatedBox{
-      background:#f8fafc;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:13px;
-      font-weight:900;
-      color:#111827;
-      min-height:47px;
-    }
-
-    .actions{
-      display:flex;
-      gap:8px;
-      margin-top:14px;
-      flex-wrap:wrap;
-    }
-
-    .weekDay{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:11px 12px;
-      margin:8px 0;
-      font-weight:900;
-      cursor:pointer;
-      background:white;
-    }
-
-    .weekDay.active{
-      background:#e6f3ff;
-      color:#061a35;
-      border-color:#a9d8ff;
-      box-shadow:inset 5px 0 0 var(--accent);
-    }
-
-    .monthGrid{
-      display:grid;
-      grid-template-columns:repeat(7,1fr);
-      gap:6px;
-      margin-top:10px;
-    }
-
-    .dow{
-      text-align:center;
-      font-size:12px;
-      color:var(--muted);
-      font-weight:900;
-      padding:6px;
-    }
-
-    .dayCell{
-      background:white;
-      border:1px solid var(--line);
-      border-radius:14px;
-      min-height:92px;
-      padding:8px;
-      cursor:pointer;
-      box-shadow:0 4px 12px rgba(15,23,42,.025);
-    }
-
-    .dayCell.today{
-      outline:3px solid var(--accent);
-      outline-offset:0;
-    }
-
-    .dayNum{
-      font-weight:900;
-      margin-bottom:2px;
-    }
-
-    .miniItem{
-      font-size:11px;
-      font-weight:900;
-      color:white;
-      border-radius:999px;
-      padding:3px 6px;
-      margin-top:4px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .summaryGrid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
-
-    .stat{
-      background:var(--card);
-      border:1px solid var(--line);
+      right:16px;
+      top:16px;
+      background:#f2f4f7;
       border-radius:18px;
-      padding:15px;
+      padding:12px 16px;
+      text-align:center;
+      min-width:72px;
     }
 
-    .stat strong{
-      display:block;
-      font-size:30px;
-      line-height:1;
-      margin-top:4px;
-      color:#0b67d8;
-    }
+    .durationBox strong{font-size:26px;display:block;line-height:1}
+    .durationBox span{color:var(--muted);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
 
-    .status{
-      padding:16px;
-      border-radius:16px;
-      background:white;
-      border:1px solid var(--line);
-      font-weight:800;
-      color:#344054;
-    }
+    .calculatedBox{background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:14px;font-weight:900;color:#111827;min-height:49px}
+    .calculatedBox.warn{border-color:#fecaca;background:#fff5f5;color:#b42318}
 
-    .bottomBanner{
-      margin-top:14px;
-      background:linear-gradient(135deg,#061a35,#092b57);
-      color:white;
-      border-radius:18px;
-      padding:14px;
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:10px;
-      box-shadow:0 14px 35px rgba(6,26,53,.18);
-    }
+    .actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 
-    .bottomItem{
-      border-right:1px solid rgba(255,255,255,.18);
-      padding:5px 10px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
+    .weekDay{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin:8px 0;font-weight:900;cursor:pointer;background:white;gap:8px}
+    .weekDay.active{background:var(--navy);color:white;box-shadow:inset 0 -4px 0 var(--accent)}
 
-    .bottomItem:last-child{
-      border-right:0;
-    }
+    .monthGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+    .dow{text-align:center;font-size:12px;color:var(--muted);font-weight:900;padding:6px}
+    .dayCell{background:white;border:1px solid var(--line);border-radius:14px;min-height:92px;padding:8px;cursor:pointer;box-shadow:0 4px 12px rgba(15,23,42,.025)}
+    .dayCell.today{outline:3px solid var(--accent);outline-offset:0}
+    .dayCell.selected{background:#eef7ff;border-color:var(--accent)}
+    .dayNum{font-weight:900;margin-bottom:2px}
+    .miniItem{font-size:11px;font-weight:900;color:white;border-radius:999px;padding:3px 6px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-    .bottomItem b{
-      display:block;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-    }
-
-    .bottomItem span{
-      display:block;
-      font-size:12px;
-      color:rgba(255,255,255,.80);
-      margin-top:2px;
-      line-height:1.2;
-    }
-
-    .bottomIcon{
-      font-size:24px;
-      flex:0 0 auto;
-    }
-
-    .hidden{
-      display:none!important;
-    }
+    .summaryGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .stat{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+    .stat strong{display:block;font-size:30px;line-height:1;margin-top:4px}
+    .status{padding:18px;border-radius:18px;background:white;border:1px solid var(--line);font-weight:800;color:#344054}
+    .hint{font-size:13px;color:var(--muted);font-weight:700;line-height:1.4;margin-top:8px}
+    .checkRow{display:flex;align-items:center;gap:10px;background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:13px 14px;font-weight:900;color:#344054;margin-top:10px}
+    .checkRow input{width:auto;accent-color:var(--accent)}
+    .hidden{display:none!important}
 
     @media(max-width:850px){
-      .wrap{
-        padding:9px 8px 54px;
-      }
-
-      .hero{
-        padding:16px;
-        border-radius:22px;
-        background:
-          linear-gradient(180deg,rgba(3,15,32,.88) 0%,rgba(5,22,48,.92) 55%,rgba(5,22,48,.96) 100%),
-          url("cam-hero-rink.jpg");
-        background-size:cover;
-        background-position:center;
-      }
-
-      .heroTop{
-        display:block;
-      }
-
-      .titleRow{
-        gap:12px;
-      }
-
-      .logoBox{
-        width:68px;
-        height:68px;
-        border-radius:18px;
-      }
-
-      h1{
-        font-size:38px;
-      }
-
-      .subtitle{
-        font-size:27px;
-      }
-
-      .heroKicker{
-        margin-top:20px;
-        font-size:16px;
-      }
-
-      .heroCopy{
-        font-size:14px;
-        margin-top:8px;
-      }
-
-       .heroTiles{
-  grid-template-columns:repeat(3,1fr);
-  margin-top:14px;
-  gap:7px;
-}
-
-.heroTile{
-  grid-template-columns:1fr;
-  padding:8px 4px;
-  border-radius:14px;
-  text-align:center;
-  min-height:72px;
-}
-
-.heroIcon{
-  width:28px;
-  height:28px;
-  font-size:16px;
-  margin:0 auto 4px;
-  border-radius:9px;
-}
-
-.heroTile strong{
-  font-size:13px;
-  line-height:1;
-}
-
-.heroTile span{
-  font-size:10px;
-  line-height:1.1;
-  margin-top:3px;
-}
-      .nextCard{
-        margin-top:14px;
-        padding:17px 15px;
-        border-radius:20px;
-      }
-
-      .nextTitle{
-        font-size:24px;
-      }
-
-      .nextMeta{
-        font-size:14px;
-      }
-
-      .hero.compact{
-        padding:10px 12px;
-        border-radius:18px;
-      }
-
-      .hero.compact .titleRow{
-        gap:10px;
-      }
-
-      .hero.compact .logoBox{
-        width:48px;
-        height:48px;
-        border-radius:14px;
-        padding:5px;
-      }
-
-      .hero.compact h1{
-        font-size:27px;
-      }
-
-      .hero.compact .subtitle{
-        font-size:18px;
-      }
-
-      .tabs{
-        grid-template-columns:repeat(4,1fr);
-        border-radius:20px;
-        gap:6px;
-        padding:6px;
-        margin:10px 0 10px;
-      }
-
-      .tabBtn{
-        padding:10px 4px;
-        font-size:12px;
-        border-radius:14px;
-        flex-direction:column;
-        gap:3px;
-      }
-
-      .tabBtn .navIcon{
-        font-size:17px;
-      }
-
-      .legendToggle{
-        padding:10px 12px;
-        border-radius:15px;
-        font-size:14px;
-      }
-
-      .legend{
-        gap:7px;
-        margin-top:8px;
-      }
-
-      .pill{
-        padding:7px 10px;
-        font-size:12px;
-      }
-
-      .grid{
-        grid-template-columns:1fr;
-        gap:10px;
-      }
-
-      .panel{
-        padding:14px;
-        border-radius:20px;
-      }
-
-      h2{
-        font-size:25px;
-      }
-
-      h3{
-        font-size:18px;
-      }
-
-      .sectionLabel{
-        font-size:12px;
-      }
-
-      .accentLine{
-        height:8px;
-        margin:12px 0 14px;
-      }
-
-      input,select,textarea{
-        border-radius:13px;
-        padding:11px 12px;
-      }
-
-      .row,.summaryGrid{
-        grid-template-columns:1fr;
-      }
-
-      .dayToolbar{
-        grid-template-columns:1fr 1fr;
-        gap:8px;
-      }
-
-      .dayToolbar .btn{
-        padding:11px 8px;
-        font-size:13px;
-        white-space:nowrap;
-      }
-
-      .quickActions{
-        grid-template-columns:1fr;
-      }
-
-      .eventCard{
-        padding:13px;
-        padding-right:13px;
-        border-radius:17px;
-        margin:8px 0;
-      }
-
-      .eventTitle{
-        font-size:18px;
-        padding-right:0;
-      }
-
-      .durationBox{
-        position:static;
-        display:inline-block;
-        margin-top:10px;
-        padding:8px 11px;
-      }
-
-      .monthGrid{
-        gap:4px;
-      }
-
-      .dow{
-        font-size:10px;
-        padding:3px 1px;
-      }
-
-      .dayCell{
-        min-height:72px;
-        padding:5px;
-        border-radius:11px;
-      }
-
-      .dayNum{
-        font-size:12px;
-      }
-
-      .miniItem{
-        font-size:9.5px;
-        padding:3px 4px;
-      }
-
-      .bottomBanner{
-        grid-template-columns:1fr;
-        gap:0;
-        padding:12px;
-      }
-
-      .bottomItem{
-        border-right:0;
-        border-bottom:1px solid rgba(255,255,255,.14);
-        padding:9px 6px;
-      }
-
-      .bottomItem:last-child{
-        border-bottom:0;
-      }
+      .wrap{padding:14px 10px 60px}
+      .hero{padding:18px;border-radius:24px}
+      .heroTop{display:block}
+      .titleRow{gap:14px}
+      .logoBox{width:72px;height:72px;margin-bottom:0;border-radius:20px}
+      h1{font-size:38px}.subtitle{font-size:29px;line-height:1}
+      .heroKicker{margin-top:18px;font-size:16px}.heroCopy{margin-top:18px;font-size:15px;line-height:1.42}
+      .heroTiles{grid-template-columns:repeat(3,1fr);margin-top:14px;gap:6px}
+      .heroTile{padding:8px 6px;text-align:center;font-size:11px;border-radius:14px}
+      .heroTile span{font-size:9px;margin-bottom:4px}
+      .nextCard{margin-top:16px;min-width:0;padding:16px 16px;border-radius:22px;border-width:3px}
+      .nextTitle{font-size:24px}.nextMeta{font-size:14px}
+      .tabs{grid-template-columns:repeat(4,1fr);border-radius:24px;gap:8px;padding:8px;margin-top:18px}
+      .tabBtn{padding:15px 6px;font-size:14px;border-radius:18px}
+      .legendBox:not([open]){margin-bottom:12px}
+      .legend{gap:8px}.pill{padding:8px 12px;font-size:13px}
+      .grid{grid-template-columns:1fr;gap:14px}.panel{padding:18px;border-radius:24px}h2{font-size:30px}h3{font-size:19px}
+      .row,.summaryGrid{grid-template-columns:1fr}.dayToolbar,.quickActions{grid-template-columns:1fr}
+      .eventCard{padding:15px;padding-right:15px;border-radius:20px;margin:10px 0}.eventTitle{font-size:21px;padding-right:0}.durationBox{position:static;display:inline-block;margin-top:10px}
+      .monthGrid{gap:4px}.dow{font-size:11px;padding:4px 2px}.dayCell{min-height:78px;padding:6px;border-radius:12px}.miniItem{font-size:10px;padding:3px 5px}
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <section id="hero" class="hero">
+    <section class="hero">
       <div class="heroTop">
         <div class="heroLeft">
           <div class="titleRow">
-            <div class="logoBox">
-              <img src="cam-uri-ram-logo.jpg" alt="Rhode Island Rams logo">
-            </div>
+            <div class="logoBox"><img src="cam-uri-ram-logo.jpg" alt="Rhode Island Rams logo"></div>
             <div>
               <h1>Cam</h1>
               <div class="subtitle">Summer Training</div>
@@ -1057,24 +426,12 @@
           </div>
 
           <div class="heroKicker">Your summer training hub.</div>
-
-          <div class="heroCopy">
-            Check your schedule, stay on top of the week ahead, and log the work that helps you get better — one day at a time.
-          </div>
+          <div class="heroCopy">Check your schedule, stay on top of the week ahead, and log the work that helps you get better — one day at a time.</div>
 
           <div class="heroTiles">
-            <div class="heroTile">
-              <div class="heroIcon">📅</div>
-              <div><strong>Plan</strong><span>Day • Week • Month</span></div>
-            </div>
-            <div class="heroTile">
-              <div class="heroIcon">🏋️</div>
-              <div><strong>Train</strong><span>Ice • Lift • Conditioning</span></div>
-            </div>
-            <div class="heroTile">
-              <div class="heroIcon">✏️</div>
-              <div><strong>Log</strong><span>What you trained</span></div>
-            </div>
+            <div class="heroTile"><span>Plan</span>Day • Week • Month</div>
+            <div class="heroTile"><span>Train</span>Ice • Workout • Skills</div>
+            <div class="heroTile"><span>Log</span>What you trained</div>
           </div>
         </div>
 
@@ -1082,39 +439,29 @@
           <div class="eyebrow">Next Scheduled Session</div>
           <div id="nextTitle" class="nextTitle">—</div>
           <div id="nextMeta" class="nextMeta">Loading...</div>
-          <button class="viewDayBtn" id="viewFullDayBtn">View Full Day</button>
         </div>
       </div>
     </section>
 
     <nav class="tabs">
-      <button class="tabBtn active" data-tab="home"><span class="navIcon">⌂</span>Home</button>
-      <button class="tabBtn" data-tab="day"><span class="navIcon">▣</span>Day</button>
-      <button class="tabBtn" data-tab="week"><span class="navIcon">▦</span>Week</button>
-      <button class="tabBtn" data-tab="calendar"><span class="navIcon">□</span>Month</button>
-      <button class="tabBtn" data-tab="summary"><span class="navIcon">◷</span>Summary</button>
-      <button class="tabBtn" data-tab="journal"><span class="navIcon">♢</span>Journal</button>
-      <button class="tabBtn" data-tab="add"><span class="navIcon">＋</span>Add Event</button>
+      <button class="tabBtn active" data-tab="home">Home</button>
+      <button class="tabBtn" data-tab="day">Day</button>
+      <button class="tabBtn" data-tab="week">Week</button>
+      <button class="tabBtn" data-tab="calendar">Month</button>
+      <button class="tabBtn" data-tab="summary">Summary</button>
+      <button class="tabBtn" data-tab="journal">Journal</button>
+      <button class="tabBtn" data-tab="add">Add Event</button>
     </nav>
 
-    <div class="legendShell">
-      <button id="legendToggle" class="legendToggle">
-        <div class="legendTitle">
-          <span class="legendDots">
-            <i style="background:#1e9bf0"></i><i style="background:#06152b"></i><i style="background:#f97316"></i><i style="background:#ef4444"></i>
-            <i style="background:#8b5cf6"></i><i style="background:#20c997"></i><i style="background:#64748b"></i><i style="background:#94a3b8"></i>
-          </span>
-          <strong>Color Legend</strong>
-        </div>
-        <span id="legendToggleText">Show</span>
-      </button>
+    <details id="legendBox" class="legendBox">
+      <summary class="legendToggle">Color Legend</summary>
       <div id="legend" class="legend"></div>
-    </div>
+    </details>
 
     <main id="home" class="tabPage">
       <div class="grid">
         <section class="panel">
-          <div class="sectionLabel">📅 Today / Selected Day</div>
+          <div class="sectionLabel">Today / Selected Day</div>
           <h2 id="selectedDayTitle">Today</h2>
           <div class="accentLine"></div>
           <input id="selectedDate" type="date" />
@@ -1122,7 +469,7 @@
         </section>
 
         <section class="panel">
-          <div class="sectionLabel">▦ This Week</div>
+          <div class="sectionLabel">This Week</div>
           <h2>Week Ahead</h2>
           <div class="accentLine"></div>
           <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap">
@@ -1137,13 +484,13 @@
     <main id="day" class="tabPage hidden">
       <div class="grid">
         <section class="panel">
-          <div class="sectionLabel">📅 Day View</div>
+          <div class="sectionLabel">Day View</div>
           <h2 id="dayViewTitle">Today</h2>
           <div class="accentLine"></div>
 
           <div class="dayToolbar">
-            <button class="btn secondary" id="prevDay">‹ Previous</button>
-            <button class="btn secondary" id="nextDay">Next ›</button>
+            <button class="btn secondary" id="prevDay">‹ Previous Day</button>
+            <button class="btn secondary" id="nextDay">Next Day ›</button>
           </div>
 
           <label>Selected Date</label>
@@ -1163,7 +510,7 @@
         </section>
       </div>
 
-      <div style="height:10px"></div>
+      <div style="height:14px"></div>
 
       <section class="panel">
         <div class="sectionLabel">Logged Work</div>
@@ -1173,32 +520,29 @@
       </section>
     </main>
 
-    <main id="week" class="tabPage hidden">
-      <section class="panel">
-        <div class="sectionLabel">▦ Week View</div>
-        <h2>Full Week</h2>
-        <div class="accentLine"></div>
-        <div id="fullWeek"></div>
-      </section>
-    </main>
-
     <main id="calendar" class="tabPage hidden">
       <section class="panel">
         <div class="row">
           <button class="btn secondary" id="prevMonth">‹ Previous Month</button>
           <button class="btn secondary" id="nextMonth">Next Month ›</button>
         </div>
-        <div class="sectionLabel" style="margin-top:18px">□ Month View</div>
-        <h2 id="monthTitle"></h2>
+        <h2 id="monthTitle" style="margin-top:18px"></h2>
         <div class="accentLine"></div>
         <div id="monthGrid" class="monthGrid"></div>
       </section>
     </main>
 
+    <main id="week" class="tabPage hidden">
+      <section class="panel">
+        <h2>Full Week</h2>
+        <div class="accentLine"></div>
+        <div id="fullWeek"></div>
+      </section>
+    </main>
+
     <main id="summary" class="tabPage hidden">
       <section class="panel">
-        <div class="sectionLabel">◷ Summary</div>
-        <h2>Progress Snapshot</h2>
+        <h2>Summary</h2>
         <div class="accentLine"></div>
         <div id="summaryGrid" class="summaryGrid"></div>
         <div id="categorySummary" style="margin-top:20px"></div>
@@ -1208,8 +552,8 @@
     <main id="journal" class="tabPage hidden">
       <div class="grid">
         <section class="panel">
-          <div class="sectionLabel">✏️ Cam Journal</div>
-          <h2>Log Your Training</h2>
+          <div class="sectionLabel">Cam journal</div>
+          <h2>What did you work on?</h2>
           <div class="accentLine"></div>
           <p class="eventMeta">Simple activity log. Choose the activity, enter minutes, and write one quick line about what you worked on.</p>
 
@@ -1223,7 +567,7 @@
           <input id="journalMinutes" type="number" min="0" step="5" placeholder="Example: 60">
 
           <label>What did you work on?</label>
-          <input id="journalTitle" placeholder="Example: lower body lift, edge work, 100 pucks">
+          <input id="journalTitle" placeholder="Example: workout, on-ice skills, mobility">
 
           <label>Optional quick note</label>
           <textarea id="journalNote" placeholder="Optional note"></textarea>
@@ -1238,7 +582,7 @@
         </section>
 
         <section class="panel">
-          <div class="sectionLabel">Recent Entries</div>
+          <div class="sectionLabel">Recent entries</div>
           <h2>Training Journal</h2>
           <div class="accentLine"></div>
           <div id="journalEntries"></div>
@@ -1249,8 +593,8 @@
     <main id="add" class="tabPage hidden">
       <div class="grid">
         <section class="panel">
-          <div class="sectionLabel" id="formMode">New Event</div>
-          <h2 id="formTitle">Add a Scheduled Item</h2>
+          <div class="sectionLabel" id="formMode">New event</div>
+          <h2 id="formTitle">Add a scheduled item</h2>
           <div class="accentLine"></div>
 
           <input type="hidden" id="eventId" />
@@ -1261,27 +605,39 @@
           <label>Category</label>
           <select id="eventCategory"></select>
 
-          <label>Title</label>
-          <input id="eventTitleInput" placeholder="Example: Skate with Kevin, Lift at gym, Work shift" />
-
-          <label>Start Time</label>
-          <div class="timeRow">
-            <select id="startHour"></select>
-            <select id="startMinute"></select>
-            <select id="startAmPm"></select>
+          <div id="awayOptions" class="hidden">
+            <label>End Date <span style="text-transform:none;letter-spacing:0;font-weight:700;color:#98a2b3">optional for multi-day away blocks</span></label>
+            <input id="eventEndDate" type="date" />
+            <label class="checkRow" style="text-transform:none;letter-spacing:0;font-size:14px">
+              <input id="allDayToggle" type="checkbox">
+              <span>All Day / No exact time</span>
+            </label>
+            <div class="hint">Use the end date for trips like Wednesday night through Saturday afternoon. The dashboard will create one Away item for each date in the range.</div>
           </div>
 
-          <label>End Time</label>
-          <div class="timeRow">
-            <select id="endHour"></select>
-            <select id="endMinute"></select>
-            <select id="endAmPm"></select>
+          <label>Title</label>
+          <input id="eventTitleInput" placeholder="Example: Away at tournament, workout, on-ice skate, work shift" />
+
+          <div id="timeFields">
+            <label>Start Time</label>
+            <div class="timeRow">
+              <select id="startHour"></select>
+              <select id="startMinute"></select>
+              <select id="startAmPm"></select>
+            </div>
+
+            <label>End Time</label>
+            <div class="timeRow">
+              <select id="endHour"></select>
+              <select id="endMinute"></select>
+              <select id="endAmPm"></select>
+            </div>
           </div>
 
           <div class="row">
             <div>
               <label>Location</label>
-              <input id="eventLocation" placeholder="Example: Gym, rink, home" />
+              <input id="eventLocation" placeholder="Example: Gym, rink, home, away city" />
             </div>
             <div>
               <label>Calculated Minutes</label>
@@ -1303,35 +659,47 @@
         </section>
 
         <section class="panel">
-          <div class="sectionLabel">Upcoming</div>
           <h2>Upcoming Schedule</h2>
           <div class="accentLine"></div>
           <div id="upcomingEvents"></div>
         </section>
       </div>
     </main>
-
-    <section class="bottomBanner">
-      <div class="bottomItem"><div class="bottomIcon">📅</div><div><b>All-in-one hub</b><span>Everything in one place.</span></div></div>
-      <div class="bottomItem"><div class="bottomIcon">✓</div><div><b>Stay organized</b><span>Day, week, month views.</span></div></div>
-      <div class="bottomItem"><div class="bottomIcon">✏️</div><div><b>Log consistently</b><span>Track work and recovery.</span></div></div>
-      <div class="bottomItem"><div class="bottomIcon">↗</div><div><b>See progress</b><span>Summary and insights.</span></div></div>
-      <div class="bottomItem"><div class="bottomIcon">🏆</div><div><b>Get better</b><span>One day at a time.</span></div></div>
-    </section>
   </div>
 
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzALxfRtc41NQA-rNrJh1zv1L0b138KMgrkPbGJL8gNJe-aQVSdN2PK6H0nLdphBn2H/exec";
 
     const categories = {
-      "On-ice": "#1e9bf0",
-      "Lift": "#06152b",
-      "Shooting": "#f97316",
-      "Conditioning": "#ef4444",
+      "Workout": "#06152b",
+      "On-Ice": "#1e9bf0",
+      "Shooting/Skills": "#f97316",
+      "Away": "#ef4444",
       "Mobility": "#8b5cf6",
       "Recovery": "#20c997",
       "Work": "#64748b",
       "Other": "#94a3b8"
+    };
+
+    const typeAliases = {
+      "Lift": "Workout",
+      "Conditioning": "Workout",
+      "Off-ice": "Workout",
+      "Off-Ice": "Workout",
+      "Off-ice Workout": "Workout",
+      "On-ice": "On-Ice",
+      "On Ice": "On-Ice",
+      "On-Ice": "On-Ice",
+      "Shooting": "Shooting/Skills",
+      "Skills": "Shooting/Skills",
+      "Stickhandling": "Shooting/Skills",
+      "Stick Handling": "Shooting/Skills",
+      "Shooting/Skills": "Shooting/Skills",
+      "Away": "Away",
+      "Mobility": "Mobility",
+      "Recovery": "Recovery",
+      "Work": "Work",
+      "Other": "Other"
     };
 
     let items = [];
@@ -1341,18 +709,11 @@
     let dayViewDate = selectedDate;
     let weekStart = startOfWeek(new Date());
     let calendarMonth = new Date();
-    let legendCollapsed = window.innerWidth <= 850;
 
     function $(id){ return document.getElementById(id); }
 
     function esc(s){
-      return String(s ?? "").replace(/[&<>"']/g, m => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
-      }[m]));
+      return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
     }
 
     function toYMD(d){
@@ -1388,39 +749,55 @@
       return parseYMD(ymd).toLocaleDateString("en-US",{month:"short",day:"numeric"});
     }
 
+    function normalizeType(type){
+      const raw = String(type || "Other").trim();
+      return typeAliases[raw] || categories[raw] ? (typeAliases[raw] || raw) : "Other";
+    }
+
     function colorFor(cat){
-      return categories[cat] || categories.Other;
+      return categories[normalizeType(cat)] || categories.Other;
+    }
+
+    function isAway(eOrType){
+      const type = typeof eOrType === "string" ? eOrType : eOrType?.type;
+      return normalizeType(type) === "Away";
+    }
+
+    function cleanTimeLabel(time){
+      const raw = String(time || "").trim();
+      if(!raw) return "";
+      if(/^all day$/i.test(raw)) return "All day";
+      return raw;
+    }
+
+    function timeForParsing(time){
+      return String(time || "").trim().replace(/^Begins\s+/i, "").replace(/^Until\s+/i, "");
+    }
+
+    function eventTime(e){
+      const time = cleanTimeLabel(e.time);
+      const end = cleanTimeLabel(e.end);
+      if(time && end) return `${time} – ${end}`;
+      if(time) return time;
+      return isAway(e) ? "Away" : "";
     }
 
     function calendarLabel(e){
+      const type = normalizeType(e.type);
       const title = String(e.title || "").trim();
-      const type = String(e.type || "").trim();
-
+      if(type === "Away") return title || "Away";
       if(!title) return type || "Event";
-
       const lower = title.toLowerCase();
-
       if(lower.includes(" with ")){
         const afterWith = title.split(/ with /i).pop().trim();
-        const firstName = afterWith.split(/\s+/)[0];
-        if(firstName) return firstName;
+        if(afterWith) return afterWith.split(/\s+/)[0] || afterWith;
       }
-
       if(lower.includes(" at ")){
         const beforeAt = title.split(/ at /i)[0].trim();
         if(beforeAt) return beforeAt;
       }
-
-      if(title.length <= 10) return title;
-      if(type) return type;
-
-      return title.split(" ")[0] || "Event";
-    }
-
-    function eventTime(e){
-      if(e.time && e.end) return `${e.time} – ${e.end}`;
-      if(e.time) return e.time;
-      return "";
+      if(title.length <= 12) return title;
+      return type || title.split(" ")[0] || "Event";
     }
 
     function timeStringFromParts(prefix){
@@ -1433,29 +810,27 @@
 
     function minutesFromTimeString(time){
       if(!time) return null;
-      const match = String(time).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      const cleaned = timeForParsing(time);
+      if(/^all day$/i.test(cleaned)) return 0;
+      const match = String(cleaned).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
       if(!match) return null;
-
       let hour = Number(match[1]);
       const minute = Number(match[2]);
       const ampm = match[3].toUpperCase();
-
       if(ampm === "AM" && hour === 12) hour = 0;
       if(ampm === "PM" && hour !== 12) hour += 12;
-
       return hour * 60 + minute;
     }
 
     function setTimeParts(prefix, time){
-      const match = String(time || "").trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-
+      const cleaned = timeForParsing(time);
+      const match = String(cleaned || "").trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
       if(!match){
         $(`${prefix}Hour`).value = "";
         $(`${prefix}Minute`).value = "";
         $(`${prefix}AmPm`).value = "";
         return;
       }
-
       $(`${prefix}Hour`).value = String(Number(match[1]));
       $(`${prefix}Minute`).value = match[2];
       $(`${prefix}AmPm`).value = match[3].toUpperCase();
@@ -1466,77 +841,95 @@
       let hour24 = Math.floor(total / 60);
       const minute = total % 60;
       const ampm = hour24 >= 12 ? "PM" : "AM";
-
       let hour12 = hour24 % 12;
       if(hour12 === 0) hour12 = 12;
-
       return `${hour12}:${String(minute).padStart(2,"0")} ${ampm}`;
     }
 
     function itemDateTime(item){
       const d = item.date ? parseYMD(item.date) : new Date();
       const mins = minutesFromTimeString(item.time);
-
       if(mins !== null){
         d.setHours(Math.floor(mins / 60), mins % 60, 0, 0);
       }else{
         d.setHours(0,0,0,0);
       }
-
       return d;
     }
 
     function buildTimeSelectors(){
       const hourOptions = [`<option value="">Hour</option>`];
-      for(let h=1; h<=12; h++){
-        hourOptions.push(`<option value="${h}">${h}</option>`);
-      }
-
+      for(let h=1; h<=12; h++) hourOptions.push(`<option value="${h}">${h}</option>`);
       const minuteOptions = [`<option value="">Min</option>`];
-      ["00","15","30","45"].forEach(m => {
-        minuteOptions.push(`<option value="${m}">${m}</option>`);
-      });
-
-      const ampmOptions = `
-        <option value="">AM/PM</option>
-        <option value="AM">AM</option>
-        <option value="PM">PM</option>
-      `;
-
+      ["00","15","30","45"].forEach(m => minuteOptions.push(`<option value="${m}">${m}</option>`));
+      const ampmOptions = `<option value="">AM/PM</option><option value="AM">AM</option><option value="PM">PM</option>`;
       ["startHour","endHour"].forEach(id => $(id).innerHTML = hourOptions.join(""));
       ["startMinute","endMinute"].forEach(id => $(id).innerHTML = minuteOptions.join(""));
       ["startAmPm","endAmPm"].forEach(id => $(id).innerHTML = ampmOptions);
     }
 
+    function updateEventFormMode(){
+      const away = $("eventCategory").value === "Away";
+      $("awayOptions").classList.toggle("hidden", !away);
+      if(away && !$("eventEndDate").value) $("eventEndDate").value = $("eventDate").value || selectedDate;
+      if(!away){
+        $("allDayToggle").checked = false;
+        $("eventEndDate").value = "";
+      }
+      ["startHour","startMinute","startAmPm","endHour","endMinute","endAmPm"].forEach(id => {
+        $(id).disabled = away && $("allDayToggle").checked;
+        if(away && $("allDayToggle").checked) $(id).value = "";
+      });
+      calculateDuration();
+    }
+
     function calculateDuration(){
+      const away = $("eventCategory")?.value === "Away";
+      const allDay = away && $("allDayToggle")?.checked;
+      const box = $("durationDisplay");
+      box.classList.remove("warn");
+
+      if(away){
+        $("eventDuration").value = "0";
+        if(allDay){
+          box.textContent = "Away block · All day · 0 training minutes";
+          return 0;
+        }
+        box.textContent = "Away block · 0 training minutes";
+        return 0;
+      }
+
       const start = timeStringFromParts("start");
       const end = timeStringFromParts("end");
       const startMinutes = minutesFromTimeString(start);
       const endMinutes = minutesFromTimeString(end);
-
       if(startMinutes === null || endMinutes === null){
         $("eventDuration").value = "";
-        $("durationDisplay").textContent = "Choose start and end times";
+        box.textContent = "Choose start and end times";
         return "";
       }
-
       let duration = endMinutes - startMinutes;
       if(duration < 0) duration += 24 * 60;
-
       $("eventDuration").value = String(duration);
-      $("durationDisplay").textContent = `${duration} minutes`;
+      box.textContent = `${duration} minutes`;
+      if(duration > 240){
+        box.textContent += " · check AM/PM";
+        box.classList.add("warn");
+      }
       return duration;
     }
 
     function autofillEndTime(){
+      if($("eventCategory").value === "Away"){
+        calculateDuration();
+        return;
+      }
       const start = timeStringFromParts("start");
       const startMinutes = minutesFromTimeString(start);
-
       if(startMinutes === null){
         calculateDuration();
         return;
       }
-
       const end = timeStringFromMinutes(startMinutes + 60);
       setTimeParts("end", end);
       calculateDuration();
@@ -1548,22 +941,26 @@
       return await res.json();
     }
 
+    function normalizeItem(x){
+      const copy = {...x};
+      copy.type = normalizeType(copy.type);
+      copy.isJournal = !!(copy.isJournal || String(copy.mode || "").toLowerCase() === "journal" || copy.owner === "Cam" && copy.location === "Training journal");
+      return copy;
+    }
+
     async function loadItems(){
       try{
         $("nextMeta").textContent = "Loading schedule...";
         const data = await api({action:"list", t:Date.now()});
-
-        items = Array.isArray(data.items) ? data.items : [];
+        items = Array.isArray(data.items) ? data.items.map(normalizeItem) : [];
         events = items.filter(x => !x.isJournal);
         journals = items.filter(x => x.isJournal);
-
         events.sort((a,b) => itemDateTime(a) - itemDateTime(b));
         journals.sort((a,b) => {
           const dateDiff = parseYMD(b.date || toYMD(new Date())) - parseYMD(a.date || toYMD(new Date()));
           if(dateDiff !== 0) return dateDiff;
           return String(b.createdAt || "").localeCompare(String(a.createdAt || ""));
         });
-
         renderAll();
       }catch(err){
         $("nextTitle").textContent = "Error";
@@ -1576,17 +973,9 @@
       $("legend").innerHTML = Object.entries(categories).map(([name,color]) =>
         `<span class="pill"><span class="dot" style="background:${color}"></span>${esc(name)}</span>`
       ).join("");
-
-      const categoryOptions = Object.keys(categories).map(c => `<option>${esc(c)}</option>`).join("");
+      const categoryOptions = Object.keys(categories).map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
       $("eventCategory").innerHTML = categoryOptions;
       $("journalCategory").innerHTML = categoryOptions;
-
-      updateLegendState();
-    }
-
-    function updateLegendState(){
-      $("legend").classList.toggle("collapsed", legendCollapsed);
-      $("legendToggleText").textContent = legendCollapsed ? "Show" : "Hide";
     }
 
     function renderNext(){
@@ -1594,193 +983,108 @@
       const next = events
         .filter(e => itemDateTime(e) > now)
         .sort((a,b) => itemDateTime(a)-itemDateTime(b))[0];
-
       if(!next){
         $("nextTitle").textContent = "—";
         $("nextMeta").textContent = "No upcoming sessions";
         return;
       }
-
       $("nextTitle").textContent = next.title || "Scheduled item";
       $("nextMeta").textContent = `${shortDate(next.date)} · ${eventTime(next) || "Time TBD"} · ${next.location || "Location TBD"}`;
     }
 
     function eventCard(e, allowActions=true){
-      const dur = e.minutes
-        ? `<div class="durationBox"><strong>${esc(e.minutes)}</strong><span>min</span></div>`
-        : "";
-
-      const notes = e.note
-        ? `<div class="eventNotes" style="margin-top:12px;background:#f8fafc;border-radius:14px;padding:11px">${esc(e.note)}</div>`
-        : "";
-
-      const actions = allowActions
-        ? `<div class="actions">
-            <button class="btn secondary small" onclick="editEvent('${esc(e.id)}')">Edit</button>
-            <button class="btn danger small" onclick="deleteItemById('${esc(e.id)}')">Delete</button>
-          </div>`
-        : "";
-
-      return `
-        <div class="eventCard">
-          ${dur}
-          <span class="catBadge" style="background:${colorFor(e.type)}">${esc(e.type || "Other")}</span>
-          <div class="eventTitle">${esc(e.title || "Scheduled item")}</div>
-          <div class="eventMeta">${esc(prettyDate(e.date))}${eventTime(e) ? " · " + esc(eventTime(e)) : ""}</div>
-          <div class="eventMeta">${esc(e.location || "")}</div>
-          ${notes}
-          ${actions}
-        </div>
-      `;
+      const type = normalizeType(e.type);
+      const minutesNum = parseInt(e.minutes,10) || 0;
+      const dur = minutesNum > 0 ? `<div class="durationBox"><strong>${esc(minutesNum)}</strong><span>min</span></div>` : "";
+      const notes = e.note ? `<div class="eventNotes" style="margin-top:12px;background:#f8fafc;border-radius:16px;padding:12px">${esc(e.note)}</div>` : "";
+      const actions = allowActions ? `<div class="actions"><button class="btn secondary small" onclick="editEvent('${esc(e.id)}')">Edit</button><button class="btn danger small" onclick="deleteItemById('${esc(e.id)}')">Delete</button></div>` : "";
+      return `<div class="eventCard">${dur}<span class="catBadge" style="background:${colorFor(type)}">${esc(type)}</span><div class="eventTitle">${esc(e.title || "Scheduled item")}</div><div class="eventMeta">${esc(prettyDate(e.date))}${eventTime(e) ? " · " + esc(eventTime(e)) : ""}</div><div class="eventMeta">${esc(e.location || "")}</div>${notes}${actions}</div>`;
     }
 
     function journalCard(j){
-      const recovery = j.recovery ? `<div class="eventNotes" style="margin-top:8px;background:#ecfdf3;border-radius:14px;padding:10px">Recovery completed</div>` : "";
-      const note = j.note ? `<div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:14px;padding:10px">${esc(j.note)}</div>` : "";
-
-      return `
-        <div class="eventCard">
-          ${j.minutes ? `<div class="durationBox"><strong>${esc(j.minutes)}</strong><span>min</span></div>` : ""}
-          <span class="catBadge" style="background:${colorFor(j.type)}">${esc(j.type || "Other")}</span>
-          <span class="journalBadge">Journal</span>
-          <div class="eventTitle">${esc(j.title || "Journal entry")}</div>
-          <div class="eventMeta">${esc(prettyDate(j.date))} · Logged</div>
-          <div class="eventMeta">Training journal</div>
-          ${note}
-          ${recovery}
-          <div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:14px;padding:10px">Shared item. For rare edits/deletes, update the Google Sheet row.</div>
-        </div>
-      `;
+      const type = normalizeType(j.type);
+      const recovery = j.recovery ? `<div class="eventNotes" style="margin-top:8px;background:#ecfdf3;border-radius:16px;padding:10px">Recovery completed</div>` : "";
+      const note = j.note ? `<div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:16px;padding:10px">${esc(j.note)}</div>` : "";
+      const minutesNum = parseInt(j.minutes,10) || 0;
+      return `<div class="eventCard">${minutesNum ? `<div class="durationBox"><strong>${esc(minutesNum)}</strong><span>min</span></div>` : ""}<span class="catBadge" style="background:${colorFor(type)}">${esc(type)}</span><span class="journalBadge">Journal</span><div class="eventTitle">${esc(j.title || "Journal entry")}</div><div class="eventMeta">${esc(prettyDate(j.date))} · Logged</div><div class="eventMeta">Training journal</div>${note}${recovery}<div class="eventNotes" style="margin-top:8px;background:#f8fafc;border-radius:16px;padding:10px">Shared item. For rare edits/deletes, update the Google Sheet row.</div></div>`;
     }
 
     function renderDay(){
       $("selectedDate").value = selectedDate;
       $("selectedDayTitle").textContent = prettyDate(selectedDate);
-
       const dayEvents = events.filter(e => e.date === selectedDate);
-
-      $("dayEvents").innerHTML = dayEvents.length
-        ? dayEvents.map(e => eventCard(e)).join("")
-        : `<div class="status">No events for this day yet.</div>`;
+      $("dayEvents").innerHTML = dayEvents.length ? dayEvents.map(e => eventCard(e)).join("") : `<div class="status">No events for this day yet.</div>`;
     }
 
     function renderDayView(){
       $("dayViewDate").value = dayViewDate;
       $("dayViewTitle").textContent = prettyDate(dayViewDate);
-
       const dayEvents = events.filter(e => e.date === dayViewDate);
       const dayJournals = journals.filter(j => j.date === dayViewDate);
-
-      $("dayViewEvents").innerHTML = dayEvents.length
-        ? dayEvents.map(e => eventCard(e)).join("")
-        : `<div class="status">No scheduled events for this day.</div>`;
-
-      $("dayViewJournals").innerHTML = dayJournals.length
-        ? dayJournals.map(j => journalCard(j)).join("")
-        : `<div class="status">No training journal entries for this day yet.</div>`;
+      $("dayViewEvents").innerHTML = dayEvents.length ? dayEvents.map(e => eventCard(e)).join("") : `<div class="status">No scheduled events for this day.</div>`;
+      $("dayViewJournals").innerHTML = dayJournals.length ? dayJournals.map(j => journalCard(j)).join("") : `<div class="status">No training journal entries for this day yet.</div>`;
     }
 
     function renderWeek(){
       const list = [];
-
       for(let i=0;i<7;i++){
         const d = addDays(weekStart,i);
         const ymd = toYMD(d);
         const count = events.filter(e => e.date === ymd).length;
-
-        list.push(`
-          <div class="weekDay ${ymd===selectedDate?'active':''}" onclick="selectDay('${ymd}')">
-            <span>${d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})}</span>
-            <span>${count} item${count===1?"":"s"}</span>
-          </div>
-        `);
+        list.push(`<div class="weekDay ${ymd===selectedDate?'active':''}" onclick="selectDay('${ymd}')"><span>${d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})}</span><span>${count} item${count===1?"":"s"}</span></div>`);
       }
-
       $("weekList").innerHTML = list.join("");
-
       let full = "";
-
       for(let i=0;i<7;i++){
         const d = addDays(weekStart,i);
         const ymd = toYMD(d);
         const dayEvents = events.filter(e => e.date === ymd);
-
         full += `<h3 style="margin-top:18px">${d.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})}</h3>`;
-        full += dayEvents.length
-          ? dayEvents.map(e => eventCard(e)).join("")
-          : `<div class="status">No events.</div>`;
+        full += dayEvents.length ? dayEvents.map(e => eventCard(e)).join("") : `<div class="status">No events.</div>`;
       }
-
       $("fullWeek").innerHTML = full;
     }
 
     function renderCalendar(){
       const y = calendarMonth.getFullYear();
       const m = calendarMonth.getMonth();
-
       $("monthTitle").textContent = calendarMonth.toLocaleDateString("en-US",{month:"long",year:"numeric"});
-
       const first = new Date(y,m,1);
       const start = startOfWeek(first);
-
-      let html = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-        .map(d => `<div class="dow">${d}</div>`)
-        .join("");
-
+      let html = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => `<div class="dow">${d}</div>`).join("");
       for(let i=0;i<42;i++){
         const d = addDays(start,i);
         const ymd = toYMD(d);
         const dayEvents = events.filter(e => e.date === ymd);
         const muted = d.getMonth() !== m ? "opacity:.35" : "";
         const today = ymd === toYMD(new Date()) ? "today" : "";
-
-        html += `
-          <div class="dayCell ${today}" style="${muted}" onclick="selectDay('${ymd}','day')">
-            <div class="dayNum">${d.getDate()}</div>
-            ${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.type)}">${esc(calendarLabel(e))}</div>`).join("")}
-          </div>
-        `;
+        const selected = ymd === selectedDate ? "selected" : "";
+        html += `<div class="dayCell ${today} ${selected}" style="${muted}" onclick="selectDay('${ymd}','day')"><div class="dayNum">${d.getDate()}</div>${dayEvents.slice(0,3).map(e => `<div class="miniItem" style="background:${colorFor(e.type)}">${esc(calendarLabel(e))}</div>`).join("")}</div>`;
       }
-
       $("monthGrid").innerHTML = html;
     }
 
     function renderSummary(){
       const totalPlanned = events.reduce((sum,e) => sum + (parseInt(e.minutes,10)||0), 0);
       const totalLogged = journals.reduce((sum,j) => sum + (parseInt(j.minutes,10)||0), 0);
-
-      const stats = [
-        ["Planned Events", events.length],
-        ["Planned Minutes", totalPlanned],
-        ["Journal Entries", journals.length],
-        ["Logged Minutes", totalLogged]
-      ];
-
-      $("summaryGrid").innerHTML = stats.map(([label,val]) =>
-        `<div class="stat"><div class="eyebrow">${label}</div><strong>${val}</strong></div>`
-      ).join("");
-
+      const stats = [["Planned Events", events.length],["Planned Minutes", totalPlanned],["Journal Entries", journals.length],["Logged Minutes", totalLogged]];
+      $("summaryGrid").innerHTML = stats.map(([label,val]) => `<div class="stat"><div class="eyebrow">${label}</div><strong>${val}</strong></div>`).join("");
       $("categorySummary").innerHTML = Object.keys(categories).map(cat => {
-        const planned = events.filter(e => e.type === cat).length;
-        const logged = journals.filter(j => j.type === cat).length;
-        const loggedMins = journals.filter(j => j.type === cat).reduce((s,j) => s + (parseInt(j.minutes,10)||0), 0);
+        const planned = events.filter(e => normalizeType(e.type) === cat).length;
+        const logged = journals.filter(j => normalizeType(j.type) === cat).length;
+        const loggedMins = journals.filter(j => normalizeType(j.type) === cat).reduce((s,j) => s + (parseInt(j.minutes,10)||0), 0);
         return `<div class="weekDay"><span>${cat}</span><span>${planned} planned · ${logged} logged · ${loggedMins} min</span></div>`;
       }).join("");
     }
 
     function renderJournal(){
-      $("journalEntries").innerHTML = journals.length
-        ? journals.map(j => journalCard(j)).join("")
-        : `<div class="status">No journal entries yet.</div>`;
+      $("journalEntries").innerHTML = journals.length ? journals.map(j => journalCard(j)).join("") : `<div class="status">No journal entries yet.</div>`;
     }
 
     function renderUpcoming(){
       const now = new Date();
       const upcoming = events.filter(e => itemDateTime(e) >= now).slice(0,10);
-
-      $("upcomingEvents").innerHTML = upcoming.length
-        ? upcoming.map(e => eventCard(e)).join("")
-        : `<div class="status">No upcoming events yet.</div>`;
+      $("upcomingEvents").innerHTML = upcoming.length ? upcoming.map(e => eventCard(e)).join("") : `<div class="status">No upcoming events yet.</div>`;
     }
 
     function renderAll(){
@@ -1792,12 +1096,15 @@
       renderSummary();
       renderJournal();
       renderUpcoming();
+      updateEventFormMode();
     }
 
     function selectDay(ymd, tab){
       selectedDate = ymd;
       dayViewDate = ymd;
       weekStart = startOfWeek(parseYMD(ymd));
+      if($("eventDate")) $("eventDate").value = ymd;
+      if($("journalDate")) $("journalDate").value = ymd;
       renderAll();
       if(tab) showTab(tab);
     }
@@ -1814,28 +1121,26 @@
       document.querySelectorAll(".tabBtn").forEach(b => b.classList.remove("active"));
       $(tab).classList.remove("hidden");
       document.querySelector(`[data-tab="${tab}"]`).classList.add("active");
-
-      $("hero").classList.toggle("compact", tab !== "home");
-
-      if(tab !== "home"){
-        setTimeout(() => window.scrollTo({top:0,behavior:"smooth"}), 50);
-      }
     }
 
     function clearForm(){
       $("eventId").value = "";
-      $("formMode").textContent = "New Event";
-      $("formTitle").textContent = "Add a Scheduled Item";
+      $("formMode").textContent = "New event";
+      $("formTitle").textContent = "Add a scheduled item";
       $("eventDate").value = selectedDate;
-      $("eventCategory").value = "On-ice";
+      $("eventEndDate").value = selectedDate;
+      $("eventCategory").value = "Workout";
+      $("allDayToggle").checked = false;
       $("eventTitleInput").value = "";
       setTimeParts("start", "");
       setTimeParts("end", "");
       $("eventLocation").value = "";
       $("eventDuration").value = "";
       $("durationDisplay").textContent = "Choose start and end times";
+      $("durationDisplay").classList.remove("warn");
       $("eventNotes").value = "";
       $("saveStatus").innerHTML = "";
+      updateEventFormMode();
     }
 
     function quickAddEventForDay(){
@@ -1843,49 +1148,41 @@
       clearForm();
       $("eventDate").value = dayViewDate;
       showTab("add");
+      window.scrollTo({top:0,behavior:"smooth"});
     }
 
     function quickLogTrainingForDay(){
       selectedDate = dayViewDate;
       $("journalDate").value = dayViewDate;
       showTab("journal");
+      window.scrollTo({top:0,behavior:"smooth"});
     }
 
     window.editEvent = function(id){
       const e = events.find(x => String(x.id) === String(id));
-
-      if(!e){
-        alert("Could not find this event.");
-        return;
-      }
-
+      if(!e){ alert("Could not find this event."); return; }
       showTab("add");
-
       $("eventId").value = e.id;
-      $("formMode").textContent = "Editing Event";
-      $("formTitle").textContent = "Edit Scheduled Item";
+      $("formMode").textContent = "Editing event";
+      $("formTitle").textContent = "Edit scheduled item";
       $("eventDate").value = e.date || selectedDate;
-      $("eventCategory").value = e.type || "Other";
+      $("eventEndDate").value = e.date || selectedDate;
+      $("eventCategory").value = normalizeType(e.type);
       $("eventTitleInput").value = e.title || "";
+      $("allDayToggle").checked = /^all day$/i.test(String(e.time || "").trim());
       setTimeParts("start", e.time || "");
       setTimeParts("end", e.end || "");
       $("eventLocation").value = e.location || "";
       $("eventNotes").value = e.note || "";
+      updateEventFormMode();
       calculateDuration();
+      window.scrollTo({top:0,behavior:"smooth"});
     }
 
     window.deleteItemById = async function(id){
       const item = items.find(x => String(x.id) === String(id));
-
-      if(!item){
-        alert("Could not find this item.");
-        return;
-      }
-
-      if(!confirm(`Delete "${item.title || "this item"}"?`)){
-        return;
-      }
-
+      if(!item){ alert("Could not find this item."); return; }
+      if(!confirm(`Delete "${item.title || "this item"}"?`)) return;
       try{
         await api({action:"delete", id});
         await loadItems();
@@ -1895,20 +1192,59 @@
       }
     }
 
+    function buildAwayRecords(base){
+      const startDate = base.date;
+      const endDate = $("eventEndDate").value || startDate;
+      const start = timeStringFromParts("start");
+      const end = timeStringFromParts("end");
+      const allDay = $("allDayToggle").checked;
+      const records = [];
+      let cursor = parseYMD(startDate);
+      const last = parseYMD(endDate);
+      let i = 0;
+      while(cursor <= last){
+        const ymd = toYMD(cursor);
+        let time = "All Day";
+        let title = base.title;
+        if(!allDay){
+          if(ymd === startDate && start){ time = `Begins ${start}`; title = `${base.title} begins`; }
+          else if(ymd === endDate && end){ time = `Until ${end}`; title = `${base.title} ends`; }
+          else time = "All Day";
+        }
+        const rangeNote = startDate !== endDate ? `Away block: ${shortDate(startDate)}${start ? " " + start : ""} through ${shortDate(endDate)}${end ? " " + end : ""}.` : "";
+        records.push({
+          ...base,
+          id: `${base.id}-${i}`,
+          date: ymd,
+          time,
+          end: "",
+          title,
+          minutes: "0",
+          note: [rangeNote, base.note].filter(Boolean).join(" ").trim()
+        });
+        cursor = addDays(cursor, 1);
+        i++;
+      }
+      return records;
+    }
+
     async function saveEvent(){
       const id = $("eventId").value || "";
-      const time = timeStringFromParts("start");
-      const end = timeStringFromParts("end");
-      const minutes = calculateDuration();
+      const type = normalizeType($("eventCategory").value);
+      const isAwayType = type === "Away";
+      const time = isAwayType && $("allDayToggle").checked ? "All Day" : timeStringFromParts("start");
+      const end = isAwayType && $("allDayToggle").checked ? "" : timeStringFromParts("end");
+      const minutes = isAwayType ? 0 : calculateDuration();
+      const baseId = id || ("event-" + Date.now());
 
-      const params = {
+      const base = {
         action: id ? "update" : "add",
         mode: "event",
-        id: id || ("event-" + Date.now()),
+        id: baseId,
         date: $("eventDate").value,
         time,
-        title: $("eventTitleInput").value,
-        type: $("eventCategory").value,
+        title: $("eventTitleInput").value.trim(),
+        type,
         end,
         location: $("eventLocation").value,
         minutes: minutes || "",
@@ -1917,20 +1253,38 @@
         addedBy: "Dashboard"
       };
 
-      if(!params.date || !params.title){
+      if(!base.date || !base.title){
         $("saveStatus").innerHTML = `<div class="status">Please add at least a date and title.</div>`;
         return;
+      }
+
+      if(isAwayType){
+        const endDate = $("eventEndDate").value || base.date;
+        if(parseYMD(endDate) < parseYMD(base.date)){
+          $("saveStatus").innerHTML = `<div class="status">End date cannot be before start date.</div>`;
+          return;
+        }
       }
 
       $("saveStatus").innerHTML = `<div class="status">Saving...</div>`;
 
       try{
-        const result = await api(params);
-        if(!result.ok) throw new Error(result.error || "Save failed");
+        let records = [base];
+        if(isAwayType && !id){
+          const endDate = $("eventEndDate").value || base.date;
+          if(endDate !== base.date){
+            records = buildAwayRecords(base);
+          }
+        }
+
+        for(const record of records){
+          const result = await api(record);
+          if(!result.ok) throw new Error(result.error || "Save failed");
+        }
 
         $("saveStatus").innerHTML = `<div class="status">Saved.</div>`;
-        selectedDate = params.date;
-        dayViewDate = params.date;
+        selectedDate = base.date;
+        dayViewDate = base.date;
         clearForm();
         await loadItems();
         showTab("day");
@@ -1947,7 +1301,7 @@
         id: "journal-" + Date.now(),
         date: $("journalDate").value,
         title: $("journalTitle").value,
-        type: $("journalCategory").value,
+        type: normalizeType($("journalCategory").value),
         minutes: $("journalMinutes").value,
         location: "Training journal",
         note: $("journalNote").value,
@@ -1966,7 +1320,6 @@
       try{
         const result = await api(params);
         if(!result.ok) throw new Error(result.error || "Save failed");
-
         $("journalStatus").innerHTML = `<div class="status">Journal entry saved.</div>`;
         dayViewDate = params.date;
         selectedDate = params.date;
@@ -1981,66 +1334,33 @@
       }
     }
 
-    document.querySelectorAll(".tabBtn").forEach(btn => {
-      btn.addEventListener("click", () => showTab(btn.dataset.tab));
-    });
-
-    $("legendToggle").addEventListener("click", () => {
-      legendCollapsed = !legendCollapsed;
-      updateLegendState();
-    });
-
-    $("viewFullDayBtn").addEventListener("click", () => showTab("day"));
-
+    document.querySelectorAll(".tabBtn").forEach(btn => btn.addEventListener("click", () => showTab(btn.dataset.tab)));
     $("selectedDate").addEventListener("change", e => selectDay(e.target.value));
     $("dayViewDate").addEventListener("change", e => selectDay(e.target.value,"day"));
-
+    $("eventDate").addEventListener("change", () => { if(!$("eventEndDate").value || $("eventEndDate").value < $("eventDate").value) $("eventEndDate").value = $("eventDate").value; updateEventFormMode(); });
+    $("eventCategory").addEventListener("change", updateEventFormMode);
+    $("allDayToggle").addEventListener("change", updateEventFormMode);
     $("prevDay").addEventListener("click", () => shiftDayView(-1));
     $("nextDay").addEventListener("click", () => shiftDayView(1));
-
     $("quickAddEvent").addEventListener("click", quickAddEventForDay);
     $("quickLogTraining").addEventListener("click", quickLogTrainingForDay);
-
-    $("prevWeek").addEventListener("click", () => {
-      weekStart = addDays(weekStart,-7);
-      renderAll();
-    });
-
-    $("nextWeek").addEventListener("click", () => {
-      weekStart = addDays(weekStart,7);
-      renderAll();
-    });
-
-    $("prevMonth").addEventListener("click", () => {
-      calendarMonth.setMonth(calendarMonth.getMonth()-1);
-      renderAll();
-    });
-
-    $("nextMonth").addEventListener("click", () => {
-      calendarMonth.setMonth(calendarMonth.getMonth()+1);
-      renderAll();
-    });
-
+    $("prevWeek").addEventListener("click", () => { weekStart = addDays(weekStart,-7); renderAll(); });
+    $("nextWeek").addEventListener("click", () => { weekStart = addDays(weekStart,7); renderAll(); });
+    $("prevMonth").addEventListener("click", () => { calendarMonth.setMonth(calendarMonth.getMonth()-1); renderAll(); });
+    $("nextMonth").addEventListener("click", () => { calendarMonth.setMonth(calendarMonth.getMonth()+1); renderAll(); });
     $("saveEvent").addEventListener("click", saveEvent);
     $("clearForm").addEventListener("click", clearForm);
     $("saveJournal").addEventListener("click", saveJournal);
-
-    ["startHour","startMinute","startAmPm"].forEach(id => {
-      $(id).addEventListener("change", autofillEndTime);
-    });
-
-    ["endHour","endMinute","endAmPm"].forEach(id => {
-      $(id).addEventListener("change", calculateDuration);
-    });
+    ["startHour","startMinute","startAmPm"].forEach(id => $(id).addEventListener("change", autofillEndTime));
+    ["endHour","endMinute","endAmPm"].forEach(id => $(id).addEventListener("change", calculateDuration));
 
     renderLegend();
     buildTimeSelectors();
-
     $("selectedDate").value = selectedDate;
     $("dayViewDate").value = dayViewDate;
     $("eventDate").value = selectedDate;
+    $("eventEndDate").value = selectedDate;
     $("journalDate").value = selectedDate;
-
     clearForm();
     loadItems();
   </script>
