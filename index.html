@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Cam Summer Training</title>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" href="apple-touch-icon.png">
-<meta name="apple-mobile-web-app-title" content="Cam Hockey">
-<meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="icon" type="image/png" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Cam Hockey">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -57,6 +59,7 @@
       box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
+      transition:all .2s ease;
     }
 
     .heroTop{
@@ -169,6 +172,51 @@
       box-shadow:0 10px 24px rgba(15,23,42,.12);
     }
 
+    .hero.compact{
+      padding:16px 18px;
+      border-radius:22px;
+    }
+
+    .hero.compact .heroTop{
+      align-items:center;
+    }
+
+    .hero.compact .logoBox{
+      width:58px;
+      height:58px;
+      border-radius:17px;
+      padding:6px;
+    }
+
+    .hero.compact h1{
+      font-size:32px;
+    }
+
+    .hero.compact .subtitle{
+      font-size:23px;
+    }
+
+    .hero.compact .heroKicker,
+    .hero.compact .heroCopy,
+    .hero.compact .heroTiles{
+      display:none;
+    }
+
+    .hero.compact .nextCard{
+      padding:14px;
+      min-width:230px;
+      border-width:3px;
+      border-radius:18px;
+    }
+
+    .hero.compact .nextTitle{
+      font-size:22px;
+    }
+
+    .hero.compact .nextMeta{
+      font-size:13px;
+    }
+
     .eyebrow{
       font-size:12px;
       text-transform:uppercase;
@@ -193,7 +241,7 @@
     }
 
     .tabs{
-      margin:18px 0 14px;
+      margin:18px 0 12px;
       background:white;
       border:1px solid var(--line);
       border-radius:24px;
@@ -202,6 +250,9 @@
       padding:8px;
       gap:8px;
       box-shadow:0 6px 18px rgba(15,23,42,.04);
+      position:sticky;
+      top:0;
+      z-index:20;
     }
 
     .tabBtn{
@@ -221,11 +272,41 @@
       box-shadow:inset 0 -5px 0 var(--accent);
     }
 
+    .legendShell{
+      margin:0 0 14px;
+    }
+
+    .legendToggle{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px 14px;
+      font-weight:900;
+      color:var(--navy);
+      box-shadow:0 4px 14px rgba(15,23,42,.035);
+      cursor:pointer;
+    }
+
+    .legendToggle span{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:800;
+    }
+
     .legend{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin:14px 0 18px;
+      margin:10px 0 0;
+    }
+
+    .legend.collapsed{
+      display:none;
     }
 
     .pill{
@@ -560,12 +641,12 @@
 
     @media(max-width:850px){
       .wrap{
-        padding:14px 10px 60px;
+        padding:10px 8px 56px;
       }
 
       .hero{
-        padding:18px;
-        border-radius:24px;
+        padding:16px;
+        border-radius:22px;
       }
 
       .heroTop{
@@ -575,111 +656,163 @@
       .titleRow{
         display:flex;
         align-items:center;
-        gap:14px;
+        gap:12px;
       }
 
       .logoBox{
-        width:72px;
-        height:72px;
+        width:66px;
+        height:66px;
         margin-bottom:0;
-        border-radius:20px;
+        border-radius:18px;
         flex-shrink:0;
       }
 
       h1{
-        font-size:38px;
+        font-size:35px;
       }
 
       .subtitle{
-        font-size:29px;
+        font-size:27px;
         line-height:1;
       }
 
       .heroKicker{
-        margin-top:18px;
-        font-size:16px;
+        margin-top:14px;
+        font-size:15px;
       }
 
       .heroCopy{
-        margin-top:24px;
-        font-size:16px;
-        line-height:1.45;
+        margin-top:18px;
+        font-size:15px;
+        line-height:1.4;
       }
 
       .heroTiles{
         grid-template-columns:repeat(3,1fr);
-        margin-top:16px;
-        gap:8px;
+        margin-top:14px;
+        gap:7px;
       }
 
       .heroTile{
-        padding:10px 6px;
+        padding:9px 5px;
         text-align:center;
-        font-size:13px;
-        border-radius:16px;
+        font-size:12px;
+        border-radius:14px;
       }
 
       .heroTile span{
-        font-size:11px;
-        margin-bottom:5px;
+        font-size:10px;
+        margin-bottom:4px;
       }
 
       .nextCard{
-        margin-top:18px;
+        margin-top:14px;
         min-width:0;
-        padding:22px 18px;
-        border-radius:24px;
-        border-width:5px;
+        padding:17px 15px;
+        border-radius:20px;
+        border-width:4px;
       }
 
       .nextTitle{
-        font-size:29px;
+        font-size:25px;
       }
 
       .nextMeta{
-        font-size:16px;
+        font-size:14px;
+      }
+
+      .hero.compact{
+        padding:10px 12px;
+        border-radius:18px;
+      }
+
+      .hero.compact .titleRow{
+        gap:10px;
+      }
+
+      .hero.compact .logoBox{
+        width:48px;
+        height:48px;
+        border-radius:14px;
+        padding:5px;
+      }
+
+      .hero.compact h1{
+        font-size:26px;
+      }
+
+      .hero.compact .subtitle{
+        font-size:18px;
+      }
+
+      .hero.compact .nextCard{
+        display:none;
       }
 
       .tabs{
         grid-template-columns:repeat(4,1fr);
-        border-radius:24px;
-        gap:8px;
-        padding:8px;
-        margin-top:18px;
+        border-radius:20px;
+        gap:6px;
+        padding:6px;
+        margin:10px 0 10px;
       }
 
       .tabBtn{
-        padding:15px 6px;
+        padding:11px 4px;
+        font-size:12px;
+        border-radius:14px;
+      }
+
+      .legendShell{
+        margin-bottom:10px;
+      }
+
+      .legendToggle{
+        padding:10px 12px;
+        border-radius:16px;
         font-size:14px;
-        border-radius:18px;
       }
 
       .legend{
-        gap:8px;
-        margin:12px 0 18px;
+        gap:7px;
+        margin-top:8px;
       }
 
       .pill{
-        padding:8px 12px;
-        font-size:13px;
+        padding:7px 10px;
+        font-size:12px;
       }
 
       .grid{
         grid-template-columns:1fr;
-        gap:14px;
+        gap:10px;
       }
 
       .panel{
-        padding:18px;
-        border-radius:24px;
+        padding:14px;
+        border-radius:20px;
       }
 
       h2{
-        font-size:30px;
+        font-size:25px;
       }
 
       h3{
-        font-size:19px;
+        font-size:18px;
+      }
+
+      .sectionLabel{
+        font-size:13px;
+      }
+
+      .accentLine{
+        height:8px;
+        margin:12px 0 14px;
+      }
+
+      input,select,textarea{
+        border-radius:14px;
+        padding:11px 12px;
       }
 
       .row,.summaryGrid{
@@ -692,14 +825,14 @@
       }
 
       .eventCard{
-        padding:15px;
-        padding-right:15px;
-        border-radius:20px;
-        margin:10px 0;
+        padding:13px;
+        padding-right:13px;
+        border-radius:18px;
+        margin:8px 0;
       }
 
       .eventTitle{
-        font-size:21px;
+        font-size:19px;
         padding-right:0;
       }
 
@@ -707,6 +840,7 @@
         position:static;
         display:inline-block;
         margin-top:10px;
+        padding:9px 12px;
       }
 
       .monthGrid{
@@ -714,19 +848,23 @@
       }
 
       .dow{
-        font-size:11px;
-        padding:4px 2px;
+        font-size:10px;
+        padding:3px 1px;
       }
 
       .dayCell{
-        min-height:78px;
-        padding:6px;
-        border-radius:12px;
+        min-height:72px;
+        padding:5px;
+        border-radius:11px;
+      }
+
+      .dayNum{
+        font-size:12px;
       }
 
       .miniItem{
-        font-size:10px;
-        padding:3px 5px;
+        font-size:9.5px;
+        padding:3px 4px;
       }
     }
   </style>
@@ -734,7 +872,7 @@
 
 <body>
   <div class="wrap">
-    <section class="hero">
+    <section id="hero" class="hero">
       <div class="heroTop">
         <div class="heroLeft">
           <div class="titleRow">
@@ -778,7 +916,13 @@
       <button class="tabBtn" data-tab="add">Add Event</button>
     </nav>
 
-    <div id="legend" class="legend"></div>
+    <div class="legendShell">
+      <button id="legendToggle" class="legendToggle">
+        <strong>Color Legend</strong>
+        <span id="legendToggleText">Show</span>
+      </button>
+      <div id="legend" class="legend"></div>
+    </div>
 
     <main id="home" class="tabPage">
       <div class="grid">
@@ -832,13 +976,21 @@
         </section>
       </div>
 
-      <div style="height:14px"></div>
+      <div style="height:10px"></div>
 
       <section class="panel">
         <div class="sectionLabel">Logged Work</div>
         <h2>Training Journal</h2>
         <div class="accentLine"></div>
         <div id="dayViewJournals"></div>
+      </section>
+    </main>
+
+    <main id="week" class="tabPage hidden">
+      <section class="panel">
+        <h2>Full Week</h2>
+        <div class="accentLine"></div>
+        <div id="fullWeek"></div>
       </section>
     </main>
 
@@ -851,14 +1003,6 @@
         <h2 id="monthTitle" style="margin-top:18px"></h2>
         <div class="accentLine"></div>
         <div id="monthGrid" class="monthGrid"></div>
-      </section>
-    </main>
-
-    <main id="week" class="tabPage hidden">
-      <section class="panel">
-        <h2>Full Week</h2>
-        <div class="accentLine"></div>
-        <div id="fullWeek"></div>
       </section>
     </main>
 
@@ -998,6 +1142,7 @@
     let dayViewDate = selectedDate;
     let weekStart = startOfWeek(new Date());
     let calendarMonth = new Date();
+    let legendCollapsed = window.innerWidth <= 850;
 
     function $(id){ return document.getElementById(id); }
 
@@ -1056,31 +1201,18 @@
 
       const lower = title.toLowerCase();
 
-      // "Skate with Kevin" -> "Kevin"
-      if(lower.includes(" with ")){
-        const afterWith = title.split(/ with /i).pop().trim();
-        if(afterWith) return afterWith;
-      }
-
-      // "Skills with Mike Rabideau" -> "Mike"
       if(lower.includes(" with ")){
         const afterWith = title.split(/ with /i).pop().trim();
         const firstName = afterWith.split(/\s+/)[0];
         if(firstName) return firstName;
       }
 
-      // "Lift at gym" -> "Lift"
       if(lower.includes(" at ")){
         const beforeAt = title.split(/ at /i)[0].trim();
         if(beforeAt) return beforeAt;
       }
 
-      // Keep short titles as-is
-      if(title.length <= 10){
-        return title;
-      }
-
-      // Clean fallback by category
+      if(title.length <= 10) return title;
       if(type) return type;
 
       return title.split(" ")[0] || "Event";
@@ -1249,6 +1381,13 @@
       const categoryOptions = Object.keys(categories).map(c => `<option>${esc(c)}</option>`).join("");
       $("eventCategory").innerHTML = categoryOptions;
       $("journalCategory").innerHTML = categoryOptions;
+
+      updateLegendState();
+    }
+
+    function updateLegendState(){
+      $("legend").classList.toggle("collapsed", legendCollapsed);
+      $("legendToggleText").textContent = legendCollapsed ? "Show" : "Hide";
     }
 
     function renderNext(){
@@ -1476,6 +1615,12 @@
       document.querySelectorAll(".tabBtn").forEach(b => b.classList.remove("active"));
       $(tab).classList.remove("hidden");
       document.querySelector(`[data-tab="${tab}"]`).classList.add("active");
+
+      $("hero").classList.toggle("compact", tab !== "home");
+
+      if(tab !== "home"){
+        setTimeout(() => window.scrollTo({top:0,behavior:"smooth"}), 50);
+      }
     }
 
     function clearForm(){
@@ -1499,14 +1644,12 @@
       clearForm();
       $("eventDate").value = dayViewDate;
       showTab("add");
-      window.scrollTo({top:0,behavior:"smooth"});
     }
 
     function quickLogTrainingForDay(){
       selectedDate = dayViewDate;
       $("journalDate").value = dayViewDate;
       showTab("journal");
-      window.scrollTo({top:0,behavior:"smooth"});
     }
 
     window.editEvent = function(id){
@@ -1530,8 +1673,6 @@
       $("eventLocation").value = e.location || "";
       $("eventNotes").value = e.note || "";
       calculateDuration();
-
-      window.scrollTo({top:0,behavior:"smooth"});
     }
 
     window.deleteItemById = async function(id){
@@ -1643,6 +1784,11 @@
 
     document.querySelectorAll(".tabBtn").forEach(btn => {
       btn.addEventListener("click", () => showTab(btn.dataset.tab));
+    });
+
+    $("legendToggle").addEventListener("click", () => {
+      legendCollapsed = !legendCollapsed;
+      updateLegendState();
     });
 
     $("selectedDate").addEventListener("change", e => selectDay(e.target.value));
