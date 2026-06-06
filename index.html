@@ -822,33 +822,38 @@
         margin-top:8px;
       }
 
-      .heroTiles{
-        grid-template-columns:1fr;
-        margin-top:16px;
-        gap:8px;
-      }
+       .heroTiles{
+  grid-template-columns:repeat(3,1fr);
+  margin-top:14px;
+  gap:7px;
+}
 
-      .heroTile{
-        grid-template-columns:42px 1fr;
-        padding:11px;
-        border-radius:16px;
-      }
+.heroTile{
+  grid-template-columns:1fr;
+  padding:8px 4px;
+  border-radius:14px;
+  text-align:center;
+  min-height:72px;
+}
 
-      .heroIcon{
-        width:38px;
-        height:38px;
-        font-size:22px;
-      }
+.heroIcon{
+  width:28px;
+  height:28px;
+  font-size:16px;
+  margin:0 auto 4px;
+  border-radius:9px;
+}
 
-      .heroTile strong{
-        font-size:19px;
-      }
+.heroTile strong{
+  font-size:13px;
+  line-height:1;
+}
 
-      .heroTile span{
-        font-size:12px;
-        margin-top:3px;
-      }
-
+.heroTile span{
+  font-size:10px;
+  line-height:1.1;
+  margin-top:3px;
+}
       .nextCard{
         margin-top:14px;
         padding:17px 15px;
