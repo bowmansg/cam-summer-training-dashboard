@@ -583,6 +583,7 @@ const builtInSchedule = [];
 let sessions = builtInSchedule.map(row => normalizeEvent({...row, builtIn:true}));
 let remoteEvents = [];
 let localAddedEvents = loadLocalAddedEvents();
+let remoteLoadedSuccessfully = false;
 let deletedEventIds = loadDeletedEventIds();
 let journals = loadJournals();
 let selectedDate = todayLocalISO();
@@ -856,7 +857,8 @@ function makeEventId(date,start,title){
 }
 function allSessions(){
   const bestBySemantic = new Map();
-  [...sessions, ...remoteEvents, ...localAddedEvents]
+  const sourceEvents = remoteLoadedSuccessfully ? [...sessions, ...remoteEvents] : [...sessions, ...remoteEvents, ...localAddedEvents];
+  sourceEvents
     .map(normalizeEvent)
     .filter(e => e && e.date && e.title)
     .filter(e => !isJournalEvent(e))
@@ -1274,8 +1276,12 @@ async function loadRemoteEvents(){
     const data=await res.json();
     const rows = Array.isArray(data) ? data : (data.events || data.data || data.rows || []);
     remoteEvents = rows.map(r=>normalizeEvent({...r, remote:true})).filter(e => !isDuplicateAwayEvent(e));
+    remoteLoadedSuccessfully = true;
+    localAddedEvents = [];
+    saveLocalAddedEvents();
     status.textContent = remoteEvents.length ? `Shared schedule loaded: ${remoteEvents.length} item(s).` : 'Shared schedule connected. No added Sheet items found.';
   }catch(e){
+    remoteLoadedSuccessfully = false;
     console.warn('Shared schedule load failed', e);
     status.textContent = 'Using built-in schedule. Shared Sheet did not load in this browser.';
   }
