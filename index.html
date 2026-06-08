@@ -779,6 +779,7 @@ function isDuplicateAwayEvent(e){
 }
 function eventQuality(e){
   let score = 0;
+  if(e.localOverride) score += 100;
   if(timeToMinutes(e.start) !== null) score += 10;
   if(timeToMinutes(e.end) !== null || !e.end) score += 3;
   if(e.location) score += 2;
@@ -830,7 +831,8 @@ function normalizeEvent(row){
     recovery: !!notesMeta.recovery,
     remote: !!row.remote,
     generated: !!row.generated,
-    builtIn: !!row.builtIn
+    builtIn: !!row.builtIn,
+    localOverride: !!row.localOverride
   };
 
   // If the shared Sheet sends a duplicate built-in item with blank or damaged time fields,
@@ -862,7 +864,7 @@ function allSessions(){
     .forEach(e=>{
       const sem = eventSemanticKey(e);
       const existing = bestBySemantic.get(sem);
-      if(!existing || eventQuality(e) > eventQuality(existing)){
+      if(!existing || eventQuality(e) >= eventQuality(existing)){
         bestBySemantic.set(sem, e);
       }
     });
@@ -1391,7 +1393,7 @@ function saveScheduledEvent(){
   const start = allDay ? 'All Day' : timeFromParts('eventStart');
   const end = allDay ? '' : timeFromParts('eventEnd');
   if(!allDay && (!start || !end)){ alert('Please choose a start and end time, or select All-day event.'); return; }
-  const e=normalizeEvent({id:editingEventId || 'local-'+Date.now(), date, type:document.getElementById('eventType').value, start, end, title, location:document.getElementById('eventLocation').value.trim(), owner:'Parent', minutes: allDay ? 0 : calcMinutes(start,end)});
+  const e=normalizeEvent({id:editingEventId || 'local-'+Date.now(), date, type:document.getElementById('eventType').value, start, end, title, location:document.getElementById('eventLocation').value.trim(), owner:'Parent', minutes: allDay ? 0 : calcMinutes(start,end), localOverride:true});
   if(editingEventId){
     localAddedEvents = localAddedEvents.filter(item=>String(item.id)!==String(editingEventId));
     remoteEvents = remoteEvents.map(item=>String(item.id)===String(editingEventId) ? e : item);
