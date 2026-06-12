@@ -524,10 +524,11 @@
 
       <section class="view" id="view-add">
         <div class="section">
-          <div class="card">
-            <div class="muted">Parent calendar</div>
-            <h2>Add a scheduled item</h2>
-            <p class="status">Added events save locally right away and are also sent to the shared Google Sheet.</p>
+          <div class="card" id="eventFormCard">
+            <div class="muted" id="eventFormModeLabel">Parent calendar</div>
+            <h2 id="eventFormTitle">Add a scheduled item</h2>
+            <div class="edit-mode-banner" id="editModeBanner">Editing Existing Event<strong id="editModeEventName">—</strong><span id="editModeEventMeta">Changes will update this one event only.</span></div>
+            <p class="status" id="eventFormHelp">Added events save locally right away and are also sent to the shared Google Sheet.</p>
             <div class="form-grid">
               <input type="date" id="eventDate" class="full" required>
               <select id="eventType">
@@ -539,7 +540,7 @@
                 <option value="Work">Work</option>
                 <option value="Other">Other</option>
               </select>
-              <input id="eventLocation" placeholder="Location">
+              <input id="eventLocation" name="cam_event_location_v2c" placeholder="Location" autocomplete="off" autocapitalize="words" spellcheck="false">
               <label class="full" style="display:flex;gap:8px;align-items:center;font-weight:900"><input type="checkbox" id="eventAllDay" style="width:auto" onchange="toggleAllDayEvent()"> All-day event</label>
               <div id="eventStartWrap">
                 <div class="field-label">Start time</div>
@@ -557,12 +558,12 @@
                   <select id="eventEndAmPm"><option value="">AM/PM</option><option>AM</option><option>PM</option></select>
                 </div>
               </div>
-              <input class="full" id="eventTitle" placeholder="Title" required>
+              <input class="full" id="eventTitle" name="cam_event_title_v2c" placeholder="Title" autocomplete="off" autocapitalize="words" spellcheck="false" required>
               <div class="full">
                 <div class="field-label">Calculated minutes</div>
                 <div id="eventMinutesDisplay" class="empty">Choose start and end times</div>
               </div>
-              <div class="full repeat-box">
+              <div class="full repeat-box" id="repeatBox">
                 <div class="field-label">Repeat</div>
                 <select id="eventRepeat">
                   <option value="none">Does not repeat</option>
@@ -1226,6 +1227,7 @@ function updateCompactHeader(name=getActiveViewName()){
   if(view) view.classList.add('active');
   renderAll();
   updateCompactHeader(name);
+  if(name === 'add') setTimeout(guardEventFormAutofill, 150);
 }
 function toggleLegend(){
   const card=document.getElementById('legendCard');
@@ -1544,17 +1546,29 @@ function updateMinutesDisplay(){
   const mins=calcMinutes(start,end);
   el.textContent = start && end ? `${mins} minutes` : 'Choose start and end times';
 }
+function updateEventFormMode(e=null){
+  const isEdit = !!editingEventId;
+  const card=document.getElementById('eventFormCard'); if(card) card.classList.toggle('edit-mode', isEdit);
+  const mode=document.getElementById('eventFormModeLabel'); if(mode) mode.textContent = isEdit ? 'Edit calendar item' : 'Parent calendar';
+  const heading=document.getElementById('eventFormTitle'); if(heading) heading.textContent = isEdit ? 'Edit scheduled item' : 'Add a scheduled item';
+  const help=document.getElementById('eventFormHelp'); if(help) help.textContent = isEdit ? 'You are editing one existing event. Recurring options are hidden so you do not accidentally create new items.' : 'Added events save locally right away and are also sent to the shared Google Sheet.';
+  const btn=document.getElementById('saveEventButton'); if(btn) btn.textContent = isEdit ? 'Save Changes' : 'Add To Calendar';
+  const cancel=document.getElementById('cancelEditButton'); if(cancel) cancel.style.display = isEdit ? 'block' : 'none';
+  const skip=document.getElementById('skipEventButton'); if(skip) skip.style.display = isEdit ? 'none' : 'block';
+  const repeatBox=document.getElementById('repeatBox'); if(repeatBox) repeatBox.style.display = isEdit ? 'none' : 'grid';
+  const editName=document.getElementById('editModeEventName'); if(editName) editName.textContent = e && e.title ? e.title : '—';
+  const editMeta=document.getElementById('editModeEventMeta'); if(editMeta) editMeta.textContent = e && e.date ? `${formatLongDate(e.date)}${formatEventTime(e) ? ' · '+formatEventTime(e) : ''}` : 'Changes will update this one event only.';
+}
 function clearEventForm(){
   editingEventId='';
-  document.getElementById('eventTitle').value='';
-  document.getElementById('eventLocation').value='';
+  const titleInput=document.getElementById('eventTitle'); if(titleInput){ titleInput.value=''; titleInput.setAttribute('autocomplete','off'); }
+  const locInput=document.getElementById('eventLocation'); if(locInput){ locInput.value=''; locInput.setAttribute('autocomplete','off'); }
   const allDayEl=document.getElementById('eventAllDay'); if(allDayEl) allDayEl.checked=false;
   ['eventStartHour','eventStartMinute','eventStartAmPm','eventEndHour','eventEndMinute','eventEndAmPm'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
   const repeat=document.getElementById('eventRepeat'); if(repeat) repeat.value='none';
   const repeatCount=document.getElementById('eventRepeatCount'); if(repeatCount) repeatCount.value='1';
   const repeatUntil=document.getElementById('eventRepeatUntil'); if(repeatUntil) repeatUntil.value='';
-  const btn=document.getElementById('saveEventButton'); if(btn) btn.textContent='Add To Calendar';
-  const cancel=document.getElementById('cancelEditButton'); if(cancel) cancel.style.display='none';
+  updateEventFormMode(null);
   toggleAllDayEvent();
 }
 function setTimeParts(prefix, value){
@@ -1586,10 +1600,9 @@ function startEditSelectedEvent(){
   const repeat=document.getElementById('eventRepeat'); if(repeat) repeat.value='none';
   const repeatCount=document.getElementById('eventRepeatCount'); if(repeatCount) repeatCount.value='1';
   const repeatUntil=document.getElementById('eventRepeatUntil'); if(repeatUntil) repeatUntil.value='';
-  const btn=document.getElementById('saveEventButton'); if(btn) btn.textContent='Save Changes';
-  const cancel=document.getElementById('cancelEditButton'); if(cancel) cancel.style.display='block';
+  updateEventFormMode(e);
   updateMinutesDisplay();
-  setAddEventStatus('Editing one event. Recurring options are disabled for edits.');
+  setAddEventStatus('Editing existing event. Press Save Changes when finished, or Cancel Edit to return to Add mode.');
   setTimeout(()=>{
     const addView=document.getElementById('view-add');
     if(addView) addView.scrollIntoView({behavior:'smooth', block:'start'});
@@ -1740,11 +1753,23 @@ function fillHourSelects(){
   });
   toggleAllDayEvent();
 }
+
+function guardEventFormAutofill(){
+  const title=document.getElementById('eventTitle');
+  const loc=document.getElementById('eventLocation');
+  if(!editingEventId){
+    // Chrome sometimes tries to reuse old birthday/location values. Keep blank fields blank in Add mode.
+    if(title && /birthday/i.test(title.value || '')) title.value='';
+    if(loc && /^home$/i.test(loc.value || '')) loc.value='';
+  }
+}
 function init(){
   fillHourSelects();
+  ['eventTitle','eventLocation'].forEach(id=>{const el=document.getElementById(id); if(el){ el.setAttribute('autocomplete','off'); el.addEventListener('focus', guardEventFormAutofill); }});
   const today=todayLocalISO();
   selectedDate=today; displayMonth=parseLocalDate(today);
   ['selectedDate','selectedDateDay','journalDate','eventDate'].forEach(id=>{const el=document.getElementById(id); if(el) el.value=today;});
+  updateEventFormMode(null);
   renderAll(); loadRemoteEvents();
 }
 window.addEventListener('DOMContentLoaded', init);
