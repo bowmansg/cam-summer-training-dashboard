@@ -236,6 +236,15 @@
     .compact-title{font-size:17px;font-weight:950;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .compact-subtitle{font-size:12px;font-weight:850;line-height:1.15;color:rgba(255,255,255,.86);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
+
+    .add-status-box{border:1px solid var(--line);border-radius:16px;background:var(--soft);padding:12px 13px;color:var(--muted);font-size:13px;font-weight:850;line-height:1.35}
+    .add-status-box.success{border-color:#9be7c2;background:#eafff4;color:#05603a}
+    .add-status-box.error{border-color:#ffc4c4;background:#fff0f0;color:#9a1616}
+    .repeat-box{border:1px solid var(--line);border-radius:18px;background:#f8fafc;padding:13px;display:grid;gap:10px}
+    .repeat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .quick-add-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:860px){.repeat-row,.quick-add-row{grid-template-columns:1fr}}
+
     @media(max-width:860px){
 
       .compact-header{border-radius:18px;padding:10px 12px;margin-bottom:8px}.compact-logo{width:42px;height:42px;border-radius:12px}.compact-logo img{max-width:34px;max-height:34px}.compact-title{font-size:16px}.compact-subtitle{font-size:11px}
@@ -553,7 +562,31 @@
                 <div class="field-label">Calculated minutes</div>
                 <div id="eventMinutesDisplay" class="empty">Choose start and end times</div>
               </div>
-              <button class="btn full" id="saveEventButton" onclick="saveScheduledEvent()">Add To Calendar</button>
+              <div class="full repeat-box">
+                <div class="field-label">Repeat</div>
+                <select id="eventRepeat">
+                  <option value="none">Does not repeat</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekdays">Weekdays</option>
+                  <option value="weekly">Weekly</option>
+                </select>
+                <div class="repeat-row">
+                  <div>
+                    <div class="field-label">Occurrences</div>
+                    <input type="number" id="eventRepeatCount" min="1" max="60" value="1">
+                  </div>
+                  <div>
+                    <div class="field-label">Or repeat until</div>
+                    <input type="date" id="eventRepeatUntil">
+                  </div>
+                </div>
+                <div class="status">For repeating items, the dashboard creates separate events so each one can be completed, skipped, or journaled.</div>
+              </div>
+              <div class="quick-add-row full">
+                <button class="btn full" id="saveEventButton" onclick="saveScheduledEvent()">Add To Calendar</button>
+                <button class="btn secondary full" id="skipEventButton" onclick="saveScheduledEvent('Skipped')">Log Skipped Item</button>
+              </div>
+              <div id="addEventStatus" class="add-status-box full">Ready to add a scheduled item.</div>
               <button class="btn secondary full" id="cancelEditButton" onclick="cancelEditEvent()" style="display:none">Cancel Edit</button>
             </div>
           </div>
@@ -929,7 +962,7 @@ function makeEventId(date,start,title){
 }
 function allSessions(){
   const bestBySemantic = new Map();
-  const sourceEvents = remoteLoadedSuccessfully ? [...sessions, ...remoteEvents] : [...sessions, ...remoteEvents, ...localAddedEvents];
+  const sourceEvents = [...sessions, ...remoteEvents, ...localAddedEvents];
   sourceEvents
     .map(normalizeEvent)
     .filter(e => e && e.date && e.title)
@@ -1386,8 +1419,7 @@ async function loadRemoteEvents(){
     const rows = Array.isArray(data) ? data : (data.events || data.data || data.rows || []);
     remoteEvents = rows.map(r=>normalizeEvent({...r, remote:true})).filter(e => !isDuplicateAwayEvent(e));
     remoteLoadedSuccessfully = true;
-    localAddedEvents = [];
-    saveLocalAddedEvents();
+    // Keep local pending events so newly added items remain visible while the Sheet catches up.
     status.textContent = remoteEvents.length ? `Shared schedule loaded: ${remoteEvents.length} item(s).` : 'Shared schedule connected. No added Sheet items found.';
   }catch(e){
     remoteLoadedSuccessfully = false;
@@ -1401,6 +1433,7 @@ async function postEventToSheet(e, action='addEvent'){
   payload.set('action',action);
   payload.set('id',e.id);
   payload.set('date',e.date);
+  payload.set('time',e.start);
   payload.set('startTime',e.start);
   payload.set('endTime',e.end);
   payload.set('start',e.start);
@@ -1467,13 +1500,27 @@ function timeFromParts(prefix){
   if(!h || !m || !ap) return '';
   return `${h}:${m} ${ap}`;
 }
-function addOneHourToTimeLabel(value){
+function defaultDurationForType(type){
+  const t=normalizeType(type || document.getElementById('eventType')?.value || 'Other');
+  if(t === 'ShootingSkills') return 45;
+  if(t === 'Recovery') return 30;
+  if(t === 'Work') return 120;
+  return 60;
+}
+function addMinutesToTimeLabel(value, minutes){
   const mins=timeToMinutes(value);
   if(mins === null || mins < 0) return '';
-  return minutesToTimeLabel((mins + 60) % (24*60));
+  return minutesToTimeLabel((mins + Number(minutes || 60)) % (24*60));
 }
 function hasTimeParts(prefix){
   return !!(document.getElementById(prefix+'Hour').value && document.getElementById(prefix+'Minute').value && document.getElementById(prefix+'AmPm').value);
+}
+function setAddEventStatus(message, kind=''){
+  const el=document.getElementById('addEventStatus');
+  if(!el) return;
+  el.textContent=message;
+  el.classList.remove('success','error');
+  if(kind) el.classList.add(kind);
 }
 function toggleAllDayEvent(){
   const allDay = !!document.getElementById('eventAllDay')?.checked;
@@ -1481,12 +1528,12 @@ function toggleAllDayEvent(){
   ['eventStartHour','eventStartMinute','eventStartAmPm','eventEndHour','eventEndMinute','eventEndAmPm'].forEach(id=>{const el=document.getElementById(id); if(el) el.disabled = allDay;});
   updateMinutesDisplay();
 }
-function maybeDefaultEndTime(){
+function maybeDefaultEndTime(force=false){
   const allDay = !!document.getElementById('eventAllDay')?.checked;
   if(allDay) return;
   const start = timeFromParts('eventStart');
   if(!start) { updateMinutesDisplay(); return; }
-  if(!hasTimeParts('eventEnd')) setTimeParts('eventEnd', addOneHourToTimeLabel(start));
+  if(force || !hasTimeParts('eventEnd')) setTimeParts('eventEnd', addMinutesToTimeLabel(start, defaultDurationForType()));
   updateMinutesDisplay();
 }
 function updateMinutesDisplay(){
@@ -1503,6 +1550,9 @@ function clearEventForm(){
   document.getElementById('eventLocation').value='';
   const allDayEl=document.getElementById('eventAllDay'); if(allDayEl) allDayEl.checked=false;
   ['eventStartHour','eventStartMinute','eventStartAmPm','eventEndHour','eventEndMinute','eventEndAmPm'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
+  const repeat=document.getElementById('eventRepeat'); if(repeat) repeat.value='none';
+  const repeatCount=document.getElementById('eventRepeatCount'); if(repeatCount) repeatCount.value='1';
+  const repeatUntil=document.getElementById('eventRepeatUntil'); if(repeatUntil) repeatUntil.value='';
   const btn=document.getElementById('saveEventButton'); if(btn) btn.textContent='Add To Calendar';
   const cancel=document.getElementById('cancelEditButton'); if(cancel) cancel.style.display='none';
   toggleAllDayEvent();
@@ -1533,40 +1583,117 @@ function startEditSelectedEvent(){
   setTimeParts('eventStart', e.start);
   setTimeParts('eventEnd', e.end);
   toggleAllDayEvent();
+  const repeat=document.getElementById('eventRepeat'); if(repeat) repeat.value='none';
+  const repeatCount=document.getElementById('eventRepeatCount'); if(repeatCount) repeatCount.value='1';
+  const repeatUntil=document.getElementById('eventRepeatUntil'); if(repeatUntil) repeatUntil.value='';
   const btn=document.getElementById('saveEventButton'); if(btn) btn.textContent='Save Changes';
   const cancel=document.getElementById('cancelEditButton'); if(cancel) cancel.style.display='block';
   updateMinutesDisplay();
+  setAddEventStatus('Editing one event. Recurring options are disabled for edits.');
   setTimeout(()=>{
     const addView=document.getElementById('view-add');
     if(addView) addView.scrollIntoView({behavior:'smooth', block:'start'});
     if(titleEl) titleEl.focus({preventScroll:true});
   }, 80);
 }
-function cancelEditEvent(){clearEventForm();}
-function saveScheduledEvent(){
-  const date=document.getElementById('eventDate').value || selectedDate;
-  const title=document.getElementById('eventTitle').value.trim();
-  if(!date || !title){alert('Please enter a date and title.'); return;}
+function cancelEditEvent(){clearEventForm(); setAddEventStatus('Edit cancelled.');}
+function repeatDatesFromForm(startIso){
+  const repeat=document.getElementById('eventRepeat')?.value || 'none';
+  const rawCount=Number(document.getElementById('eventRepeatCount')?.value || 1);
+  const maxCount=Math.min(Math.max(Number.isFinite(rawCount) ? rawCount : 1, 1), 60);
+  const until=document.getElementById('eventRepeatUntil')?.value || '';
+  const dates=[];
+  let d=parseLocalDate(startIso);
+  if(!d) return [startIso];
+  let guard=0;
+  while(dates.length < maxCount && guard < 400){
+    const iso=toISODate(d);
+    if(!until || iso <= until) dates.push(iso);
+    else break;
+    if(repeat === 'none') break;
+    if(repeat === 'daily') d=addDays(d,1);
+    else if(repeat === 'weekly') d=addDays(d,7);
+    else if(repeat === 'weekdays'){
+      do { d=addDays(d,1); } while(d.getDay()===0 || d.getDay()===6);
+    } else break;
+    guard++;
+  }
+  return dates.length ? dates : [startIso];
+}
+function buildEventFromForm(date, statusOverride, index=0){
   const allDay = !!document.getElementById('eventAllDay')?.checked;
   const start = allDay ? 'All Day' : timeFromParts('eventStart');
   const end = allDay ? '' : timeFromParts('eventEnd');
-  if(!allDay && (!start || !end)){ alert('Please choose a start and end time, or select All-day event.'); return; }
-  const e=normalizeEvent({id:editingEventId || 'local-'+Date.now(), date, type:document.getElementById('eventType').value, start, end, title, location:document.getElementById('eventLocation').value.trim(), owner:'Parent', minutes: allDay ? 0 : calcMinutes(start,end,date), status:'Planned', localOverride:true});
-  if(editingEventId){
-    localAddedEvents = localAddedEvents.filter(item=>String(item.id)!==String(editingEventId));
-    remoteEvents = remoteEvents.map(item=>String(item.id)===String(editingEventId) ? e : item);
-    sessions = sessions.map(item=>String(item.id)===String(editingEventId) ? e : item);
-    localAddedEvents.push(e);
-    saveLocalAddedEvents();
-    renderAll();
-    postEventToSheet(e, 'updateEvent').then(()=>loadRemoteEvents());
-    alert('Event changes saved.');
-  } else {
-    localAddedEvents.push(e); saveLocalAddedEvents(); renderAll();
-    postEventToSheet(e, 'addEvent').then(()=>loadRemoteEvents());
-    alert('Event added.');
+  const title=document.getElementById('eventTitle').value.trim();
+  const type=document.getElementById('eventType').value;
+  const id = editingEventId || `event-${Date.now()}-${index}-${Math.floor(Math.random()*100000)}`;
+  return normalizeEvent({
+    id,
+    date,
+    type,
+    start,
+    end,
+    title,
+    location:document.getElementById('eventLocation').value.trim(),
+    owner:'Parent',
+    minutes: allDay ? 0 : calcMinutes(start,end,date),
+    status: normalizeEventStatus(statusOverride || 'Planned'),
+    createdAt:new Date().toISOString(),
+    updatedAt:new Date().toISOString(),
+    localOverride:true
+  });
+}
+async function saveScheduledEvent(statusOverride){
+  const date=document.getElementById('eventDate').value || selectedDate;
+  const title=document.getElementById('eventTitle').value.trim();
+  const allDay = !!document.getElementById('eventAllDay')?.checked;
+  const start = allDay ? 'All Day' : timeFromParts('eventStart');
+  const end = allDay ? '' : timeFromParts('eventEnd');
+  if(!date || !title){ setAddEventStatus('Please enter a date and title.', 'error'); return; }
+  if(!allDay && (!start || !end)){ setAddEventStatus('Please choose a start and end time, or select All-day event.', 'error'); return; }
+  const repeat=document.getElementById('eventRepeat')?.value || 'none';
+  if(editingEventId && repeat !== 'none'){
+    setAddEventStatus('Edits can only update one event. Set Repeat to “Does not repeat” and try again.', 'error');
+    return;
   }
-  clearEventForm();
+  const status=normalizeEventStatus(statusOverride || 'Planned');
+  const dates = editingEventId ? [date] : repeatDatesFromForm(date);
+  const events = dates.map((iso,i)=>buildEventFromForm(iso,status,i));
+  const saveBtn=document.getElementById('saveEventButton');
+  const skipBtn=document.getElementById('skipEventButton');
+  if(saveBtn) saveBtn.disabled=true;
+  if(skipBtn) skipBtn.disabled=true;
+  setAddEventStatus(`Saving ${events.length} item${events.length===1?'':'s'}…`);
+  try{
+    if(editingEventId){
+      const e=events[0];
+      localAddedEvents = localAddedEvents.filter(item=>String(item.id)!==String(editingEventId));
+      remoteEvents = remoteEvents.map(item=>String(item.id)===String(editingEventId) ? e : item);
+      sessions = sessions.map(item=>String(item.id)===String(editingEventId) ? e : item);
+      localAddedEvents.push(e);
+      saveLocalAddedEvents();
+      selectedDate=e.date;
+      renderAll();
+      await postEventToSheet(e, 'updateEvent');
+      setAddEventStatus('Event changes saved. Refresh in a few seconds if the Sheet is slow to update.', 'success');
+    } else {
+      localAddedEvents.push(...events);
+      saveLocalAddedEvents();
+      selectedDate=events[0].date;
+      const d=parseLocalDate(selectedDate); if(d) displayMonth=new Date(d.getFullYear(), d.getMonth(), 1, 12, 0, 0, 0);
+      renderAll();
+      for(const e of events){ await postEventToSheet(e, 'addEvent'); }
+      setAddEventStatus(`Added ${events.length} item${events.length===1?'':'s'}${status==='Skipped'?' as Skipped':''}.`, 'success');
+    }
+    clearEventForm();
+    setTimeout(loadRemoteEvents, 2200);
+  }catch(err){
+    console.warn('Save event failed', err);
+    setAddEventStatus('Could not save to the shared Sheet. The item is shown locally for now. Try refreshing or check the Apps Script deployment.', 'error');
+  }finally{
+    if(saveBtn) saveBtn.disabled=false;
+    if(skipBtn) skipBtn.disabled=false;
+  }
 }
 async function deleteSelectedEvent(){
   const e=allSessions().find(item => String(item.id) === String(currentDetailEventId));
@@ -1602,9 +1729,15 @@ function resetDashboardData(){
 }
 
 function fillHourSelects(){
-  ['eventStartHour','eventEndHour'].forEach(id=>{const sel=document.getElementById(id); for(let i=1;i<=12;i++){const o=document.createElement('option');o.value=String(i);o.textContent=String(i);sel.appendChild(o);}});
-  ['eventStartHour','eventStartMinute','eventStartAmPm'].forEach(id=>document.getElementById(id).addEventListener('change',maybeDefaultEndTime));
-  ['eventEndHour','eventEndMinute','eventEndAmPm'].forEach(id=>document.getElementById(id).addEventListener('change',updateMinutesDisplay));
+  ['eventStartHour','eventEndHour'].forEach(id=>{const sel=document.getElementById(id); if(!sel) return; for(let i=1;i<=12;i++){const o=document.createElement('option');o.value=String(i);o.textContent=String(i);sel.appendChild(o);}});
+  ['eventStartHour','eventStartMinute','eventStartAmPm'].forEach(id=>{const el=document.getElementById(id); if(el) el.addEventListener('change',()=>maybeDefaultEndTime(false));});
+  ['eventEndHour','eventEndMinute','eventEndAmPm'].forEach(id=>{const el=document.getElementById(id); if(el) el.addEventListener('change',updateMinutesDisplay);});
+  const typeEl=document.getElementById('eventType'); if(typeEl) typeEl.addEventListener('change',()=>maybeDefaultEndTime(true));
+  const repeatEl=document.getElementById('eventRepeat'); if(repeatEl) repeatEl.addEventListener('change',()=>{
+    const count=document.getElementById('eventRepeatCount');
+    if(count && repeatEl.value==='none') count.value='1';
+    if(count && repeatEl.value!=='none' && Number(count.value||1)<2) count.value='3';
+  });
   toggleAllDayEvent();
 }
 function init(){
