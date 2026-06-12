@@ -1748,7 +1748,7 @@ function openJournalForEvent(encodedId){
   const worked=document.getElementById('journalWorkedOn');
   setTimeout(()=>{ if(worked) worked.focus({preventScroll:false}); },80);
 }
-function timeFromParts(prefix){function timeFromParts(prefix){
+function timeFromParts(prefix){
   const h=document.getElementById(prefix+'Hour').value;
   const m=document.getElementById(prefix+'Minute').value;
   const ap=document.getElementById(prefix+'AmPm').value;
