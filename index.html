@@ -245,6 +245,73 @@
     .quick-add-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     @media(max-width:860px){.repeat-row,.quick-add-row{grid-template-columns:1fr}}
 
+
+
+    /* v2D: very obvious edit mode so users do not confuse editing with adding */
+    .edit-mode-banner{
+      display:none;
+      border:2px solid #ef4444;
+      background:linear-gradient(135deg,#ef4444 0%,#b91c1c 100%);
+      color:#fff;
+      border-radius:18px;
+      padding:14px 15px;
+      margin:10px 0 14px;
+      font-size:13px;
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      box-shadow:0 10px 24px rgba(185,28,28,.22);
+    }
+    .edit-mode-banner strong{
+      display:block;
+      margin-top:6px;
+      font-size:22px;
+      line-height:1.05;
+      letter-spacing:-.3px;
+      text-transform:none;
+    }
+    .edit-mode-banner span{
+      display:block;
+      margin-top:5px;
+      font-size:12px;
+      line-height:1.25;
+      text-transform:none;
+      letter-spacing:0;
+      color:rgba(255,255,255,.90);
+    }
+    #eventFormCard.edit-mode{
+      border:3px solid #ef4444;
+      background:#fff7f7;
+      box-shadow:0 18px 50px rgba(185,28,28,.14);
+    }
+    #eventFormCard.edit-mode #eventFormModeLabel{
+      display:inline-flex;
+      width:auto;
+      background:#ef4444;
+      color:#fff;
+      border-radius:999px;
+      padding:7px 10px;
+      margin-bottom:8px;
+    }
+    #eventFormCard.edit-mode #eventFormTitle{
+      color:#991b1b;
+      font-size:28px;
+    }
+    #eventFormCard.edit-mode .edit-mode-banner{display:block;}
+    #eventFormCard.edit-mode #saveEventButton{
+      background:#ef4444;
+      box-shadow:0 8px 22px rgba(185,28,28,.18);
+    }
+    #eventFormCard.edit-mode #cancelEditButton{
+      border:2px solid #ef4444;
+      color:#991b1b;
+      background:#fff;
+    }
+    .editing-event-active .tabs .tab[data-view="add"]{
+      background:#ef4444;
+      color:#fff;
+    }
+
     @media(max-width:860px){
 
       .compact-header{border-radius:18px;padding:10px 12px;margin-bottom:8px}.compact-logo{width:42px;height:42px;border-radius:12px}.compact-logo img{max-width:34px;max-height:34px}.compact-title{font-size:16px}.compact-subtitle{font-size:11px}
@@ -1548,11 +1615,13 @@ function updateMinutesDisplay(){
 }
 function updateEventFormMode(e=null){
   const isEdit = !!editingEventId;
+  document.body.classList.toggle('editing-event-active', isEdit);
+  const addTab=document.querySelector('.tab[data-view="add"]'); if(addTab) addTab.textContent = isEdit ? 'EDITING' : 'Add Event';
   const card=document.getElementById('eventFormCard'); if(card) card.classList.toggle('edit-mode', isEdit);
-  const mode=document.getElementById('eventFormModeLabel'); if(mode) mode.textContent = isEdit ? 'Edit calendar item' : 'Parent calendar';
-  const heading=document.getElementById('eventFormTitle'); if(heading) heading.textContent = isEdit ? 'Edit scheduled item' : 'Add a scheduled item';
-  const help=document.getElementById('eventFormHelp'); if(help) help.textContent = isEdit ? 'You are editing one existing event. Recurring options are hidden so you do not accidentally create new items.' : 'Added events save locally right away and are also sent to the shared Google Sheet.';
-  const btn=document.getElementById('saveEventButton'); if(btn) btn.textContent = isEdit ? 'Save Changes' : 'Add To Calendar';
+  const mode=document.getElementById('eventFormModeLabel'); if(mode) mode.textContent = isEdit ? 'EDIT MODE — EXISTING EVENT' : 'Parent calendar';
+  const heading=document.getElementById('eventFormTitle'); if(heading) heading.textContent = isEdit ? 'Edit Scheduled Item' : 'Add a scheduled item';
+  const help=document.getElementById('eventFormHelp'); if(help) help.textContent = isEdit ? 'Red edit mode means you are changing one existing event only. Press Save Changes or Cancel Edit.' : 'Added events save locally right away and are also sent to the shared Google Sheet.';
+  const btn=document.getElementById('saveEventButton'); if(btn) btn.textContent = isEdit ? 'Save Changes to This Event' : 'Add To Calendar';
   const cancel=document.getElementById('cancelEditButton'); if(cancel) cancel.style.display = isEdit ? 'block' : 'none';
   const skip=document.getElementById('skipEventButton'); if(skip) skip.style.display = isEdit ? 'none' : 'block';
   const repeatBox=document.getElementById('repeatBox'); if(repeatBox) repeatBox.style.display = isEdit ? 'none' : 'grid';
