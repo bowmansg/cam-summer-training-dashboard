@@ -193,6 +193,34 @@
     .detail-value{font-size:15px;font-weight:800;color:#171717;line-height:1.35}
     .detail-actions{display:flex;gap:10px;margin-top:14px}
 
+
+    /* v2A Daily Tracker cards */
+    .tracker-card{border:1px solid var(--line);border-left:7px solid #bbb;border-radius:20px;background:#fff;padding:14px;display:grid;gap:10px;box-shadow:0 6px 18px rgba(0,0,0,.035)}
+    .tracker-card.ice{border-left-color:var(--ice);background:linear-gradient(90deg,var(--ice-soft),#fff 44%)}
+    .tracker-card.strength{border-left-color:var(--strength);background:linear-gradient(90deg,var(--strength-soft),#fff 44%)}
+    .tracker-card.shooting{border-left-color:var(--shooting);background:linear-gradient(90deg,var(--shooting-soft),#fff 44%)}
+    .tracker-card.work{border-left-color:var(--work);background:linear-gradient(90deg,var(--work-soft),#fff 44%)}
+    .tracker-card.recovery{border-left-color:var(--recovery);background:linear-gradient(90deg,var(--recovery-soft),#fff 44%)}
+    .tracker-card.away{border-left-color:var(--away);background:linear-gradient(90deg,var(--away-soft),#fff 44%)}
+    .tracker-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .tracker-time{font-size:13px;font-weight:950;color:#1f2937;white-space:nowrap}
+    .tracker-title{font-size:19px;font-weight:950;letter-spacing:-.25px;line-height:1.1}
+    .tracker-meta{font-size:13px;color:var(--muted);font-weight:800;line-height:1.35}
+    .tracker-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .mini-action{border:1px solid var(--line);border-radius:14px;background:#fff;color:#111827;font-weight:950;padding:10px 8px;cursor:pointer;font-size:12px}
+    .mini-action.done{background:#ecfdf3;border-color:#abefc6;color:#067647}
+    .mini-action.skip{background:#fff3f0;border-color:#ffd6cc;color:#b42318}
+    .mini-action.journal{background:var(--journal);border-color:#dfd1ff;color:var(--journal-ink)}
+    .status-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.04em;background:#eef2f6;color:#344054;white-space:nowrap}
+    .status-badge.completed{background:#d1fadf;color:#05603a}
+    .status-badge.skipped{background:#fee4e2;color:#b42318}
+    .status-badge.moved{background:#fef0c7;color:#93370d}
+    .status-badge.optional{background:#e0f2fe;color:#075985}
+    .command-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+    .command-tile{border:1px solid var(--line);border-radius:18px;background:var(--soft);padding:12px;text-align:center;cursor:pointer;font-weight:950}
+    .command-tile span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+    @media(max-width:860px){.tracker-actions{grid-template-columns:1fr 1fr 1fr}.tracker-title{font-size:17px}.command-grid{grid-template-columns:repeat(2,1fr)}}
+
     /* Compact header used on non-Home tabs to save iPhone screen space. */
     body.non-home .hero{display:none}
     body:not(.non-home) .compact-header{display:none}
@@ -341,8 +369,8 @@
       <section class="view active" id="view-home">
         <div class="section">
           <div class="card">
-            <div class="muted">Today / Selected Day</div>
-            <h2 id="selectedDayTitleHome">Selected Day</h2>
+            <div class="muted">Daily Command Center</div>
+            <h2 id="selectedDayTitleHome">Today's Plan</h2>
             <div class="controls">
               <input type="date" id="selectedDate" onchange="onSelectedDateChange()" style="max-width:210px">
               <button class="navbtn secondary" onclick="jumpToday()">Today</button>
@@ -351,6 +379,16 @@
             <div class="event-list" id="dailySessionsHome"></div>
           </div>
           <div class="home-stack">
+            <div class="card">
+              <div class="muted">Quick Actions</div>
+              <h2>What do you need?</h2>
+              <div class="command-grid">
+                <button class="command-tile" onclick="showView('day')"><span>Open</span>Day Plan</button>
+                <button class="command-tile" onclick="showView('journal')"><span>Log</span>Journal</button>
+                <button class="command-tile" onclick="showView('add')"><span>Add</span>Event</button>
+                <button class="command-tile" onclick="showView('summary')"><span>Check</span>Progress</button>
+              </div>
+            </div>
             <div class="card">
               <div class="muted">This Week</div>
               <h2>Week Ahead</h2>
@@ -378,7 +416,7 @@
 
       <section class="view" id="view-day">
         <div class="card">
-          <div class="muted">Selected Day</div>
+          <div class="muted">Today's Training Plan</div>
           <h2 id="selectedDayTitle">Daily Schedule</h2>
           <div class="controls">
             <button class="navbtn secondary" onclick="moveDay(-1)">‹ Previous</button>
@@ -545,7 +583,7 @@
 <script>
 'use strict';
 
-const DASHBOARD_VERSION = 'cam-cam-template-2026-06-07-v1';
+const DASHBOARD_VERSION = 'cam-dashboard-v2a-daily-tracker-2026-06-12';
 
 
 const SCHEDULE_TIME_ZONE = 'America/Chicago';
@@ -861,6 +899,8 @@ function normalizeEvent(row){
     owner,
     minutes,
     notes: noteTextValue(rawNotes, notesMeta),
+    status: normalizeEventStatus(rowPick(row, ['status','Status']) || notesMeta.status || 'Planned'),
+    updatedAt: cleanTextValue(rowPick(row, ['updatedAt','UpdatedAt','updated_at','Updated At'])),
     recovery: !!notesMeta.recovery,
     remote: !!row.remote,
     generated: !!row.generated,
@@ -925,6 +965,42 @@ function escapeHTML(s){
 }
 function typeClass(type){return typeInfo[normalizeType(type)]?.cls || 'other'}
 function typeLabel(type){return typeInfo[normalizeType(type)]?.label || type || 'Other'}
+function normalizeEventStatus(status){
+  const clean=String(status || '').trim().toLowerCase();
+  if(clean==='completed' || clean==='complete' || clean==='done') return 'Completed';
+  if(clean==='skipped' || clean==='skip') return 'Skipped';
+  if(clean==='moved' || clean==='rescheduled') return 'Moved';
+  if(clean==='optional') return 'Optional';
+  return 'Planned';
+}
+function statusClass(status){return normalizeEventStatus(status).toLowerCase();}
+function statusBadgeHTML(status){
+  const clean=normalizeEventStatus(status);
+  return `<span class="status-badge ${statusClass(clean)}">${escapeHTML(clean)}</span>`;
+}
+function trackerEventCard(e){
+  const cls=typeClass(e.type);
+  const time=formatEventTime(e) || 'All Day';
+  const safeId = encodeURIComponent(e.id || makeEventId(e.date,e.start,e.title));
+  const status = normalizeEventStatus(e.status || 'Planned');
+  const isDone = status === 'Completed';
+  const isSkipped = status === 'Skipped';
+  return `<div class="tracker-card ${cls}">
+    <div class="tracker-head">
+      <div>
+        <div class="tracker-title">${escapeHTML(e.title)}</div>
+        <div class="tracker-meta">${escapeHTML(typeLabel(e.type))}${e.location ? ' · '+escapeHTML(e.location) : ''}${e.minutes ? ' · '+e.minutes+' min' : ''}</div>
+      </div>
+      <div style="display:grid;gap:6px;justify-items:end"><div class="tracker-time">${escapeHTML(time)}</div>${statusBadgeHTML(status)}</div>
+    </div>
+    ${e.notes ? `<div class="tracker-meta">${escapeHTML(e.notes)}</div>` : ''}
+    <div class="tracker-actions">
+      <button class="mini-action done" onclick="event.stopPropagation();markEventStatus('${safeId}','Completed')">${isDone ? 'Completed ✓' : 'Complete'}</button>
+      <button class="mini-action skip" onclick="event.stopPropagation();markEventStatus('${safeId}','Skipped')">${isSkipped ? 'Skipped ✓' : 'Skip'}</button>
+      <button class="mini-action journal" onclick="event.stopPropagation();openJournalForEvent('${safeId}')">Journal</button>
+    </div>
+  </div>`;
+}
 function chipColorForClass(cls){
   const root = getComputedStyle(document.documentElement);
   const varMap = {
@@ -1020,6 +1096,7 @@ function openEventDetail(encodedId){
     <div class="detail-row"><div class="detail-label">Type</div><div class="detail-value">${escapeHTML(typeLabel(e.type))}</div></div>
     <div class="detail-row"><div class="detail-label">Location</div><div class="detail-value">${escapeHTML(e.location || '—')}</div></div>
     <div class="detail-row"><div class="detail-label">Minutes</div><div class="detail-value">${escapeHTML(e.minutes || 0)}</div></div>
+    <div class="detail-row"><div class="detail-label">Status</div><div class="detail-value">${statusBadgeHTML(e.status || 'Planned')}</div></div>
     ${e.notes ? `<div class="detail-row"><div class="detail-label">Notes</div><div class="detail-value">${escapeHTML(e.notes)}</div></div>` : ''}
     <div class="detail-row"><div class="detail-label">Source</div><div class="detail-value">${escapeHTML(source)}</div></div>
   `;
@@ -1140,7 +1217,7 @@ function renderDay(){
   ['selectedDayTitle','selectedDayTitleHome'].forEach(id=>document.getElementById(id).textContent=title);
   document.getElementById('awayNotice').innerHTML=awayNoticeHTML(selectedDate);
   document.getElementById('awayNoticeHome').innerHTML=awayNoticeHTML(selectedDate);
-  const html=events.length ? events.map(e=>eventCard(e)).join('') : '<div class="empty">No scheduled items for this day.</div>';
+  const html=events.length ? events.map(e=>trackerEventCard(e)).join('') : '<div class="empty">No scheduled items for this day.</div>';
   document.getElementById('dailySessions').innerHTML=html;
   document.getElementById('dailySessionsHome').innerHTML=html;
 }
@@ -1334,11 +1411,54 @@ async function postEventToSheet(e, action='addEvent'){
   payload.set('notes',e.notes || '');
   payload.set('addedBy',e.owner || 'Parent');
   payload.set('minutes',String(e.minutes || 0));
-  payload.set('createdAt',new Date().toISOString());
+  payload.set('status', normalizeEventStatus(e.status || 'Planned'));
+  payload.set('updatedAt', new Date().toISOString());
+  payload.set('createdAt', e.createdAt || new Date().toISOString());
   try{
     await fetch(SHEET_WEB_APP_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body:payload.toString()});
     return true;
   }catch(err){ console.warn('Sheet save failed',err); return false; }
+}
+async function postStatusToSheet(e, status){
+  const payload=new URLSearchParams();
+  payload.set('action','updateStatus');
+  payload.set('id',e.id);
+  payload.set('status',normalizeEventStatus(status));
+  payload.set('updatedAt',new Date().toISOString());
+  try{
+    await fetch(SHEET_WEB_APP_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body:payload.toString()});
+    return true;
+  }catch(err){ console.warn('Status sync failed',err); return false; }
+}
+function applyStatusLocally(id,status){
+  const clean=normalizeEventStatus(status);
+  const touch=e=>{ if(String(e.id)===String(id)){ e.status=clean; e.updatedAt=new Date().toISOString(); } return e; };
+  remoteEvents=remoteEvents.map(touch);
+  localAddedEvents=localAddedEvents.map(touch);
+  sessions=sessions.map(touch);
+  saveLocalAddedEvents();
+}
+async function markEventStatus(encodedId,status){
+  const id=decodeURIComponent(encodedId || '');
+  const e=allSessions().find(item=>String(item.id)===String(id));
+  if(!e){ alert('Could not find this event. Please refresh and try again.'); return; }
+  const clean=normalizeEventStatus(status);
+  applyStatusLocally(id, clean);
+  renderAll();
+  await postStatusToSheet(e, clean);
+  setTimeout(loadRemoteEvents, 700);
+}
+function openJournalForEvent(encodedId){
+  const id=decodeURIComponent(encodedId || '');
+  const e=allSessions().find(item=>String(item.id)===String(id));
+  showView('journal');
+  if(!e) return;
+  const dateEl=document.getElementById('journalDate'); if(dateEl) dateEl.value=e.date || selectedDate;
+  const typeEl=document.getElementById('journalType'); if(typeEl) typeEl.value=typeLabel(e.type);
+  const minsEl=document.getElementById('journalMinutes'); if(minsEl) minsEl.value=e.minutes || '';
+  const noteEl=document.getElementById('journalNote');
+  if(noteEl) noteEl.value=`${e.title}: `;
+  setTimeout(()=>{ if(noteEl) noteEl.focus({preventScroll:false}); },80);
 }
 function timeFromParts(prefix){
   const h=document.getElementById(prefix+'Hour').value;
@@ -1431,7 +1551,7 @@ function saveScheduledEvent(){
   const start = allDay ? 'All Day' : timeFromParts('eventStart');
   const end = allDay ? '' : timeFromParts('eventEnd');
   if(!allDay && (!start || !end)){ alert('Please choose a start and end time, or select All-day event.'); return; }
-  const e=normalizeEvent({id:editingEventId || 'local-'+Date.now(), date, type:document.getElementById('eventType').value, start, end, title, location:document.getElementById('eventLocation').value.trim(), owner:'Parent', minutes: allDay ? 0 : calcMinutes(start,end,date), localOverride:true});
+  const e=normalizeEvent({id:editingEventId || 'local-'+Date.now(), date, type:document.getElementById('eventType').value, start, end, title, location:document.getElementById('eventLocation').value.trim(), owner:'Parent', minutes: allDay ? 0 : calcMinutes(start,end,date), status:'Planned', localOverride:true});
   if(editingEventId){
     localAddedEvents = localAddedEvents.filter(item=>String(item.id)!==String(editingEventId));
     remoteEvents = remoteEvents.map(item=>String(item.id)===String(editingEventId) ? e : item);
