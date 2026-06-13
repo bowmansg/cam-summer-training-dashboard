@@ -207,9 +207,11 @@
     .tracker-title{font-size:19px;font-weight:950;letter-spacing:-.25px;line-height:1.1}
     .tracker-meta{font-size:13px;color:var(--muted);font-weight:800;line-height:1.35}
     .tracker-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .tracker-actions.has-reset{grid-template-columns:repeat(4,minmax(0,1fr))}
     .mini-action{border:1px solid var(--line);border-radius:14px;background:#fff;color:#111827;font-weight:950;padding:10px 8px;cursor:pointer;font-size:12px}
     .mini-action.done{background:#ecfdf3;border-color:#abefc6;color:#067647}
     .mini-action.skip{background:#fff3f0;border-color:#ffd6cc;color:#b42318}
+    .mini-action.reset{background:#f8fafc;border-color:#cbd5e1;color:#344054}
     .mini-action.journal{background:var(--journal);border-color:#dfd1ff;color:var(--journal-ink)}
     .journal-state{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.04em;background:#f2ebff;color:#5b3a8e;white-space:nowrap}
     .journal-state.added{background:#d1fadf;color:#05603a}
@@ -1143,6 +1145,8 @@ function trackerEventCard(e){
   const isDone = status === 'Completed';
   const isSkipped = status === 'Skipped';
   const hasJournal = !!journalForEvent(e.id);
+  const canReset = status !== 'Planned';
+  const resetButton = canReset ? `<button class="mini-action reset" onclick="event.stopPropagation();markEventStatus('${safeId}','Planned')">Reset</button>` : '';
   return `<div class="tracker-card ${cls}">
     <div class="tracker-head">
       <div>
@@ -1152,9 +1156,10 @@ function trackerEventCard(e){
       <div style="display:grid;gap:6px;justify-items:end"><div class="tracker-time">${escapeHTML(time)}</div>${statusBadgeHTML(status)}${journalStateHTML(e)}</div>
     </div>
     ${e.notes ? `<div class="tracker-meta">${escapeHTML(e.notes)}</div>` : ''}
-    <div class="tracker-actions">
+    <div class="tracker-actions ${canReset ? 'has-reset' : ''}">
       <button class="mini-action done" onclick="event.stopPropagation();markEventStatus('${safeId}','Completed')">${isDone ? 'Completed ✓' : 'Complete'}</button>
       <button class="mini-action skip" onclick="event.stopPropagation();markEventStatus('${safeId}','Skipped')">${isSkipped ? 'Skipped ✓' : 'Skip'}</button>
+      ${resetButton}
       <button class="mini-action journal" onclick="event.stopPropagation();openJournalForEvent('${safeId}')">${hasJournal ? 'View / Add Journal' : 'Journal'}</button>
     </div>
   </div>`;
